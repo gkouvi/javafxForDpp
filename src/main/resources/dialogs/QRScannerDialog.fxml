@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.QRScannerDialogController"
+      alignment="CENTER"
+      spacing="10"
+      style="-fx-padding: 20;">
+
+    <Label text="Σάρωση QR" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    <ImageView fx:id="cameraView" fitWidth="460" fitHeight="340" preserveRatio="true"/>
+
+    <Button text="Κλείσιμο" onAction="#onClose"/>
+
+</VBox>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/23"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DeviceCardController"
+      spacing="15"
+      style="-fx-padding: 20;">
+
+    <!-- Title -->
+    <Label text="Device Details"
+           style="-fx-font-size: 22px; -fx-font-weight: bold;"/>
+
+    <!-- Info box -->
+    <GridPane hgap="10" vgap="8">
+        <columnConstraints>
+            <ColumnConstraints halignment="RIGHT" minWidth="120"/>
+            <ColumnConstraints halignment="LEFT"/>
+        </columnConstraints>
+
+        <Label text="Name:"/>
+        <Label fx:id="nameLabel" GridPane.columnIndex="1"/>
+
+        <Label text="Type:" GridPane.rowIndex="1"/>
+        <Label fx:id="typeLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+        <Label text="Serial:" GridPane.rowIndex="2"/>
+        <Label fx:id="serialLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+        <Label text="Firmware:" GridPane.rowIndex="3"/>
+        <Label fx:id="firmwareLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+        <Label text="Status:" GridPane.rowIndex="4"/>
+        <Label fx:id="statusLabel" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+        <Label text="Installed:" GridPane.rowIndex="5"/>
+        <Label fx:id="installedLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+        <Label text="Building ID:" GridPane.rowIndex="6"/>
+        <Label fx:id="buildingLabel" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+    </GridPane>
+
+    <!-- QR section -->
+    <VBox spacing="10" alignment="CENTER">
+        <Label text="QR Code:" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        <ImageView fx:id="qrImage" fitWidth="200" fitHeight="200" preserveRatio="true"/>
+    </VBox>
+
+    <!-- Buttons -->
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Button text="Close" onAction="#onClose"/>
+    </HBox>
+
+</VBox>
