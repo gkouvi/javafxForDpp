@@ -1,0 +1,53 @@
+.header-bar {
+    -fx-background-color: #1E88E5;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 15;
+}
+
+.header-title {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.card {
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(two-pass-box, rgba(0,0,0,0.15), 8, 0, 2, 2);
+    -fx-alignment: CENTER;
+    -fx-min-width: 160px;
+}
+
+.card-number {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E88E5;
+}
+
+.card-label {
+    -fx-text-fill: #555;
+    -fx-font-size: 14px;
+}
+
+.primary-button {
+    -fx-background-color: #1E88E5;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 10 20;
+    -fx-font-size: 15px;
+}
+
+.action-button {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #333;
+    -fx-background-radius: 6;
+    -fx-padding: 10 20;
+    -fx-font-size: 14px;
+}
+
+.section-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1E88E5;
+}

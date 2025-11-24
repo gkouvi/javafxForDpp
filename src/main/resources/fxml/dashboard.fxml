@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<AnchorPane stylesheets="@../dashboard/haf-theme.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DashboardController">
+
+    <!-- ============ SIDEBAR ============ -->
+    <!--<left>
+        <fx:include source="sidebar.fxml"/>
+    </left>-->
+
+    <!-- ============ MAIN CONTENT ============ -->
+
+        <VBox spacing="20">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            <!-- KPIs -->
+            <HBox spacing="20">
+                <VBox fx:id="kpi_sites" alignment="CENTER" styleClass="kpi-box">
+                    <Label styleClass="kpi-title" text="Μονάδες" >
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2h-home-group" iconSize="18" iconColor="white"/>
+                    </graphic>
+                    </Label>
+                    <Label fx:id="sitesCount" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="168.0" styleClass="kpi-value" />
+                </VBox>
+
+                <VBox alignment="CENTER" styleClass="kpi-box">
+                    <Label styleClass="kpi-title" text="Κτίρια">
+                    <graphic>
+                    <FontIcon iconLiteral="mdi2o-office-building" iconSize="18" iconColor="white"/>
+                </graphic>
+                </Label>
+                    <Label fx:id="buildingsCount" alignment="CENTER" prefHeight="40.0" prefWidth="165.0" styleClass="kpi-value" textAlignment="CENTER" />
+
+                </VBox>
+
+                <VBox alignment="CENTER" styleClass="kpi-box">
+                    <Label styleClass="kpi-title" text="Συσκευές" >
+                        <graphic>
+                            <FontIcon iconLiteral="mdi2d-devices" iconSize="18" iconColor="white"/>
+                        </graphic>
+                    </Label>
+                    <Label fx:id="devicesCount" styleClass="kpi-value" />
+                </VBox>
+
+                <VBox alignment="CENTER" styleClass="kpi-box">
+                    <Label styleClass="kpi-title" text="Ειδοποιήσεις" >
+                        <graphic>
+                            <FontIcon iconLiteral="mdi2a-alert" iconSize="18" iconColor="white"/>
+                        </graphic>
+                    </Label>
+                    <Label fx:id="alertsCount" styleClass="kpi-value" />
+                </VBox>
+
+                <VBox alignment="CENTER" styleClass="kpi-box">
+                    <Label styleClass="kpi-title" text="Αρχεία Συντήρησης" >
+                        <graphic>
+                            <FontIcon iconLiteral="mdi2t-tools" iconSize="18" iconColor="white"/>
+                        </graphic>
+                    </Label>
+                    <Label fx:id="maintenanceCount" styleClass="kpi-value" />
+                </VBox>
+            </HBox>
+
+            <!-- CHARTS -->
+            <HBox spacing="20">
+                <VBox HBox.hgrow="ALWAYS">
+                    <BarChart fx:id="alertsChart" legendVisible="false">
+                        <xAxis>
+                            <CategoryAxis label="Συσκευή" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis label="Ειδοποιήσεις" tickUnit="1" />
+                        </yAxis>
+                    </BarChart>
+
+                    <Label styleClass="section-title" text="Τελευταίες ειδοποιήσεις" />
+                    <TableView fx:id="alertsTable" prefHeight="200" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colAlertDevice" prefWidth="200" text="Συσκευή" />
+                            <TableColumn fx:id="colAlertMsg" prefWidth="400" text="Μήνυμα" />
+                        </columns>
+                    </TableView>
+                </VBox>
+
+                <VBox HBox.hgrow="ALWAYS">
+                    <LineChart fx:id="maintenanceChart" legendVisible="true">
+                        <xAxis>
+                            <CategoryAxis label="Μήνας" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis label="Ενέργειες" tickUnit="1" />
+                        </yAxis>
+                    </LineChart>
+
+                    <Label styleClass="section-title" text="Τελευταία συντήρηση" />
+                    <TableView fx:id="maintenanceTable" prefHeight="200" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colMaintBuilding" prefWidth="200" text="Κτήριο" />
+                            <TableColumn fx:id="colMaintTech" prefWidth="150" text="Τεχνικός" />
+                            <TableColumn fx:id="colMaintDesc" prefWidth="400" text="Περιγραφή" />
+                        </columns>
+                    </TableView>
+                </VBox>
+            </HBox>
+
+        </VBox>
+
+
+</AnchorPane>

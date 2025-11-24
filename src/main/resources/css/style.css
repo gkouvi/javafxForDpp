@@ -1,0 +1,268 @@
+/* ============================================================
+   GLOBAL ROOT STYLE
+   ============================================================ */
+
+.root {
+    -fx-font-family: "Segoe UI", "Roboto", "Sans-Serif";
+    -fx-background-color: #f4f6f9;   /* ανοιχτό δεξί panel */
+}
+
+/* ============================================================
+   SPLITPANE (Διαχωριστής)
+   ============================================================ */
+
+.split-pane {
+    -fx-background-color: transparent;
+}
+
+.split-pane-divider {
+    -fx-background-color: #334155;   /* σκούρο border */
+    -fx-padding: 0 1 0 1;
+}
+
+/* ============================================================
+   DARK LEFT PANEL (TreeView container)
+   ============================================================ */
+
+/* Μόνο το αριστερό AnchorPane */
+.split-pane *.anchor-pane {
+    -fx-background-color: #1e293b;  /* dark slate panel */
+}
+
+/* ============================================================
+   TREEVIEW (Dark Navigation Sidebar)
+   ============================================================ */
+
+.tree-view {
+    -fx-background-color: #1e293b !important;
+    -fx-control-inner-background: #1e293b;
+    -fx-border-color: #334155;
+    -fx-border-width: 0 1 0 0;
+}
+
+/* Dark sidebar text */
+.tree-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 13px;
+    -fx-padding: 6 12 6 12;
+
+    /* DEFAULT ICON (DARK MODE) */
+    -fx-graphic-text-gap: 8;
+}
+
+/* Hover */
+.tree-cell:hover {
+    -fx-background-color: #475569;
+}
+
+/* Selected */
+.tree-cell:filled:selected,
+.tree-cell:filled:selected:focused {
+    -fx-background-color: #64748b;
+    -fx-text-fill: white;
+}
+
+/* ============================================================
+   DARK ICONS for TreeView (Folder / Device)
+   ============================================================ */
+
+/* ICONS παγκοσμίως πιο σκούρα */
+.tree-cell > .tree-disclosure-node > .arrow {
+    -fx-background-color: #cbd5e1;  /* ανοιχτό γκρι */
+}
+
+/* Expand/Collapse arrow στην dark sidebar */
+.tree-disclosure-node > .arrow {
+    -fx-background-color: #cbd5e1 !important;
+}
+
+/* Custom icons (αν βάλεις image icons): */
+.tree-cell .icon-dark {
+    -fx-opacity: 0.80;        /* σκουρότερο */
+}
+
+/* Hover & selected icons */
+.tree-cell:filled:hover .icon-dark {
+    -fx-opacity: 1.0;
+}
+
+.tree-cell:filled:selected .icon-dark {
+    -fx-opacity: 1.0;
+}
+
+/* ============================================================
+   TABPANE (δεξί panel)
+   ============================================================ */
+
+.tab-pane {
+    -fx-background-color: transparent;
+}
+
+.tab-header-area {
+    -fx-background-color: #e5e9f2;
+    -fx-padding: 4 8 0 8;
+}
+
+.tab {
+    -fx-background-radius: 4 4 0 0;
+    -fx-padding: 6 14 6 14;
+    -fx-background-color: #cbd5e1;
+}
+
+.tab-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #374151;
+}
+
+.tab:selected {
+    -fx-background-color: white;
+}
+
+.tab:selected .tab-label {
+    -fx-text-fill: #111827;
+    -fx-font-weight: bold;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.button {
+    -fx-background-color: linear-gradient(to bottom, #4f46e5, #4338ca);
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-padding: 6 14 6 14;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 6, 0.0, 0, 1);
+}
+
+.button:hover {
+    -fx-background-color: linear-gradient(to bottom, #6366f1, #4f46e5);
+}
+
+.button:pressed {
+    -fx-background-color: #4338ca;
+}
+
+.button.secondary-button {
+    -fx-background-color: #e5e7eb;
+    -fx-text-fill: #111827;
+}
+
+.button.secondary-button:hover {
+    -fx-background-color: #d4d4d8;
+}
+
+/* ============================================================
+   TABLEVIEW (δεξί panel)
+   ============================================================ */
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+.table-view:focused {
+    -fx-border-color: #4f46e5;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #e5e7eb;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #374151;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+}
+
+.table-row-cell {
+    -fx-font-size: 12px;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #f9fafb;
+}
+
+.table-row-cell:even {
+    -fx-background-color: white;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #dbeafe;
+    -fx-text-fill: #111827;
+}
+
+/* ============================================================
+   TEXTFIELDS / COMBOBOX / DATEPICKER
+   ============================================================ */
+
+.text-field,
+.text-area,
+.combo-box-base,
+.date-picker {
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-border-color: #d1d5db;
+    -fx-background-color: white;
+    -fx-font-size: 13px;
+}
+
+.text-field:focused,
+.text-area:focused,
+.combo-box-base:focused,
+.date-picker:focused {
+    -fx-border-color: #4f46e5;
+    -fx-effect: dropshadow(three-pass-box, rgba(79,70,229,0.25), 4, 0, 0, 1);
+}
+
+/* ============================================================
+   DIALOGS
+   ============================================================ */
+
+.dialog-pane {
+    -fx-background-color: #f9fafb;
+}
+
+.dialog-pane .header-panel {
+    -fx-background-color: #e5e7eb;
+}
+
+.dialog-pane .label {
+    -fx-font-size: 13px;
+}
+
+/* Icons default */
+.sidebar-icon {
+    -fx-icon-color: #cbd5e1;
+    -fx-opacity: 0.85;
+}
+
+/* Hover + Selected → bright */
+.tree-cell:hover .sidebar-icon {
+    -fx-icon-color: white;
+    -fx-opacity: 1.0;
+}
+
+.tree-cell:filled:selected .sidebar-icon,
+.tree-cell:filled:selected:focused .sidebar-icon {
+    -fx-icon-color: white;
+    -fx-opacity: 1.0;
+}
+
+.image-view {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 0);
+}
+
+#qrImage {
+    -fx-padding: 6;
+    -fx-background-color: #fff;
+    -fx-background-radius: 6;
+}
+
+
+

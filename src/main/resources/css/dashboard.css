@@ -1,0 +1,21 @@
+.root {
+    -fx-background-color: #1E1F22;
+}
+
+.label {
+    -fx-text-fill: #FFFFFF;
+}
+
+.button {
+    -fx-background-color: #3A3D42;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+}
+
+.chart-plot-background {
+    -fx-background-color: #2C2F33;
+}
+
+.chart-vertical-grid-lines, .chart-horizontal-grid-lines {
+    -fx-stroke: #444;
+}
