@@ -1,0 +1,93 @@
+.root {
+    -fx-base: #0A1A2F;
+    -fx-background-color: #0A1A2F;
+}
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+    -fx-background-color: #0E2239;
+    -fx-padding: 20;
+}
+
+.sidebar-title {
+    -fx-text-fill: #85C1FF;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
+}
+
+.sidebar-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #E0E8F0;
+    -fx-border-color: #385170;
+    -fx-border-radius: 6;
+    -fx-padding: 10;
+}
+
+.sidebar-btn:hover {
+    -fx-background-color: #1B2A41;
+}
+
+.sidebar-version {
+    -fx-text-fill: #6A7B94;
+}
+
+/* ============ KPI BOXES ============ */
+.kpi-box {
+    -fx-background-color: linear-gradient(to bottom, #1B2A41, #112240);
+    -fx-text-fill: white;
+    -fx-padding: 15;
+    -fx-min-width: 150;
+    -fx-alignment: center;
+    -fx-background-radius: 12;
+}
+
+.kpi-title {
+    -fx-text-fill: #9EBCE6;
+    -fx-font-size: 13px;
+}
+
+.kpi-value {
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+/* CHARTS */
+.chart-plot-background {
+    -fx-background-color: #0F1A2E;
+}
+
+.chart-legend {
+    -fx-text-fill: white;
+}
+
+.chart-series-line {
+    -fx-stroke-width: 3px;
+}
+
+.chart-bar {
+    -fx-bar-fill: #4F81C7;
+}
+
+/* SECTION TITLES */
+.section-title {
+    -fx-text-fill: #9EBCE6;
+    -fx-font-size: 16px;
+    -fx-padding: 8 0 5 0;
+}
+
+/* TABLE VIEW */
+.table-view {
+    -fx-background-color: #0F1A2E;
+    -fx-border-color: #1F2D40;
+}
+
+.table-row-cell {
+    -fx-background-color: #0F1A2E;
+    -fx-text-fill: #E0E8F0;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #203A58;
+}

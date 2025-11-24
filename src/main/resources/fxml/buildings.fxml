@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.BuildingsController">
+    <Label text="Κτίρια" layoutX="20" layoutY="20" />
+    <TableView fx:id="buildingsTable" layoutY="60">
+        <columns>
+            <TableColumn text="ID" fx:id="idColumn"/>
+            <TableColumn text="Όνομα" fx:id="nameColumn"/>
+            <TableColumn text="Διεύθυνση" fx:id="addressColumn"/>
+            <TableColumn text="Μονάδα" fx:id="siteIdColumn"/>
+        </columns>
+    </TableView>
+</AnchorPane>
+

@@ -12,6 +12,33 @@ public class MaintenanceModel {
     private LocalDate maintenanceDate;
     private String description;
     private String technician;
+    private Long  buildingId;
+    private transient  String deviceName;
+    private transient String buildingName;
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+    public void setDeviceName(String deviceName) {
+        this.deviceName = deviceName;
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
+    }
+
+    public Long  getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(Long  buildingId) {
+        this.buildingId = buildingId;
+    }
 
     public MaintenanceModel() {}
 
@@ -54,4 +81,15 @@ public class MaintenanceModel {
     public void setTechnician(String technician) {
         this.technician = technician;
     }
+
+    public String getTargetName() {
+        StringBuilder builder = new StringBuilder();
+        if (deviceId != null) builder.append( "Συσκευή : " + deviceName + "/");
+        if (buildingId != null) builder.append( "Κτίριο : " + buildingName);
+        if(builder.isEmpty())
+        return "-";
+        else return builder.toString();
+    }
+
+
 }

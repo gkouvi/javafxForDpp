@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.MainController">
+    <center>
+        <SplitPane dividerPositions="0.25">
+
+            <items>
+
+                <!-- ==== LEFT NAVIGATION TREE ==== -->
+                <AnchorPane>
+                    <TreeView fx:id="treeView" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
+                </AnchorPane>
+
+                <!-- ==== RIGHT SIDE TAB PANE ==== -->
+                <AnchorPane>
+
+                    <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+                        <Tab fx:id="metadataTab" text="Μεταδεδομένα DPP">
+                            <content>
+                                <AnchorPane fx:id="metadataPane" />
+                            </content>
+                        </Tab>
+
+                        <Tab fx:id="alertsTab" text="Συναγερμοί">
+                            <content>
+                                <AnchorPane fx:id="alertsPane" />
+                            </content>
+                        </Tab>
+
+                        <Tab fx:id="maintenanceTab" text="Συντήρηση">
+                            <content>
+                                <AnchorPane fx:id="maintenancePane" />
+                            </content>
+                        </Tab>
+
+                        <Tab fx:id="documentsTab" text="Συνοδευτικά Αρχεία">
+                            <content>
+                                <AnchorPane fx:id="documentsPane" />
+                            </content>
+                        </Tab>
+
+                    </TabPane>
+
+                </AnchorPane>
+
+            </items>
+
+        </SplitPane>
+    </center>
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <menus>
+                <Menu mnemonicParsing="false" text="Αρχείο">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Έξοδος" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Προσθήκη">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onAddSite" text="Μονάδας" />
+                        <MenuItem mnemonicParsing="false" onAction="#onAddBuilding" text="Κτηρίου" />
+                        <MenuItem mnemonicParsing="false" onAction="#onAddDevice" text="Συσκευής" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Επεξεργασία">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onEditSite" text="Μονάδας" />
+                        <MenuItem mnemonicParsing="false" onAction="#onEditBuilding" text="Κτιρίου" />
+                        <MenuItem mnemonicParsing="false" onAction="#onEditDevice" text="Συσκευής" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Διαγραφή">
+                    <items>
+                        <MenuItem mnemonicParsing="false" text="Μονάδας" />
+                        <MenuItem mnemonicParsing="false" onAction="#onDeleteBuilding" text="Κτιρίου" />
+                        <MenuItem mnemonicParsing="false" onAction="#onDeleteDevice" text="Συσκευής" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="QRCode">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onScanQrInMenu" text="Σκανάρισμα" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+</BorderPane>

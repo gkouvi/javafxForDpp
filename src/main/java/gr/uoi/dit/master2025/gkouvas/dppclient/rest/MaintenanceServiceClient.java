@@ -47,6 +47,24 @@ public class MaintenanceServiceClient extends ApiClient {
             return null;
         }
     }
+    public List<MaintenanceModel> getAll() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/maintenance/all"))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return Arrays.asList(mapper.readValue(response.body(), MaintenanceModel[].class));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
 }
 
 

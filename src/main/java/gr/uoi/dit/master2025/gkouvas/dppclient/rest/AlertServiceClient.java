@@ -47,5 +47,24 @@ public class AlertServiceClient extends ApiClient {
             return null;
         }
     }
+    public List<AlertModel> getAllAlerts() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/alerts"))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return Arrays.asList(mapper.readValue(response.body(), AlertModel[].class));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+
 }
 

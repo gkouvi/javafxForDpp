@@ -115,11 +115,11 @@ public class MainController {
     }*/
     private void loadTreeData() {
 
-        // 1️⃣ ΟΛΙΚΗ ΚΑΘΑΡΙΣΗ TREEVIEW (critical fix)
+        // 1️ΟΛΙΚΗ ΚΑΘΑΡΙΣΗ TREEVIEW (critical fix)
         treeView.setRoot(null);
         treeView.setShowRoot(false);
 
-        // 2️⃣ ΦΤΙΑΧΝΟΥΜΕ ΝΕΟ, ΚΑΘΑΡΟ ΔΕΝΤΡΟ
+        // 2️ΦΤΙΑΧΝΟΥΜΕ ΝΕΟ, ΚΑΘΑΡΟ ΔΕΝΤΡΟ
         TreeItem<TreeNodeData> root =
                 new TreeItem<>(new TreeNodeData("root", 0L, "ΜΟΝΑΔΕΣ"));
         root.setExpanded(true);
@@ -156,7 +156,7 @@ public class MainController {
             root.getChildren().add(siteItem);
         }
 
-        // 3️⃣ ΒΑΖΟΥΜΕ ΤΟ ΚΑΘΑΡΟ ROOT
+        // 3 ΒΑΖΟΥΜΕ ΤΟ ΚΑΘΑΡΟ ROOT
         treeView.setRoot(root);
         treeView.setShowRoot(true);
     }

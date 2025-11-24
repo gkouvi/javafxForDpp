@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.Landing">
+    <BorderPane fx:id="rootPane">
+        <left>
+            <VBox prefWidth="250" spacing="15" styleClass="sidebar">
+
+                <Label styleClass="sidebar-title" text="DPP ΠΙΝΑΚΑΣ ΕΛΕΓΧΟΥ" />
+
+                <Button onAction="#onDashboardClick" styleClass="sidebar-btn" text="Dashboard">
+                <graphic>
+                    <FontIcon iconLiteral="mdi2v-view-dashboard" iconSize="18" iconColor="white"/>
+                </graphic>
+                </Button>
+                <Button onAction="#onSitesClick" styleClass="sidebar-btn" text="Μονάδες" >
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2h-home-group" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+                <Button onAction="#onBuildingsClick" styleClass="sidebar-btn" text="Κτίρια" >
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2o-office-building" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+                <Button onAction="#onDevicesClick" styleClass="sidebar-btn" text="Συσκευές" >
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2d-devices" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+                <Button onAction="#onAlertsClick" styleClass="sidebar-btn" text="Ειδοποιήσεις" >
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2a-alert" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+                <Button onAction="#onMaintenanceClick" styleClass="sidebar-btn" text="Συντήρηση" >
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2t-tools" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+                <Button onAction="#onDocumentsClick" styleClass="sidebar-btn" text="Έγγραφα" >
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2f-file-document-multiple-outline" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+                <Button onAction="#onSettingsClick" styleClass="sidebar-btn" text="Ρυθμίσεις" >
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2c-cog-clockwise" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+                <Button onAction="#onQrcode" styleClass="sidebar-btn" text="QR code Scanner" >
+                    <graphic>
+                        <FontIcon iconLiteral="mdi2q-qrcode-scan" iconSize="18" iconColor="white"/>
+                    </graphic>
+                </Button>
+
+                <Pane VBox.vgrow="ALWAYS" />
+                <Label styleClass="sidebar-version" text="v1.0.0" />
+
+            </VBox>
+
+        </left>
+
+        <center>
+            <AnchorPane fx:id="contentArea" />
+        </center>
+    </BorderPane>
+
+</AnchorPane>

@@ -1,0 +1,38 @@
+/* Background */
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+/* Grid lines */
+.chart-horizontal-grid-lines {
+    -fx-stroke: rgba(255,255,255,0.1);
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: rgba(255,255,255,0.1);
+}
+
+/* Modern bars */
+.chart-bar {
+    -fx-bar-fill: #4285F4;
+    -fx-background-radius: 6px;
+}
+
+
+/* Line chart */
+.default-color0.chart-series-line {
+    -fx-stroke: #00C853; /* green material */
+    -fx-stroke-width: 3px;
+}
+
+.default-color0.chart-line-symbol {
+    -fx-background-color: #00C853, white;
+    -fx-background-radius: 8px;
+    -fx-padding: 4px;
+}
+
+/* Axis labels */
+.axis {
+    -fx-tick-label-fill: #0092fe;
+    -fx-font-size: 14px;
+}

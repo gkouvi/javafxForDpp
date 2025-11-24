@@ -13,49 +13,49 @@
 <BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.MainController">
    <center>
       <SplitPane dividerPositions="0.25">
-      
+
           <items>
-      
+
               <!-- ==== LEFT NAVIGATION TREE ==== -->
               <AnchorPane>
                   <TreeView fx:id="treeView" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" />
               </AnchorPane>
-      
+
               <!-- ==== RIGHT SIDE TAB PANE ==== -->
               <AnchorPane>
-      
+
                   <TabPane fx:id="tabPane" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-      
+
                       <Tab fx:id="metadataTab" text="Μεταδεδομένα DPP">
                           <content>
                               <AnchorPane fx:id="metadataPane" />
                           </content>
                       </Tab>
-      
+
                       <Tab fx:id="alertsTab" text="Συναγερμοί">
                           <content>
                               <AnchorPane fx:id="alertsPane" />
                           </content>
                       </Tab>
-      
+
                       <Tab fx:id="maintenanceTab" text="Συντήρηση">
                           <content>
                               <AnchorPane fx:id="maintenancePane" />
                           </content>
                       </Tab>
-      
+
                       <Tab fx:id="documentsTab" text="Συνοδευτικά Αρχεία">
                           <content>
                               <AnchorPane fx:id="documentsPane" />
                           </content>
                       </Tab>
-      
+
                   </TabPane>
-      
+
               </AnchorPane>
-      
+
           </items>
-      
+
       </SplitPane>
    </center>
    <top>

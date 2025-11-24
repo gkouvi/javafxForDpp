@@ -1,0 +1,255 @@
+/* =========================================================
+   DARK NAVY AIR FORCE UI THEME
+   ========================================================= */
+
+/* ---- Global background ---- */
+.root {
+    -fx-background-color: #0A1A2F; /* Deep Navy */
+    -fx-text-fill: #D0E6FF;
+}
+
+/* ===== TEXT ===== */
+.label, .text {
+    -fx-text-fill: #D0E6FF;
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI Semibold";
+}
+
+.text-field, .password-field {
+    -fx-background-color: #102641;
+    -fx-text-fill: #D0E6FF;
+    -fx-background-radius: 5;
+    -fx-padding: 6;
+    -fx-border-color: #1F4E79;
+    -fx-border-radius: 5;
+    -fx-border-width: 1;
+}
+
+.text-field:focused {
+    -fx-border-color: #5DA7E1;
+}
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+.button {
+    -fx-background-color: linear-gradient(#1F4E79, #0E2A47);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-padding: 8 14;
+    -fx-border-color: #1F4E79;
+    -fx-border-width: 1;
+}
+
+.button:hover {
+    -fx-background-color: #2F6FA1;
+}
+
+.button:pressed {
+    -fx-background-color: #163A59;
+}
+
+/* =========================================================
+   TABS
+   ========================================================= */
+.tab-pane {
+    -fx-background-color: #0A1A2F;
+}
+
+.tab-header-area {
+    -fx-background-color: #102641;
+}
+
+.tab {
+    -fx-background-color: #102641;
+    -fx-text-base-color: #D0E6FF;
+}
+
+.tab:selected {
+    -fx-background-color: #1F4E79;
+}
+
+.tab-label {
+    -fx-text-fill: #D0E6FF;
+    -fx-font-weight: bold;
+}
+
+/* =========================================================
+   TREEVIEW
+   ========================================================= */
+.tree-view {
+    -fx-background-color: #0A1A2F;
+    -fx-control-inner-background: #0A1A2F;
+    -fx-text-fill: white;
+}
+
+.tree-cell {
+    -fx-background-color: #0A1A2F;
+    -fx-text-fill: #D0E6FF;
+    -fx-font-size: 14px;
+}
+
+.tree-cell:hover {
+    -fx-background-color: #102641;
+}
+
+.tree-cell:selected {
+    -fx-background-color: #1F4E79;
+}
+
+/* =========================================================
+   TABLEVIEW
+   ========================================================= */
+.table-view {
+    -fx-background-color: #0A1A2F;
+    -fx-control-inner-background: #0A1A2F;
+    -fx-table-cell-border-color: rgba(255,255,255,0.08);
+}
+
+.table-row-cell {
+    -fx-background-color: #0A1A2F;
+    -fx-text-fill: #D0E6FF;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #102641;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #1F4E79;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #102641;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #1F4E79;
+    -fx-font-weight: bold;
+}
+
+/* =========================================================
+   SPLIT PANE
+   ========================================================= */
+.split-pane:horizontal > .split-pane-divider {
+    -fx-background-color: #1F4E79;
+    -fx-padding: 1;
+}
+
+.split-pane:vertical > .split-pane-divider {
+    -fx-background-color: #1F4E79;
+    -fx-padding: 1;
+}
+
+/* =========================================================
+   SCROLLBARS
+   ========================================================= */
+.scroll-bar .thumb {
+    -fx-background-color: #1F4E79;
+    -fx-background-insets: 0;
+    -fx-background-radius: 4;
+}
+
+.scroll-bar .track {
+    -fx-background-color: #0A1A2F;
+}
+
+/* =========================================================
+   CHARTS — combine with charts.css
+   ========================================================= */
+.chart {
+    -fx-background-color: #0A1A2F;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+.chart-title {
+    -fx-text-fill: #5DA7E1;
+}
+
+/* =========================================================
+   CARDS / PANELS
+   ========================================================= */
+.card {
+    -fx-background-color: #102641;
+    -fx-background-radius: 8;
+    -fx-padding: 16;
+    -fx-border-color: #1F4E79;
+    -fx-border-radius: 8;
+}
+/* ==================== SIDEBAR ===================== */
+
+.sidebar {
+    -fx-background-color: #051123;
+    -fx-pref-width: 220px;
+    -fx-padding: 20 10 20 10;
+}
+
+.sidebar-title {
+    -fx-text-fill: #5DA7E1;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.sidebar-menu {
+    -fx-padding: 10;
+}
+
+.sidebar-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #D0E6FF;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 18;
+    -fx-font-size: 14px;
+    -fx-background-radius: 6;
+}
+
+.sidebar-btn:hover {
+    -fx-background-color: #102641;
+}
+
+.sidebar-btn:pressed {
+    -fx-background-color: #1F4E79;
+}
+
+.sidebar-bottom {
+    -fx-background-color: transparent;
+}
+
+.sidebar-version {
+    -fx-text-fill: #4E6E8E;
+    -fx-font-size: 12px;
+}
+#sidebar {
+    -fx-background-color: #0A1A2A; /* Dark Navy */
+    -fx-padding: 20px;
+    -fx-spacing: 15px;
+    -fx-pref-width: 220px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 30, 0.15, 0, 0);
+}
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #D3E3FF;
+    -fx-border-color: #1E90FF;
+    -fx-border-width: 1.5;
+    -fx-border-radius: 6;
+    -fx-padding: 8 16;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: rgba(30,144,255,0.2);
+    -fx-border-color: #3EB3FF;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+}
+
+.sidebar-button:focused {
+    -fx-border-color: #4DC4FF;
+    -fx-background-color: rgba(30,144,255,0.25);
+}
+

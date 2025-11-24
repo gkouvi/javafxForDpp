@@ -10,13 +10,19 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/main.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/dashboard/landing.fxml"));
         Parent root = loader.load();
 
         Scene scene = new Scene(root, 1024, 768);
 
         // 👉 Φόρτωση CSS
-        scene.getStylesheets().add(getClass().getResource("/css/style.css").toExternalForm());
+        scene.getStylesheets().add(
+                getClass().getResource("/dashboard/haf-theme.css").toExternalForm()
+        );
+        /*scene.getStylesheets().add(
+                getClass().getResource("/css/charts.css").toExternalForm()
+        );*/
+
 
         stage.setTitle("DPP Client");
         stage.setScene(scene);

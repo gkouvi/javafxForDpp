@@ -1,0 +1,139 @@
+/* =========== ROOT BACKGROUND (HAF BLUE) ============ */
+.root {
+    -fx-background-color: #001f3f; /* HAF deep blue */
+    -fx-base: #001f3f;
+}
+
+/* =========== SIDEBAR ================= */
+.sidebar {
+    -fx-background-color: #002952; /* ΗAF panel navy */
+    -fx-padding: 20;
+    -fx-border-width: 0 2 0 0;
+    -fx-border-color: #0a3d77;
+}
+
+.sidebar-title {
+    -fx-text-fill: #4DA3FF; /* sky blue aircraft light */
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+
+/* BUTTON STYLE: F-16 MODERN UI */
+.sidebar-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #c7d5e0;
+    -fx-border-color: #4DA3FF33; /* faint sky-blue border */
+    -fx-border-radius: 6;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+    -fx-background-radius: 6;
+    -fx-min-width: 150px;
+}
+
+.sidebar-btn:hover {
+    -fx-background-color: #003870; /* hover bright HAF blue */
+    -fx-text-fill: white;
+    -fx-border-color: #4DA3FF;
+}
+
+/* FOOTER VERSION */
+.sidebar-version {
+    -fx-text-fill: #6A7B94;
+    -fx-font-size: 12px;
+}
+
+/* ================= KPIs ===================== */
+.kpi-box {
+    -fx-background-color: linear-gradient(to bottom, #003870, #002a50);
+    -fx-padding: 15;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, #00000055, 10, 0.2, 0, 4);
+    -fx-min-width: 200px;
+}
+
+.kpi-title {
+    -fx-text-fill: #A8B3BD; /* aircraft gray */
+    -fx-font-size: 13px;
+}
+
+.kpi-value {
+    -fx-text-fill: #4DA3FF; /* sky blue number */
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+
+}
+
+/* ================= SECTION TITLES ============== */
+.section-title {
+    -fx-text-fill: #4DA3FF;
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-padding: 5 0 8 0;
+}
+
+/* ================= TABLES ===================== */
+.table-view {
+    -fx-background-color: #002242;
+    -fx-border-color: #00325f;
+    -fx-table-cell-border-color: #003f77;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #00325f;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-background-color: #00325f;
+    -fx-border-color: #004a87;
+}
+
+.table-row-cell {
+    -fx-text-fill: #dbe8f5;
+    -fx-background-color: #002242;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #005a9e; /* selection sky-blue */
+    -fx-text-fill: white;
+}
+
+/* ================= CHARTS ===================== */
+.chart-plot-background {
+    -fx-background-color: #001f3f;
+}
+
+.chart-legend {
+    -fx-text-fill: white;
+}
+
+.chart-bar {
+    -fx-bar-fill: #4DA3FF; /* sky-blue bars */
+}
+
+.chart-series-line {
+    -fx-stroke: #4DA3FF; /* sky-blue lines */
+    -fx-stroke-width: 3;
+}
+
+.chart-line-symbol {
+    -fx-background-color: #E8BD0D, white; /* runway yellow */
+    -fx-background-insets: 0, 2;
+}
+
+/* AXIS LABELS */
+.axis-label, .axis-tick-mark, .axis {
+    -fx-text-fill: #A8B3BD;
+    -fx-font-size: 13px;
+}
+
+/* ================= SCROLLBARS ===================== */
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #4DA3FF55;
+    -fx-background-radius: 5;
+}
+
+/* ============ MAIN BACKGROUND PANELS ============== */
+.vbox, .hbox {
+    -fx-background-color: transparent;
+}

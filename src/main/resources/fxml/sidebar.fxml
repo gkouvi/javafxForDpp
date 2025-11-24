@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15" prefWidth="250" styleClass="sidebar">
+
+    <Label text="DPP ΠΙΝΑΚΑΣ ΕΛΕΓΧΟΥ" styleClass="sidebar-title"/>
+
+    <Button text="Dashboard" styleClass="sidebar-btn"/>
+    <Button text="Μονάδες" styleClass="sidebar-btn"/>
+    <Button text="Κτίρια" styleClass="sidebar-btn"/>
+    <Button text="Συσκευές" styleClass="sidebar-btn"/>
+    <Button text="Ειδοποιήσεις" styleClass="sidebar-btn"/>
+    <Button text="Συντήρηση" styleClass="sidebar-btn"/>
+    <Button text="Έγγραφα" styleClass="sidebar-btn"/>
+    <Button text="Ρυθμίσεις" styleClass="sidebar-btn"/>
+
+    <Pane VBox.vgrow="ALWAYS"/>
+    <Label text="v1.0.0" styleClass="sidebar-version"/>
+
+</VBox>

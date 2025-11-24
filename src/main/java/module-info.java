@@ -20,7 +20,7 @@ module gr.uoi.dit.master2025.gkouvas.dppclient {
 
     // Για Jackson (reflection πάνω στα models)
     opens gr.uoi.dit.master2025.gkouvas.dppclient.model
-            to com.fasterxml.jackson.databind;
+            to com.fasterxml.jackson.databind,javafx.base;
 
     // αν θες, μπορείς να exportάρεις μόνο το βασικό package
     exports gr.uoi.dit.master2025.gkouvas.dppclient;

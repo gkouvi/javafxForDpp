@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.SitesController">
+
+    <Label layoutX="99.0" layoutY="24.0" text="Μονάδες" />
+    <TableView fx:id="sitesTable" layoutY="60" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+        <columns>
+            <TableColumn fx:id="idColumn" text="ID" />
+            <TableColumn fx:id="nameColumn" text="Όνομα" />
+            <TableColumn fx:id="regionColumn" text="Περιοχή" />
+            <TableColumn fx:id="coordinatesColumn" text="Συντεταγμένες" />
+        </columns>
+    </TableView>
+</AnchorPane>

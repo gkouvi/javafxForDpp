@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.AlertsPageController">
+    <Label text="Συναγερμοί" layoutX="20" layoutY="20" />
+    <TableView fx:id="alertsTable" layoutY="60">
+        <columns>
+            <TableColumn text="Συσκευή" fx:id="colDevice"/>
+            <TableColumn text="Μήνυμα" fx:id="colMsg"/>
+            <TableColumn text="Ημερομηνία" fx:id="colDate"/>
+        </columns>
+    </TableView>
+
+</AnchorPane>
