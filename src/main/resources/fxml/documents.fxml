@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DocumentsPageController">
+   <children>
+      <VBox spacing="15" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+          <padding>
+              <Insets bottom="20" left="20" right="20" top="20" />
+          </padding>
+      
+          <Label alignment="CENTER" prefHeight="30.0" prefWidth="450.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Επισκόπηση εγγράφων" />
+      
+          <TableView fx:id="documentsTable">
+      
+              <columns>
+      
+                  <TableColumn fx:id="deviceColumn" maxWidth="1.7976931348623157E308" prefWidth="300" text="Συσκευή" />
+      
+                  <TableColumn fx:id="statusColumn" maxWidth="1.7976931348623157E308" prefWidth="150" text="Αρχεία" />
+      
+              </columns>
+            <columnResizePolicy>
+               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+      
+          </TableView>
+      
+      </VBox>
+   </children>
+</AnchorPane>
