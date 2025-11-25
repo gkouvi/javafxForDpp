@@ -1,6 +1,7 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.AlertModel;
+import javafx.scene.control.TextField;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
@@ -47,6 +48,7 @@ public class AlertServiceClient extends ApiClient {
             return null;
         }
     }
+
     public List<AlertModel> getAllAlerts() {
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -66,5 +68,46 @@ public class AlertServiceClient extends ApiClient {
     }
 
 
+    public AlertModel updateAlert(AlertModel alert) {
+        try {
+            String json = mapper.writeValueAsString(alert);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/alerts/" + alert.getAlertId()))
+                    .header("Content-Type", "application/json")
+                    .PUT(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return mapper.readValue(response.body(), AlertModel.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // ========================= GET ALERT BY DEVICE ============================
+    public AlertModel getAllertFromDeviceID(Long deviceId) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/alerts/device/" + deviceId))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            AlertModel[] list = mapper.readValue(response.body(), AlertModel[].class);
+
+            return list.length > 0 ? list[0] : null;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
 

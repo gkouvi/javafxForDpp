@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.MaintenancePageController">
-    <Label text="Συντηρήσεις" layoutX="20" layoutY="20" />
-    <TableView fx:id="maintTable" layoutY="60">
+<AnchorPane minWidth="-Infinity" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.MaintenancePageController">
+    <Label alignment="CENTER" layoutX="127.0" layoutY="24.0" text="Συντηρήσεις" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="20.0" />
+    <TableView fx:id="maintenanceTable" layoutY="60" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="60.0">
         <columns>
-            <TableColumn text="Κτίριο" fx:id="colBuilding"/>
-            <TableColumn text="Τεχνικός" fx:id="colTech"/>
-            <TableColumn text="Περιγραφή" fx:id="colDesc"/>
-            <TableColumn text="Ημερομηνία" fx:id="colDate"/>
+            <TableColumn fx:id="colTarget" minWidth="200.0" text="Κτίριο / Συσκευή" />
+            <TableColumn fx:id="technicianColumn" minWidth="200.0" text="Τεχνικός" />
+            <TableColumn fx:id="descriptionColumn" minWidth="200.0" text="Περιγραφή" />
+            <TableColumn fx:id="dateColumn" minWidth="100.0" text="Ημερομηνία" />
         </columns>
+      <columnResizePolicy>
+         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+      </columnResizePolicy>
     </TableView>
 
 </AnchorPane>

@@ -6,11 +6,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
-
-
 <?import org.kordamp.ikonli.javafx.FontIcon?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.Landing">
-    <BorderPane fx:id="rootPane">
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.Landing">
+    <BorderPane fx:id="rootPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <left>
             <VBox prefWidth="250" spacing="15" styleClass="sidebar">
 
@@ -18,47 +17,47 @@
 
                 <Button onAction="#onDashboardClick" styleClass="sidebar-btn" text="Dashboard">
                 <graphic>
-                    <FontIcon iconLiteral="mdi2v-view-dashboard" iconSize="18" iconColor="white"/>
+                    <FontIcon iconColor="white" iconLiteral="mdi2v-view-dashboard" iconSize="18" />
                 </graphic>
                 </Button>
-                <Button onAction="#onSitesClick" styleClass="sidebar-btn" text="Μονάδες" >
+                <Button onAction="#onSitesClick" styleClass="sidebar-btn" text="Μονάδες">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2h-home-group" iconSize="18" iconColor="white"/>
+                        <FontIcon iconColor="white" iconLiteral="mdi2h-home-group" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onBuildingsClick" styleClass="sidebar-btn" text="Κτίρια" >
+                <Button onAction="#onBuildingsClick" styleClass="sidebar-btn" text="Κτίρια">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2o-office-building" iconSize="18" iconColor="white"/>
+                        <FontIcon iconColor="white" iconLiteral="mdi2o-office-building" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onDevicesClick" styleClass="sidebar-btn" text="Συσκευές" >
+                <Button onAction="#onDevicesClick" styleClass="sidebar-btn" text="Συσκευές">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2d-devices" iconSize="18" iconColor="white"/>
+                        <FontIcon iconColor="white" iconLiteral="mdi2d-devices" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onAlertsClick" styleClass="sidebar-btn" text="Ειδοποιήσεις" >
+                <Button onAction="#onAlertsClick" styleClass="sidebar-btn" text="Ειδοποιήσεις">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2a-alert" iconSize="18" iconColor="white"/>
+                        <FontIcon iconColor="white" iconLiteral="mdi2a-alert" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onMaintenanceClick" styleClass="sidebar-btn" text="Συντήρηση" >
+                <Button onAction="#onMaintenanceClick" styleClass="sidebar-btn" text="Συντήρηση">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2t-tools" iconSize="18" iconColor="white"/>
+                        <FontIcon iconColor="white" iconLiteral="mdi2t-tools" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onDocumentsClick" styleClass="sidebar-btn" text="Έγγραφα" >
+                <Button onAction="#onDocumentsClick" styleClass="sidebar-btn" text="Έγγραφα">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2f-file-document-multiple-outline" iconSize="18" iconColor="white"/>
+                        <FontIcon iconColor="white" iconLiteral="mdi2f-file-document-multiple-outline" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onSettingsClick" styleClass="sidebar-btn" text="Ρυθμίσεις" >
+                <Button onAction="#onSettingsClick" styleClass="sidebar-btn" text="Ρυθμίσεις">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2c-cog-clockwise" iconSize="18" iconColor="white"/>
+                        <FontIcon iconColor="white" iconLiteral="mdi2c-cog-clockwise" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onQrcode" styleClass="sidebar-btn" text="QR code Scanner" >
+                <Button onAction="#onQrcode" styleClass="sidebar-btn" text="QR code Scanner">
                     <graphic>
-                        <FontIcon iconLiteral="mdi2q-qrcode-scan" iconSize="18" iconColor="white"/>
+                        <FontIcon iconColor="white" iconLiteral="mdi2q-qrcode-scan" iconSize="18" />
                     </graphic>
                 </Button>
 
@@ -70,7 +69,7 @@
         </left>
 
         <center>
-            <AnchorPane fx:id="contentArea" />
+            <AnchorPane fx:id="contentArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" />
         </center>
     </BorderPane>
 

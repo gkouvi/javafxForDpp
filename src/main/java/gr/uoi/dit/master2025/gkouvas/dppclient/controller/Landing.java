@@ -54,16 +54,16 @@ public class Landing {
     }
 
     @FXML private void onAlertsClick() {
-        loadView("/tabs/alerts.fxml");
+        loadView("/fxml/alerts.fxml");
     }
 
     @FXML
     private void onMaintenanceClick() {
-        loadView("/tabs/maintenance.fxml");
+        loadView("/fxml/maintenance.fxml");
     }
 
     @FXML private void onDocumentsClick() {
-        loadView("/tabs/documents.fxml");
+        loadView("/fxml/documents.fxml");
     }
 
     @FXML private void onSettingsClick() {

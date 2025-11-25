@@ -16,7 +16,7 @@ module gr.uoi.dit.master2025.gkouvas.dppclient {
 
     // Για FXML
     opens gr.uoi.dit.master2025.gkouvas.dppclient to javafx.fxml;
-    opens gr.uoi.dit.master2025.gkouvas.dppclient.controller to javafx.fxml;
+    opens gr.uoi.dit.master2025.gkouvas.dppclient.controller to javafx.fxml,javafx.base;
 
     // Για Jackson (reflection πάνω στα models)
     opens gr.uoi.dit.master2025.gkouvas.dppclient.model

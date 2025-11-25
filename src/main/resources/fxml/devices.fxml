@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DevicesController">
-    <Label text="Συσκευές" layoutX="20" layoutY="20" />
-    <TableView fx:id="devicesTable" layoutY="60">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DevicesController">
+    <Label alignment="CENTER" layoutX="7.0" layoutY="20" prefHeight="18.0" prefWidth="391.0" text="Συσκευές" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="20.0" />
+    <TableView fx:id="devicesTable" layoutY="60" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="60.0">
         <columns>
-            <TableColumn text="ID" fx:id="idColumn"/>
-            <TableColumn text="Όνομα" fx:id="nameColumn"/>
-            <TableColumn text="Τύπος" fx:id="typeColumn"/>
-            <TableColumn text="Σειριακός Αριθμός" fx:id="serialColumn"/>
-            <TableColumn text="Κτίριο" fx:id="buildingIdColumn"/>
+            <TableColumn fx:id="nameColumn" text="Όνομα" />
+            <TableColumn fx:id="typeColumn" text="Τύπος" />
+            <TableColumn fx:id="serialColumn" text="Σειριακός Αριθμός" />
+            <TableColumn fx:id="buildingIdColumn" text="Κτίριο" />
         </columns>
+      <columnResizePolicy>
+         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+      </columnResizePolicy>
     </TableView>
 </AnchorPane>
-

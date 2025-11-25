@@ -41,8 +41,7 @@ public class EditBuildingController {
 
             buildingClient.updateBuilding(buildingId, b);
 
-            MainController.instance.refreshBuildingsForSite(
-                    MainController.SelectionContext.selectedSiteId);
+
 
             ((Stage) nameField.getScene().getWindow()).close();
 

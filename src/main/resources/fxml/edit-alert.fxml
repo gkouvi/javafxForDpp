@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.EditAlertController">
+    <VBox spacing="12" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+
+        <Label alignment="CENTER" prefHeight="30.0" prefWidth="577.0" style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Επεξεργάσια Ειδοποίησης" />
+
+        <GridPane hgap="10" vgap="10">
+
+            <Label text="ID Συσκευής" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="alertId" editable="false" prefHeight="25.0" prefWidth="158.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+            <Label text="ID Ειδοποίησης" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="deviceId" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+            <Label text="Μήνυμα" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="message" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+            <Label text="Ημερομηνία" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <DatePicker fx:id="dueDate" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+            <Label text="Κατάσταηση" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+            <TextField fx:id="status" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+         <columnConstraints>
+            <ColumnConstraints maxWidth="141.0" minWidth="94.0" prefWidth="103.0" />
+            <ColumnConstraints maxWidth="169.0" minWidth="122.0" prefWidth="160.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+
+        </GridPane>
+
+        <HBox alignment="CENTER" spacing="10">
+            <Button onAction="#onCancel" text="Ακύρωση" />
+            <Button onAction="#onSave" text="Αποθήκευση Αλλαγών" />
+        </HBox>
+
+    </VBox>
+
+
+</AnchorPane>

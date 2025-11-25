@@ -39,7 +39,7 @@ public class EditSiteController {
             siteClient.updateSite(siteId, s);
 
             // refresh tree completely
-            MainController.instance.refreshSites();
+           
 
             ((Stage) nameField.getScene().getWindow()).close();
 

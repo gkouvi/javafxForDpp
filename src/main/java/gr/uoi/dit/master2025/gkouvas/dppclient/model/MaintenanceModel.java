@@ -1,5 +1,8 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.model;
 
+import gr.uoi.dit.master2025.gkouvas.dppclient.rest.BuildingServiceClient;
+import gr.uoi.dit.master2025.gkouvas.dppclient.rest.DeviceServiceClient;
+
 import java.time.LocalDate;
 
 /**
@@ -15,8 +18,16 @@ public class MaintenanceModel {
     private Long  buildingId;
     private transient  String deviceName;
     private transient String buildingName;
+    private final BuildingServiceClient buildingClient = new BuildingServiceClient();
+    private final DeviceServiceClient deviceClient = new DeviceServiceClient();
 
     public String getDeviceName() {
+        if (deviceClient.getDevice(deviceId)!= null) {
+            this.setDeviceName(
+                    deviceClient.getDevice(deviceId).getName()
+            );
+        }
+
         return deviceName;
     }
 
@@ -84,8 +95,9 @@ public class MaintenanceModel {
 
     public String getTargetName() {
         StringBuilder builder = new StringBuilder();
-        if (deviceId != null) builder.append( "Συσκευή : " + deviceName + "/");
-        if (buildingId != null) builder.append( "Κτίριο : " + buildingName);
+        if (buildingId != null) builder.append( buildingClient.getBuilding(buildingId).getName()+" / ");
+        if (deviceId != null) builder.append( deviceClient.getDevice(deviceId).getName() );
+
         if(builder.isEmpty())
         return "-";
         else return builder.toString();
