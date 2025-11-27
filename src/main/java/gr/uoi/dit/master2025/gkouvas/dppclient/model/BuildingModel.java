@@ -1,5 +1,7 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.model;
 
+import gr.uoi.dit.master2025.gkouvas.dppclient.rest.SiteServiceClient;
+
 /**
  * UI Model for representing a Building inside a Site.
  */
@@ -9,6 +11,7 @@ public class BuildingModel {
     private String name;
     private String address;
     private Long siteId;
+    private SiteServiceClient serviceClient = new SiteServiceClient();
 
     public BuildingModel() {}
 
@@ -42,6 +45,11 @@ public class BuildingModel {
 
     public void setSiteId(Long siteId) {
         this.siteId = siteId;
+    }
+
+    public String getSiteFromID() {
+
+        return serviceClient.getSite(siteId).getName();
     }
 }
 

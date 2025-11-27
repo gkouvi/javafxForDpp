@@ -71,7 +71,7 @@ public class Landing {
     }
 
     public void onQrcode(ActionEvent actionEvent) {
-        loadView("qrcode_view.fxml");
+        loadView("/dialogs/QRScannerDialog.fxml");
     }
 }
 

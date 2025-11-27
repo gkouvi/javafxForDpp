@@ -2,6 +2,7 @@ package gr.uoi.dit.master2025.gkouvas.dppclient.controller;
 
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.*;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.*;
+import gr.uoi.dit.master2025.gkouvas.dppclient.service.PingMonitorService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
@@ -10,8 +11,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import static java.util.Comparator.naturalOrder;
 
 public class DashboardController {
 
@@ -28,12 +32,7 @@ public class DashboardController {
     @FXML private LineChart<String, Number> maintenanceChart;
 
     // ===== TABLES =====
-   /* @FXML private TableView<AlertModel> latestAlertsTable;
-    @FXML private TableView<MaintenanceModel> latestMaintTable;
-    @FXML private TableColumn<AlertModel, String> deviceCol;
-    @FXML private TableColumn<MaintenanceModel, String> targetCol;
-    @FXML private TableColumn<AlertModel, String> msgCol;
-    @FXML private TableColumn<MaintenanceModel, String> descCol;*/
+
     @FXML private TableView<AlertModel> alertsTable;
     @FXML private TableColumn<AlertModel, String> colAlertDevice;
     @FXML private TableColumn<AlertModel, String> colAlertMsg;
@@ -42,6 +41,13 @@ public class DashboardController {
     @FXML private TableColumn<MaintenanceModel, String> colMaintBuilding;
     @FXML private TableColumn<MaintenanceModel, String> colMaintTech;
     @FXML private TableColumn<MaintenanceModel, String> colMaintDesc;
+
+    @FXML private TableView<DeviceModel> upcomingMaintenanceTable;
+
+    @FXML private TableColumn<DeviceModel, String> upNameCol;
+    @FXML private TableColumn<DeviceModel, String> upIntervalCol;
+    @FXML private TableColumn<DeviceModel, LocalDate> upNextDateCol;
+
 
     // REST Clients
     private final SiteServiceClient siteClient = new SiteServiceClient();
@@ -58,6 +64,12 @@ public class DashboardController {
         loadMaintenanceChart();
         loadLatestAlertsTable();
         loadLatestMaintenanceTable();
+        setupUpcomingTable();
+        loadUpcomingMaintenance();
+
+        List<DeviceModel> allDevices = deviceClient.getAllDevices();
+        Thread pingThread = new Thread(new PingMonitorService(allDevices));
+        pingThread.start();
        /* alertsChart.getStylesheets().add(
                 getClass().getResource("/css/charts.css").toExternalForm()
         );
@@ -107,6 +119,12 @@ public class DashboardController {
         }
 */
 
+    }
+
+    private void setupUpcomingTable() {
+        upNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        upIntervalCol.setCellValueFactory(new PropertyValueFactory<>("maintenanceInterval"));
+        upNextDateCol.setCellValueFactory(new PropertyValueFactory<>("nextMaintenanceDate"));
     }
 
     // ===================================================================
@@ -247,7 +265,7 @@ public class DashboardController {
 
         alertsTable.getItems().setAll(
                 all.stream()
-                        .sorted(Comparator.comparing(AlertModel::getDueDate).reversed())
+                        .sorted(Comparator.comparing(AlertModel::getDueDate,Comparator.nullsLast(naturalOrder())).reversed())
                        .limit(10)
                        .toList()
         );
@@ -284,4 +302,10 @@ public class DashboardController {
                         .toList()
         );
     }
+    private void loadUpcomingMaintenance() {
+        List<DeviceModel> devices = deviceClient.getUpcomingMaintenance();
+
+        upcomingMaintenanceTable.getItems().setAll(devices);
+    }
+
 }

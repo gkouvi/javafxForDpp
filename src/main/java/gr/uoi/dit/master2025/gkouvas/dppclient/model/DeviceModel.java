@@ -1,5 +1,7 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.model;
 
+import gr.uoi.dit.master2025.gkouvas.dppclient.rest.BuildingServiceClient;
+
 import java.time.LocalDate;
 
 /**
@@ -16,6 +18,44 @@ public class DeviceModel {
     private String status;
     private Long buildingId;
     private String qrBase64;
+    private String ipAddress;  // ΝΕΟ
+    private boolean offline = false;
+    private MaintenanceInterval maintenanceInterval;
+
+    public LocalDate getLastMaintenanceDate() {
+        return lastMaintenanceDate;
+    }
+
+    public void setLastMaintenanceDate(LocalDate lastMaintenanceDate) {
+        this.lastMaintenanceDate = lastMaintenanceDate;
+    }
+
+    private LocalDate lastMaintenanceDate;//
+    private LocalDate nextMaintenanceDate;// ΝΕΟ// ΝΕΟ
+
+    public LocalDate getNextMaintenanceDate() {
+        return nextMaintenanceDate;
+    }
+
+    public void setNextMaintenanceDate(LocalDate nextMaintenanceDate) {
+        this.nextMaintenanceDate = nextMaintenanceDate;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public boolean isOffline() {
+        return offline;
+    }
+
+    public void setOffline(boolean offline) {
+        this.offline = offline;
+    }
 
     public String getQrBase64() {
         return qrBase64;
@@ -90,5 +130,18 @@ public class DeviceModel {
 
     public void setBuildingId(Long buildingId) {
         this.buildingId = buildingId;
+    }
+
+    public String getBuildingName() {
+
+        return new BuildingServiceClient().getBuilding(buildingId).getName();
+    }
+
+    public MaintenanceInterval getMaintenanceInterval() {
+        return maintenanceInterval;
+    }
+
+    public void setMaintenanceInterval(MaintenanceInterval maintenanceInterval) {
+        this.maintenanceInterval = maintenanceInterval;
     }
 }

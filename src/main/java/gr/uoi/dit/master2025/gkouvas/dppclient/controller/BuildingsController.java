@@ -29,7 +29,7 @@ public class BuildingsController {
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
-        siteIdColumn.setCellValueFactory(new PropertyValueFactory<>("siteId"));
+        siteIdColumn.setCellValueFactory(new PropertyValueFactory<>("siteFromID"));
 
         buildingsTable.setItems(FXCollections
                 .observableArrayList(buildingClient.getAllBuildings()));

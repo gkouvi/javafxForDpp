@@ -17,16 +17,16 @@
       </padding>
       
           <HBox spacing="20">
-              <Button fx:id="btnUpload" text="Upload Document" />
-              <Button fx:id="btnDownload" text="Download Selected" />
+              <Button fx:id="btnUpload" text="Ανεβάστε έγγραφο" />
+              <Button fx:id="btnDownload" text="Λήψη επιλεγμένων" />
           </HBox>
       
           <TableView fx:id="documentsTable" prefHeight="400">
               <columns>
                   <TableColumn fx:id="colId" prefWidth="50" text="ID" />
-                  <TableColumn fx:id="colFilename" prefWidth="220" text="Filename" />
-                  <TableColumn fx:id="colType" prefWidth="120" text="Type" />
-                  <TableColumn fx:id="colUploadedAt" prefWidth="160" text="Uploaded At" />
+                  <TableColumn fx:id="colFilename" prefWidth="220" text="Όνομα αρχείου" />
+                  <TableColumn fx:id="colType" prefWidth="120" text="Τύπος" />
+                  <TableColumn fx:id="colUploadedAt" prefWidth="160" text="Ανεβάστηκε στις" />
               </columns>
           </TableView>
       

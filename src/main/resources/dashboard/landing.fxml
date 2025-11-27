@@ -50,7 +50,7 @@
                         <FontIcon iconColor="white" iconLiteral="mdi2f-file-document-multiple-outline" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onSettingsClick" styleClass="sidebar-btn" text="Ρυθμίσεις">
+                <Button onAction="#onSettingsClick" styleClass="sidebar-btn" text="Διαχείριση">
                     <graphic>
                         <FontIcon iconColor="white" iconLiteral="mdi2c-cog-clockwise" iconSize="18" />
                     </graphic>

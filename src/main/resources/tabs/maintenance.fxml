@@ -16,15 +16,15 @@
     </padding>
 
     <HBox spacing="20">
-        <Button text="Add Maintenance Log" fx:id="addLogButton"/>
+        <Button text="Προσθήκη αρχείου καταγραφής συντήρησης" fx:id="addLogButton"/>
     </HBox>
 
     <TableView fx:id="maintenanceTable" prefHeight="400">
         <columns>
             <TableColumn text="ID" fx:id="colId" prefWidth="50"/>
-            <TableColumn text="Date" fx:id="colDate" prefWidth="120"/>
-            <TableColumn text="Technician" fx:id="colTech" prefWidth="140"/>
-            <TableColumn text="Description" fx:id="colDesc" prefWidth="300"/>
+            <TableColumn text="Ημερομηνία" fx:id="colDate" prefWidth="120"/>
+            <TableColumn text="Τεχνικός" fx:id="colTech" prefWidth="140"/>
+            <TableColumn text="Περιγραφή" fx:id="colDesc" prefWidth="300"/>
         </columns>
     </TableView>
 

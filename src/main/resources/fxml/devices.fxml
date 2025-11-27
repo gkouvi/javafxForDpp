@@ -13,6 +13,7 @@
             <TableColumn fx:id="typeColumn" text="Τύπος" />
             <TableColumn fx:id="serialColumn" text="Σειριακός Αριθμός" />
             <TableColumn fx:id="buildingIdColumn" text="Κτίριο" />
+
         </columns>
       <columnResizePolicy>
          <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

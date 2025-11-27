@@ -1,5 +1,7 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.DeviceModel;
 import gr.uoi.dit.master2025.gkouvas.dppclient.util.MultipartUtil;
 
@@ -53,22 +55,7 @@ public class DeviceServiceClient extends ApiClient {
         }
     }
 
-    /*public List<DeviceModel> getDevicesByBuilding(Long buildingId) {
-        try {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/devices?buildingId=" + buildingId))
-                    .GET()
-                    .build();
 
-            HttpResponse<String> response =
-                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            return Arrays.asList(mapper.readValue(response.body(), DeviceModel[].class));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return List.of();
-        }
-    }*/
     public List<DeviceModel> getDevicesByBuilding(Long buildingId) {
         try {
             HttpRequest request = HttpRequest.newBuilder()
@@ -162,6 +149,34 @@ public class DeviceServiceClient extends ApiClient {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public List<DeviceModel> getUpcomingMaintenance() {
+        try {
+            String endpoint = BASE_URL + "/devices/upcoming-maintenance";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(endpoint))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                System.out.println("Backend returned status: " + response.statusCode());
+                System.out.println("Body: " + response.body());
+                return List.of();
+            }
+
+            // Deserialize JSON array → List<DeviceModel>
+            DeviceModel[] arr = mapper.readValue(response.body(), DeviceModel[].class);
+            return Arrays.asList(arr);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
         }
     }
 

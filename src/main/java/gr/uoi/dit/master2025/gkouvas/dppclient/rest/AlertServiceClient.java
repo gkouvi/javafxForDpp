@@ -4,8 +4,10 @@ import gr.uoi.dit.master2025.gkouvas.dppclient.model.AlertModel;
 import javafx.scene.control.TextField;
 
 import java.net.URI;
+import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
@@ -109,5 +111,35 @@ public class AlertServiceClient extends ApiClient {
             return null;
         }
     }
+
+    public void createPingAlert(Long deviceId, String type, String message) {
+        try {
+            System.out.println(type);
+            AlertModel model = new AlertModel();
+            model.setDeviceId(deviceId);
+            model.setStatus(type);
+            model.setMessage(message);
+            model.setDueDate(LocalDate.now());
+
+            String json = mapper.writeValueAsString(model);
+
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/alerts/ping"))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(json))
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("Ping Alert Created: " + response.body());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
 

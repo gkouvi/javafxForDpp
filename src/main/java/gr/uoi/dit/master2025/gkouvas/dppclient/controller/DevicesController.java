@@ -31,7 +31,7 @@ public class DevicesController {
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         serialColumn.setCellValueFactory(new PropertyValueFactory<>("serialNumber"));
-        buildingIdColumn.setCellValueFactory(new PropertyValueFactory<>("buildingId"));
+        buildingIdColumn.setCellValueFactory(new PropertyValueFactory<>("buildingName"));
 
         devicesTable.setItems(FXCollections
                 .observableArrayList(deviceClient.getAllDevices()));

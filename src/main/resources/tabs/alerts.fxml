@@ -18,15 +18,15 @@
           </padding>
       
           <HBox spacing="20">
-              <Button fx:id="addAlertButton" text="Add Alert" />
+              <Button fx:id="addAlertButton" text="Προσθήκη ειδοποίησης" />
           </HBox>
       
           <TableView fx:id="alertsTable" prefHeight="400">
               <columns>
                   <TableColumn fx:id="colId" prefWidth="50" text="ID" />
-                  <TableColumn fx:id="colMessage" prefWidth="200" text="Message" />
-                  <TableColumn fx:id="colDueDate" prefWidth="120" text="Due Date" />
-                  <TableColumn fx:id="colStatus" prefWidth="120" text="Status" />
+                  <TableColumn fx:id="colMessage" prefWidth="200" text="Μήνυμα" />
+                  <TableColumn fx:id="colDueDate" prefWidth="120" text="Ημερομηνία" />
+                  <TableColumn fx:id="colStatus" prefWidth="120" text="Κατάσταση" />
               </columns>
           </TableView>
       
