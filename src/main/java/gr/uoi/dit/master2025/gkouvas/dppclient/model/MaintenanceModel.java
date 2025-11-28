@@ -21,7 +21,25 @@ public class MaintenanceModel {
     private final BuildingServiceClient buildingClient = new BuildingServiceClient();
     private final DeviceServiceClient deviceClient = new DeviceServiceClient();
 
-    public String getDeviceName() {
+    private MaintenanceInterval interval;
+
+   /* public BuildingServiceClient getBuildingClient() {
+        return buildingClient;
+    }
+
+    public DeviceServiceClient getDeviceClient() {
+        return deviceClient;
+    }*/
+
+    public MaintenanceInterval getInterval() {
+        return interval;
+    }
+
+    public void setInterval(MaintenanceInterval interval) {
+        this.interval = interval;
+    }
+
+    /*public String getDeviceName() {
         if (deviceClient.getDevice(deviceId)!= null) {
             this.setDeviceName(
                     deviceClient.getDevice(deviceId).getName()
@@ -29,7 +47,7 @@ public class MaintenanceModel {
         }
 
         return deviceName;
-    }
+    }*/
 
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;

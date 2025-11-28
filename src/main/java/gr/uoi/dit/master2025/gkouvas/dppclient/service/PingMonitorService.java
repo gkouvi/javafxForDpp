@@ -39,7 +39,7 @@ public class PingMonitorService implements Runnable {
                     Platform.runLater(() ->
                             DashboardPopup.show(
                                     "Συσκευή OFFLINE",
-                                    d.getName() + " ΔΕΝ είναι προσβάσιμο!"
+                                    d.getName() + " ΔΕΝ είναι προσβάσιμη!"
                             )
                     );
 
@@ -63,7 +63,7 @@ public class PingMonitorService implements Runnable {
             }
 
             try {
-                Thread.sleep(4000); // κάθε 4 sec
+                Thread.sleep(10000); // κάθε 10 sec
             } catch (InterruptedException ignored) {}
         }
     }

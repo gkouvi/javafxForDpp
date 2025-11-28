@@ -80,9 +80,9 @@ public class MaintenanceController {
     private void showAddLogDialog() {
 
         Dialog<MaintenanceModel> dialog = new Dialog<>();
-        dialog.setTitle("Add Maintenance Log");
+        dialog.setTitle("Προσθήκη αρχείου καταγραφής συντήρησης");
 
-        ButtonType saveBtn = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        ButtonType saveBtn = new ButtonType("Αποθήκευση", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
 
         GridPane grid = new GridPane();
@@ -94,13 +94,13 @@ public class MaintenanceController {
         TextArea descArea = new TextArea();
         descArea.setPrefRowCount(4);
 
-        grid.add(new Label("Date:"), 0, 0);
+        grid.add(new Label("Ημερομηνία:"), 0, 0);
         grid.add(datePicker, 1, 0);
 
-        grid.add(new Label("Technician:"), 0, 1);
+        grid.add(new Label("Τεχνικός:"), 0, 1);
         grid.add(techField, 1, 1);
 
-        grid.add(new Label("Description:"), 0, 2);
+        grid.add(new Label("Περιγραφή:"), 0, 2);
         grid.add(descArea, 1, 2);
 
         dialog.getDialogPane().setContent(grid);

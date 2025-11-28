@@ -12,9 +12,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<?import javafx.collections.FXCollections?>
-<?import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceInterval?>
-<?import java.lang.String?>
+
+<?import javafx.scene.control.CheckBox?>
 <VBox prefHeight="546.0" prefWidth="407.0" spacing="12" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.CreateDeviceController">
 
     <padding>
@@ -23,10 +22,10 @@
 
     <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Προσθήκη νέας συσκευής" />
 
-    <GridPane hgap="10" vgap="10">
+    <GridPane hgap="10" prefHeight="369.0" prefWidth="378.0" vgap="10">
 
         <Label text="Όνομα:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <TextField fx:id="nameField" prefHeight="26.0" prefWidth="208.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+        <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
         <Label text="Τύπος:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
         <TextField fx:id="typeField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
@@ -38,42 +37,85 @@
         <TextField fx:id="firmwareField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
         <Label text="Ημερομηνία εγκατάστασης:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <DatePicker fx:id="dateField" prefHeight="26.0" prefWidth="207.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+        <DatePicker fx:id="dateField" prefHeight="26.0" prefWidth="299.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-        <Label text="Κατάσταση:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+        <Label prefHeight="18.0" prefWidth="150.0" text="Κατάσταση:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
         <TextField fx:id="statusField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-
-        <Label text="Κτίριο ID:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-        <TextField fx:id="buildingIdField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <Label prefHeight="35.0" prefWidth="150.0" text="IP Διεύθυνση" GridPane.rowIndex="7" />
-      <TextField fx:id="ipAddress" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-      <Label prefHeight="37.0" prefWidth="150.0" text="Διάστημα συντήρησης" GridPane.rowIndex="8" />
-      <ComboBox fx:id="maintenanceCombo" prefHeight="30.0" prefWidth="205.0" GridPane.columnIndex="1" GridPane.rowIndex="8" >
-        <items>
-            <FXCollections fx:factory = "observableArrayList">
-                <String fx:value="Καθημερινά" />
-                <String fx:value="Μηνιαία" />
-                <String fx:value="Εξαμηνιαία" />
-                <String fx:value="Ετήσια" />
-
-            </FXCollections >
-        </items>
-      </ComboBox>
-      <columnConstraints>
-         <ColumnConstraints />
-         <ColumnConstraints />
-      </columnConstraints>
-      <rowConstraints>
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints />
-         <RowConstraints minHeight="10.0" prefHeight="30.0" />
-         <RowConstraints minHeight="10.0" prefHeight="30.0" />
-      </rowConstraints>
+        <Label prefHeight="18.0" prefWidth="149.0" text="Κτίριο" GridPane.rowIndex="6" />
+        <Label prefHeight="18.0" prefWidth="150.0" text="Διεύθυνση IP" GridPane.rowIndex="7" />
+        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+            <children>
+                <CheckBox fx:id="hasIPCheck" mnemonicParsing="false" prefHeight="18.0" prefWidth="53.0" text="Ναι" />
+                <TextField fx:id="ipAddressField" prefHeight="26.0" prefWidth="253.0" />
+            </children>
+        </HBox>
+        <ComboBox fx:id="comboForBuildings" prefHeight="26.0" prefWidth="298.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+        <Label prefHeight="72.0" prefWidth="150.0" text="Συντήρηση" GridPane.rowIndex="8" GridPane.rowSpan="2" />
+        <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.rowIndex="8" GridPane.rowSpan="2">
+            <children>
+                <Label alignment="CENTER" prefHeight="18.0" prefWidth="300.0" text="Επιλογή Συντήρησης" />
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <VBox alignment="CENTER" prefHeight="54.0" prefWidth="75.0">
+                            <children>
+                                <Label text="ΗΜΕΡΗΣΙΑ" />
+                                <CheckBox fx:id="dailyCheck" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="18.0" prefWidth="19.0" text="CheckBox">
+                                    <padding>
+                                        <Insets left="10.0" />
+                                    </padding>
+                                </CheckBox>
+                            </children>
+                        </VBox>
+                        <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="54.0" prefWidth="75.0">
+                            <children>
+                                <Label text="ΜΗΝΙΑΙΑ" />
+                                <CheckBox fx:id="monthlyCheck" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="18.0" prefWidth="19.0" text="CheckBox">
+                                    <padding>
+                                        <Insets left="10.0" />
+                                    </padding>
+                                </CheckBox>
+                            </children>
+                        </VBox>
+                        <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="54.0" prefWidth="75.0">
+                            <children>
+                                <Label prefHeight="18.0" prefWidth="73.0" text="ΕΞΑΜΗΝΙΑΙΑ" />
+                                <CheckBox fx:id="sixMonthCheck" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="18.0" prefWidth="19.0" text="CheckBox">
+                                    <padding>
+                                        <Insets left="10.0" />
+                                    </padding>
+                                </CheckBox>
+                            </children>
+                        </VBox>
+                        <VBox alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="54.0" prefWidth="75.0">
+                            <children>
+                                <Label text="ΕΤΗΣΙΑ" />
+                                <CheckBox fx:id="yearlyCheck" alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="18.0" prefWidth="42.0" text="CheckBox">
+                                    <padding>
+                                        <Insets left="10.0" />
+                                    </padding>
+                                </CheckBox>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+        <columnConstraints>
+            <ColumnConstraints maxWidth="181.6" minWidth="145.599951171875" prefWidth="180.80001220703124" />
+            <ColumnConstraints maxWidth="295.20001220703125" minWidth="300.0" prefWidth="264.79998779296875" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
+        </rowConstraints>
 
     </GridPane>
 

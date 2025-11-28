@@ -29,8 +29,8 @@
     </GridPane>
 
     <HBox spacing="10" alignment="CENTER_RIGHT">
-        <Button text="Cancel" onAction="#onCancel"/>
-        <Button text="Create Building" onAction="#onCreate"/>
+        <Button text="Ακύρωση" onAction="#onCancel"/>
+        <Button text="Δημιουργία κτιρίου" onAction="#onCreate"/>
     </HBox>
 
 </VBox>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.MaintenanceCreateDialogController"
+            prefWidth="480" prefHeight="420"
+            style="-fx-background-color: #0D1B2A;">
+
+    <VBox spacing="15" AnchorPane.topAnchor="15" AnchorPane.leftAnchor="20"
+          AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20">
+
+        <!-- TITLE -->
+        <Label text="Δημιουργία Συντήρησης"
+               style="-fx-text-fill: #00C1FF; -fx-font-size: 20; -fx-font-weight: bold;" />
+
+        <!-- DEVICE -->
+        <Label fx:id="deviceLabel"
+               text="Συσκευή #?"
+               style="-fx-text-fill: white; -fx-font-size: 14;" />
+
+        <!-- FORM GRID -->
+        <GridPane hgap="10" vgap="12">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" minWidth="140" />
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+
+            <!-- Interval -->
+            <Label text="Τύπος Συντήρησης:"
+                   GridPane.rowIndex="0" GridPane.columnIndex="0"
+                   style="-fx-text-fill: white;" />
+            <ComboBox fx:id="intervalCombo"
+                      GridPane.rowIndex="0" GridPane.columnIndex="1"
+                      style="-fx-background-color: #1B263B; -fx-text-fill: white;" />
+
+            <!-- Date -->
+            <Label text="Ημερομηνία:"
+                   GridPane.rowIndex="1" GridPane.columnIndex="0"
+                   style="-fx-text-fill: white;" />
+            <DatePicker fx:id="datePicker"
+                        GridPane.rowIndex="1" GridPane.columnIndex="1"
+                        style="-fx-background-color: #1B263B; -fx-text-fill: white;" />
+
+            <!-- Technician -->
+            <Label text="Τεχνικός:"
+                   GridPane.rowIndex="2" GridPane.columnIndex="0"
+                   style="-fx-text-fill: white;" />
+            <TextField fx:id="technicianField" promptText="Όνομα τεχνικού"
+                       GridPane.rowIndex="2" GridPane.columnIndex="1"
+                       style="-fx-background-color: #1B263B; -fx-text-fill: white;" />
+
+            <!-- Description -->
+            <Label text="Περιγραφή:"
+                   GridPane.rowIndex="3" GridPane.columnIndex="0"
+                   style="-fx-text-fill: white;" />
+            <TextArea fx:id="descriptionField" promptText="Λεπτομέρειες εργασίας"
+                      GridPane.rowIndex="3" GridPane.columnIndex="1"
+                      prefRowCount="4"
+                      style="-fx-background-color: #1B263B; -fx-text-fill: white;" />
+
+        </GridPane>
+
+        <!-- BUTTONS -->
+        <HBox spacing="15" alignment="CENTER_RIGHT">
+            <Button text="Άκυρο"
+                    onAction="#onCancel"
+                    style="-fx-background-color: #3E4A5A; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20;" />
+
+            <Button text="Δημιουργία"
+                    onAction="#onCreate"
+                    style="-fx-background-color: #00C1FF; -fx-text-fill: #0D1B2A; -fx-font-weight: bold; -fx-padding: 8 20;" />
+        </HBox>
+
+    </VBox>
+
+</AnchorPane>

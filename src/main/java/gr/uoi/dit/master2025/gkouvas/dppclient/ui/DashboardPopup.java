@@ -21,7 +21,7 @@ public class DashboardPopup {
                 "-fx-font-size:16px; -fx-padding:15;" +
                         "-fx-background-color:#0a2342;" +
                         "-fx-text-fill:white;" +
-                        "-fx-border-color:#1e90ff; -fx-border-width:2;" +
+                        "-fx-border-color:#1ec3ff; -fx-border-width:2;" +
                         "-fx-background-radius:10; -fx-border-radius:10;"
         );
 
@@ -32,7 +32,7 @@ public class DashboardPopup {
         stage.setScene(scene);
         stage.show();
 
-        FadeTransition fade = new FadeTransition(Duration.seconds(4), root);
+        FadeTransition fade = new FadeTransition(Duration.seconds(8), root);
         fade.setFromValue(1.0);
         fade.setToValue(0.0);
         fade.setOnFinished(e -> stage.close());

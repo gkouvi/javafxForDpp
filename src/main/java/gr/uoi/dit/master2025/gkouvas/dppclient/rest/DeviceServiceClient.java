@@ -3,6 +3,8 @@ package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.DeviceModel;
+import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceKpiModel;
+import gr.uoi.dit.master2025.gkouvas.dppclient.model.UpcomingMaintenanceItem;
 import gr.uoi.dit.master2025.gkouvas.dppclient.util.MultipartUtil;
 
 import javax.imageio.ImageIO;
@@ -180,10 +182,43 @@ public class DeviceServiceClient extends ApiClient {
         }
     }
 
+    public List<UpcomingMaintenanceItem> getUpcomingMaintenanceDetails() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/devices/upcoming-maintenance/details"))
+                    .GET()
+                    .build();
 
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
+            return Arrays.asList(mapper.readValue(
+                    response.body(), UpcomingMaintenanceItem[].class));
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+    public MaintenanceKpiModel getMaintenanceKpis() {
+        try {
+            String url = BASE_URL + "/devices/maintenance-kpis";
 
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return mapper.readValue(response.body(), MaintenanceKpiModel.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new MaintenanceKpiModel();
+        }
+    }
 
 
 

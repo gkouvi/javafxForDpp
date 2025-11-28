@@ -51,5 +51,8 @@ public class BuildingModel {
 
         return serviceClient.getSite(siteId).getName();
     }
+    public String getSite(){
+        return serviceClient.getSite(siteId).getName();
+    }
 }
 
