@@ -9,14 +9,16 @@ import javafx.scene.layout.BorderPane;
 public class Landing {
 
     @FXML private BorderPane rootPane;
+    public static Landing instance;
     @FXML private AnchorPane contentArea;
 
     @FXML
     public void initialize() {
+        instance = this;   // 🔥 Κρατάμε το instance
         loadView("/fxml/dashboard.fxml");
     }
 
-    // ---------------- LOAD ANY FXML INTO CENTER ----------------
+    // ---------------- ΦΟΡΤΩΣΤΕ ΟΠΟΙΟΔΗΠΟΤΕ FXML ΣΤΟ ΚΕΝΤΡΟ ----------------
     private void loadView(String fxmlName) {
         try {
             FXMLLoader loader = new FXMLLoader(
@@ -35,6 +37,23 @@ public class Landing {
         }
     }
 
+    public void loadDashboard() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/dashboard.fxml")
+            );
+            AnchorPane pane = loader.load();
+
+            contentArea.getChildren().setAll(pane);
+            AnchorPane.setTopAnchor(pane, 0.0);
+            AnchorPane.setBottomAnchor(pane, 0.0);
+            AnchorPane.setLeftAnchor(pane, 0.0);
+            AnchorPane.setRightAnchor(pane, 0.0);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     // ---------------- SIDEBAR BUTTON ACTIONS ----------------
 
     @FXML private void onDashboardClick() {

@@ -8,10 +8,14 @@ import com.google.zxing.client.j2se.BufferedImageLuminanceSource;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.awt.Dimension;
@@ -22,12 +26,14 @@ public class QRScannerDialogController {
     public TextField usbScanner;
     @FXML private ImageView cameraView;
 
+
     private Webcam webcam;
     private volatile boolean running = true;
     private Thread cameraThread;
 
     @FXML
     public void initialize() {
+        usbScanner.setFocusTraversable(true);
         Platform.runLater(() -> usbScanner.requestFocus());
         startScanner();
     }
@@ -66,8 +72,8 @@ public class QRScannerDialogController {
                             MainController.instance.handleScannedQR(result);
 
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                            alert.setTitle("QR Found");
-                            alert.setHeaderText("Scanned:");
+                            alert.setTitle("QR Βρέθηκε");
+                            alert.setHeaderText("Σαρωμένο:");
                             alert.setContentText(result);
                             alert.show();
 
@@ -112,13 +118,14 @@ public class QRScannerDialogController {
             String qr = usbScanner.getText().trim();
             usbScanner.clear();
 
+
             if (!qr.isEmpty()) {
 
                 // Σταματάμε την κάμερα
                 running = false;
 
-                // Στέλνουμε στο MainController
-                MainController.instance.handleScannedQR(qr);
+
+                handleScannedQR(qr);
 
                 // Optional pop-up
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -129,6 +136,41 @@ public class QRScannerDialogController {
 
                 closeWindow();
             }
+        }
+    }
+    public void handleScannedQR(String code) {
+
+
+        if (code == null || code.isEmpty()) return;
+
+        // ---- NEW FORMAT ----
+        if (code.startsWith("DPP://device/")) {
+            long id = Long.parseLong(code.substring("DPP://device/".length()));
+
+            openDeviceCard(id);
+            return;
+        }
+
+        // ---- OLD FORMAT (URL FORMAT) ----
+        if (code.startsWith("http://localhost:8080/devices/qr/")) {
+            long id = Long.parseLong(code.substring("http://localhost:8080/devices/qr/".length()));
+
+            openDeviceCard(id);
+            return;
+        }
+
+        // ---- ΚΤΙΡΙΟ ----
+        if (code.startsWith("DPP://building/")) {
+            long id = Long.parseLong(code.substring("DPP://building/".length()));
+
+            return;
+        }
+
+        // ---- SITE ----
+        if (code.startsWith("DPP://site/")) {
+            long id = Long.parseLong(code.substring("DPP://site/".length()));
+
+            return;
         }
     }
 
@@ -146,9 +188,28 @@ public class QRScannerDialogController {
                 webcam.close();
                 cameraView.setImage(null);
             }
+
         } catch (Exception ignored) {
         }
+        Landing.instance.loadDashboard();
+        Stage stage = (Stage) cameraView.getScene().getWindow();
+        stage.close();
+    }
+    public void openDeviceCard(Long deviceId) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/deviceCard.fxml"));
+            Parent root = loader.load();
 
-        //((Stage) cameraView.getScene().getWindow()).close();
+            DeviceCardController controller = loader.getController();
+            controller.loadDevice(deviceId);
+
+            Stage stage = new Stage();
+            stage.setTitle("Λεπτομέρειες συσκευής");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

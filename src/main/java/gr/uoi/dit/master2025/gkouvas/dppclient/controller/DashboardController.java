@@ -165,14 +165,14 @@ public class DashboardController {
 
                     UpcomingMaintenanceItem item = row.getItem();
 
-                    // LEFT CLICK
+                    // ΑΡΙΣΤΕΡΟ ΚΛΙΚ
                     if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
 
                         Long deviceId = item.getDeviceId();
                         openDeviceCard(deviceId);
                     }
 
-                    // RIGHT CLICK
+                    // ΔΕΞΙ ΚΛΙΚ
                     if (event.getButton() == MouseButton.SECONDARY) {
                         showMaintenanceContextMenu(row, item, event.getScreenX(), event.getScreenY());
                     }
@@ -190,45 +190,17 @@ public class DashboardController {
     }
 
     // ===================================================================
-    // TABLE SETUP
+    // TABLE ΡΥΘΜΙΣΗ
     // ===================================================================
     private void setupTables() {
-        // Alerts table
-        //System.out.println(latestAlertsTable.getColumns().isEmpty());
+
         colAlertDevice.setCellValueFactory(new PropertyValueFactory<>("deviceName"));
         colAlertMsg.setCellValueFactory(new PropertyValueFactory<>("message"));
 
         colMaintBuilding.setCellValueFactory(new PropertyValueFactory<>("buildingName"));
         colMaintTech.setCellValueFactory(new PropertyValueFactory<>("technician"));
         colMaintDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
-       /* if (!latestAlertsTable.getColumns().isEmpty()) {
-            // = new TableColumn<>("Device");
-            deviceCol.setCellValueFactory(new PropertyValueFactory<>("deviceName"));
-
-
-            //TableColumn<AlertModel, String> msgCol = new TableColumn<>("Message");
-            msgCol.setCellValueFactory(new PropertyValueFactory<>("message"));
-
-            //latestAlertsTable.getColumns().addAll(deviceCol, msgCol);
-
-
-
-        }
-
-        // Maintenance table
-        if (!latestMaintTable.getColumns().isEmpty()) {
-            // = new TableColumn<>("Target");
-            targetCol.setCellValueFactory(new PropertyValueFactory<>("targetName"));
-
-            //TableColumn<MaintenanceModel, String> descCol = new TableColumn<>("Description");
-            descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
-
-            //latestMaintTable.getColumns().addAll(targetCol, descCol);
-
-        }
-*/
-
-    }
+           }
 
     private void setupUpcomingTable() {
         upNameCol.setCellValueFactory(new PropertyValueFactory<>("deviceName"));
@@ -253,7 +225,7 @@ public class DashboardController {
         createNow.setOnAction(e -> openCreateMaintenanceDialog(item));
 
         MenuItem openDevice = new MenuItem("Άνοιγμα Συσκευής");
-        openDevice.setOnAction(e -> MainController.instance.openDeviceCard(item.getDeviceId()));
+        openDevice.setOnAction(e -> openDeviceCard(item.getDeviceId()));
 
         menu.getItems().addAll(createNow, openDevice);
 
@@ -285,16 +257,21 @@ public class DashboardController {
 
     public void openDeviceCard(Long deviceId) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/device-card.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/deviceCard.fxml"));
             Parent root = loader.load();
+
 
             DeviceCardController controller = loader.getController();
             controller.loadDevice(deviceId);
 
             Stage stage = new Stage();
-            stage.setTitle("Συσκευή #" + deviceId);
+            stage.setTitle("Συσκευή " + deviceClient.getDevice(deviceId).getName());
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(
+                    getClass().getResource("/css/app.css").toExternalForm()
+            );
+            stage.setScene(scene);
             stage.show();
 
         } catch (Exception e) {
@@ -344,7 +321,7 @@ public class DashboardController {
     }
 
     // ===================================================================
-    // ALERTS BAR CHART
+    // Ειδοποιήσεις BAR CHART
     // ===================================================================
     private void loadAlertsChart() {
 
@@ -391,7 +368,7 @@ public class DashboardController {
     }
 
     // ===================================================================
-    // MAINTENANCE LINE CHART
+    // ΣΥΝΤΗΡΗΣΗ LINE CHART
     // ===================================================================
     private void loadMaintenanceChart() {
 
@@ -433,7 +410,7 @@ public class DashboardController {
     }
 
     // ===================================================================
-    // Latest Alerts (last 10)
+    // Τελευταίες ειδοποιήσεις (Τελευταίες 10)
     // ===================================================================
     private void loadLatestAlertsTable() {
 
@@ -455,7 +432,7 @@ public class DashboardController {
     }
 
     // ===================================================================
-    // Latest Maintenance (last 10)
+    // Τελευταία συντήρηση (τελευταία 10)
     // ===================================================================
     private void loadLatestMaintenanceTable() {
 
@@ -485,10 +462,6 @@ public class DashboardController {
                         .toList()
         );
     }
-    /*private void loadUpcomingMaintenance() {
-        List<DeviceModel> devices = deviceClient.getUpcomingMaintenance();
 
-        upcomingMaintenanceTable.getItems().setAll(devices);
-    }*/
 
 }

@@ -49,7 +49,21 @@ public class DeviceServiceClient extends ApiClient {
             HttpResponse<String> response =
                     httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            return mapper.readValue(response.body(), DeviceModel.class);
+            if (response.statusCode() != 200) {
+                System.err.println("GET /devices/"+id+" returned " + response.statusCode());
+                System.err.println(response.body());
+                return null;
+            }
+
+            try {
+                return mapper.readValue(response.body(), DeviceModel.class);
+            } catch (Exception ex) {
+                System.err.println("JSON parse failed for device " + id);
+                System.err.println("BODY = " + response.body());
+                ex.printStackTrace();
+                return null;
+            }
+
 
         } catch (Exception ex) {
             ex.printStackTrace();

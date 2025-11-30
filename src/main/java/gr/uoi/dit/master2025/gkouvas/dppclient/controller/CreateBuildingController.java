@@ -39,7 +39,7 @@ public class CreateBuildingController {
     @FXML
     public void onCreate() {
         try {
-            // 1. CREATE BUILDING
+            // 1. ΔΗΜΙΟΥΡΓΙΑ ΚΤΙΡΙΟΥ
             BuildingModel b = new BuildingModel();
             b.setName(nameField.getText());
             b.setAddress(addressField.getText());
@@ -49,17 +49,17 @@ public class CreateBuildingController {
 
             Long newId = created.getId();
 
-            // 2. GENERATE QR
+            // 2. ΔΗΜΙΟΥΡΓΙΑ QR
             String qrUrl = "http://localhost:8080/buildings/qr/" + newId;
             BufferedImage qr = QRUtil.generateQRCode(qrUrl, 300);
 
-            // 3. UPLOAD QR
+            // 3. Ανέβασμα QR
             buildingClient.uploadBuildingQr(newId, qr);
 
-            // 4. REFRESH TREE
+            // 4. ΑΝΑΝΕΩΣΗ ΔΕΝΤΡΟΥ
             MainController.instance.refreshBuildingsForSite(siteId);
 
-            // 5. CLOSE
+            // 5. ΚΛΕΙΣΙΜΟ
             ((Stage) nameField.getScene().getWindow()).close();
 
         } catch (Exception e) {

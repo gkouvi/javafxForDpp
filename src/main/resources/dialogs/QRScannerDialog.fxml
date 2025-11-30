@@ -10,13 +10,18 @@
 <AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.QRScannerDialogController">
    <children>
       <VBox alignment="CENTER" prefHeight="454.0" prefWidth="511.0" spacing="10" style="-fx-padding: 20;" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-      
+
           <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Σάρωση QR" />
           <ImageView fx:id="cameraView" fitHeight="340" fitWidth="460" preserveRatio="true" />
-         <TextField fx:id="usbScanner" onKeyReleased="#onUsbScan" visible="false" />
-      
+          <TextField fx:id="usbScanner"
+                     onKeyReleased="#onUsbScan"
+                     focusTraversable="true"
+                     opacity="0"
+                     mouseTransparent="true"
+                     prefWidth="1" prefHeight="1"/>
+
           <Button onAction="#onClose" text="Κλείσιμο" />
-      
+
       </VBox>
    </children>
 </AnchorPane>

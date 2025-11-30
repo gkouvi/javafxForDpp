@@ -13,16 +13,16 @@
 <?import javafx.scene.layout.VBox?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane stylesheets="@../dashboard/haf-theme.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DashboardController">
+<AnchorPane prefHeight="900.0" prefWidth="1200.0" stylesheets="@../dashboard/haf-theme.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DashboardController">
 
-    <!-- ============ SIDEBAR ============ -->
+          <!-- ============ SIDEBAR ============ -->
     <!--<left>
         <fx:include source="sidebar.fxml"/>
-    </left>-->
+          </left>-->
 
-    <!-- ============ MAIN CONTENT ============ -->
+          <!-- ============ MAIN CONTENT ============ -->
 
-        <VBox spacing="20">
+              <VBox alignment="CENTER" spacing="20" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
             <padding>
                 <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
@@ -37,7 +37,7 @@
                     <Label fx:id="sitesCount" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="168.0" styleClass="kpi-value" />
                 </VBox>
 
-                <VBox alignment="CENTER" styleClass="kpi-box">
+                      <VBox alignment="CENTER" styleClass="kpi-box">
                     <Label styleClass="kpi-title" text="Κτίρια">
                     <graphic>
                     <FontIcon iconColor="white" iconLiteral="mdi2o-office-building" iconSize="18" />
@@ -45,9 +45,9 @@
                 </Label>
                     <Label fx:id="buildingsCount" alignment="CENTER" prefHeight="40.0" prefWidth="165.0" styleClass="kpi-value" textAlignment="CENTER" />
 
-                </VBox>
+                      </VBox>
 
-                <VBox alignment="CENTER" styleClass="kpi-box">
+                      <VBox alignment="CENTER" styleClass="kpi-box">
                     <Label styleClass="kpi-title" text="Συσκευές">
                         <graphic>
                             <FontIcon iconColor="white" iconLiteral="mdi2d-devices" iconSize="18" />
@@ -56,7 +56,7 @@
                     <Label fx:id="devicesCount" styleClass="kpi-value" />
                 </VBox>
 
-                <VBox alignment="CENTER" styleClass="kpi-box">
+                      <VBox alignment="CENTER" styleClass="kpi-box">
                     <Label styleClass="kpi-title" text="Ειδοποιήσεις">
                         <graphic>
                             <FontIcon iconColor="white" iconLiteral="mdi2a-alert" iconSize="18" />
@@ -65,7 +65,7 @@
                     <Label fx:id="alertsCount" styleClass="kpi-value" />
                 </VBox>
 
-                <VBox alignment="CENTER" styleClass="kpi-box">
+                      <VBox alignment="CENTER" styleClass="kpi-box">
                     <Label styleClass="kpi-title" text="Αρχεία Συντήρησης">
                         <graphic>
                             <FontIcon iconColor="white" iconLiteral="mdi2t-tools" iconSize="18" />
@@ -75,7 +75,7 @@
                 </VBox>
             </HBox>
 
-            <!-- CHARTS -->
+                  <!-- CHARTS -->
             <HBox spacing="20">
                 <VBox HBox.hgrow="ALWAYS">
                     <BarChart fx:id="alertsChart" legendVisible="false">
@@ -87,7 +87,7 @@
                         </yAxis>
                     </BarChart>
 
-                    <Label alignment="CENTER" prefHeight="38.0" prefWidth="601.0" styleClass="section-title" text="Τελευταίες ειδοποιήσεις" />
+                          <Label alignment="CENTER" prefHeight="38.0" prefWidth="601.0" styleClass="section-title" text="Τελευταίες ειδοποιήσεις" />
                     <TableView fx:id="alertsTable" prefHeight="200" VBox.vgrow="ALWAYS">
                         <columns>
                             <TableColumn fx:id="colAlertDevice" prefWidth="200" text="Συσκευή" />
@@ -96,7 +96,7 @@
                     </TableView>
                 </VBox>
 
-                <VBox HBox.hgrow="ALWAYS">
+                      <VBox HBox.hgrow="ALWAYS">
                     <LineChart fx:id="maintenanceChart" legendVisible="true" VBox.vgrow="ALWAYS">
                         <xAxis>
                             <CategoryAxis label="Μήνας" />
@@ -111,22 +111,22 @@
                      <children>
                                 <HBox alignment="CENTER" spacing="50.0" VBox.vgrow="ALWAYS">
             
-                                          <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: #1B263B; -fx-padding: 15; -fx-background-radius: 10;">
+                                                <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: #1B263B; -fx-padding: 15; -fx-background-radius: 10;">
                                         <Label style="-fx-text-fill: white; -fx-font-size: 14;" text="Επείγουσες" />
                                         <Label fx:id="urgentKpiLabel" style="-fx-text-fill: #FFD700; -fx-font-size: 26; -fx-font-weight: bold;" />
                                     </VBox>
             
-                                          <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: #1B263B; -fx-padding: 15; -fx-background-radius: 10;">
+                                                <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: #1B263B; -fx-padding: 15; -fx-background-radius: 10;">
                                         <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-text-fill: white; -fx-font-size: 14;" text="Πολύ Επείγουσες" />
                                         <Label fx:id="criticalKpiLabel" style="-fx-text-fill: #FF4500; -fx-font-size: 26; -fx-font-weight: bold;" />
                                     </VBox>
             
-                                          <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: #1B263B; -fx-padding: 15; -fx-background-radius: 10;">
+                                                <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: #1B263B; -fx-padding: 15; -fx-background-radius: 10;">
                                         <Label style="-fx-text-fill: white; -fx-font-size: 14;" text="Εκπρόθεσμες" />
                                         <Label fx:id="overdueKpiLabel" style="-fx-text-fill: #B30000; -fx-font-size: 26; -fx-font-weight: bold;" />
                                     </VBox>
             
-                                          <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: #1B263B; -fx-padding: 15; -fx-background-radius: 10;">
+                                                <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="150.0" style="-fx-background-color: #1B263B; -fx-padding: 15; -fx-background-radius: 10;">
                                         <Label style="-fx-text-fill: white; -fx-font-size: 14;" text="Μήνα" />
                                         <Label fx:id="monthKpiLabel" style="-fx-text-fill: #00C1FF; -fx-font-size: 26; -fx-font-weight: bold;" />
                                     </VBox>
@@ -137,7 +137,7 @@
                               <VBox>
                                  <children>
                         
-                                            <Label alignment="CENTER" prefHeight="38.0" prefWidth="500.0" styleClass="section-title" text="Τελευταία συντήρηση" VBox.vgrow="ALWAYS" />
+                                                  <Label alignment="CENTER" prefHeight="38.0" prefWidth="500.0" styleClass="section-title" text="Τελευταία συντήρηση" VBox.vgrow="ALWAYS" />
                                             <TableView fx:id="maintenanceTable" prefHeight="400.0" prefWidth="500.0" VBox.vgrow="ALWAYS">
                                                 <columns>
                                                     <TableColumn fx:id="colMaintBuilding" prefWidth="200" text="Κτήριο" />
@@ -172,11 +172,11 @@
                </children>
             </HBox>
 
-                </VBox>
+                      </VBox>
 
-            </HBox>
+                  </HBox>
 
-        </VBox>
+              </VBox>
 
-
+      
 </AnchorPane>

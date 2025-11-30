@@ -20,11 +20,13 @@ public class PingMonitorService implements Runnable {
 
     @Override
     public void run() {
+
         while (true) {
             for (DeviceModel d : devices) {
-                System.out.println(d.getName());
+                //System.out.println(d.getName());
                 boolean reachable = isReachable(d.getIpAddress(), 10000);
 
+                //System.out.println(" offline: "+d.isOffline()+" reacheable "+reachable);
                 if (!reachable && !d.isOffline()) {
                     d.setOffline(true);
 

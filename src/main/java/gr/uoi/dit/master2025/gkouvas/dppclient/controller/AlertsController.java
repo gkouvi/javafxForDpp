@@ -13,11 +13,11 @@ import java.util.List;
 
 /**
  * Controller for the Alerts tab.
- * Displays alerts for the selected device and allows adding new alerts.
+ * Εμφανίζει ειδοποιήσεις για την επιλεγμένη συσκευή και επιτρέπει την προσθήκη νέων ειδοποιήσεων.
  *
  * IMPORTANT:
- * initialize() runs once (on FXML load)
- * refresh(deviceId) runs EVERY time the user selects a different device
+ * initialize() εκτελείται μία φορά (on FXML load)
+ * refresh(deviceId) εκτελείται ΚΑΘΕ φορά που ο χρήστης επιλέγει μια διαφορετική συσκευή
  */
 public class AlertsController {
 
@@ -35,7 +35,7 @@ public class AlertsController {
 
 
     /**
-     * Runs ONLY ONCE when FXML is loaded.
+     * Εκτελείται ΜΟΝΟ ΜΙΑ ΦΟΡΑ όταν φορτώνεται το FXML.
      */
     @FXML
     public void initialize() {
@@ -60,7 +60,7 @@ public class AlertsController {
 
 
     /**
-     * Called by MainController EVERY TIME a different device is selected.
+     * Καλείται από το MainController ΚΑΘΕ ΦΟΡΑ που επιλέγεται μια διαφορετική συσκευή.
      */
     public void refresh(Long deviceId) {
         data.clear();
@@ -71,7 +71,7 @@ public class AlertsController {
 
 
     /**
-     * Load alerts from backend
+     * Φόρτωση ειδοποιήσεων από backend
      */
     private void loadAlerts(Long deviceId) {
         List<AlertModel> alerts = client.getAlertsForDevice(deviceId);
@@ -80,14 +80,14 @@ public class AlertsController {
 
 
     /**
-     * Dialog for adding a new alert
+     * Διάλογος για την προσθήκη νέας ειδοποίησης
      */
     private void showAddAlertDialog() {
 
         Dialog<AlertModel> dialog = new Dialog<>();
-        dialog.setTitle("Add Alert");
+        dialog.setTitle("Προσθήκη ειδοποίησης");
 
-        ButtonType saveBtn = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        ButtonType saveBtn = new ButtonType("Αποθήκευση", ButtonBar.ButtonData.OK_DONE);
         dialog.getDialogPane().getButtonTypes().addAll(saveBtn, ButtonType.CANCEL);
 
         GridPane grid = new GridPane();
@@ -97,16 +97,16 @@ public class AlertsController {
         TextField messageField = new TextField();
         DatePicker dueDatePicker = new DatePicker(LocalDate.now());
         ComboBox<String> statusBox = new ComboBox<>();
-        statusBox.getItems().addAll("Active", "Resolved");
-        statusBox.setValue("Active");
+        statusBox.getItems().addAll("Ενεργός", "Επιλύθηκε");
+        statusBox.setValue("Ενεργός");
 
-        grid.add(new Label("Message:"), 0, 0);
+        grid.add(new Label("Μήνυμα:"), 0, 0);
         grid.add(messageField, 1, 0);
 
-        grid.add(new Label("Due Date:"), 0, 1);
+        grid.add(new Label("Ημερομηνία:"), 0, 1);
         grid.add(dueDatePicker, 1, 1);
 
-        grid.add(new Label("Status:"), 0, 2);
+        grid.add(new Label("Κατάσταση:"), 0, 2);
         grid.add(statusBox, 1, 2);
 
         dialog.getDialogPane().setContent(grid);

@@ -34,7 +34,7 @@ public class CreateSiteController {
                 return;
             }
 
-            // 1. Create Site (WITHOUT QR)
+            // 1. Δημιουργία ιστότοπου (ΧΩΡΙΣ QR)
             SiteModel s = new SiteModel();
             s.setName(nameField.getText());
             s.setRegion(regionField.getText());
@@ -43,17 +43,17 @@ public class CreateSiteController {
             SiteModel created = siteClient.createSite(s);
             Long newId = created.getId();
 
-            // 2. Generate QR in client
+            // 2. Δημιουργία QR στον πελάτη
             String qrUrl = "http://localhost:8080/sites/qr/" + newId;
             BufferedImage qr = QRUtil.generateQRCode(qrUrl, 300);
 
-            // 3. Upload QR to backend
+            // 3. Ανεβάστε το QR στο backend
             siteClient.uploadSiteQr(newId, qr);
 
-            // 4. Refresh tree
+            // 4. Ανανέωση δέντρου
             MainController.instance.refreshSites();
 
-            // 5. Close window
+            // 5. Κλείσιμο παραθύρου
             ((Stage) nameField.getScene().getWindow()).close();
 
         } catch (Exception e) {

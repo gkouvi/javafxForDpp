@@ -86,7 +86,7 @@ public class DocumentsPageController {
     }
 
     // ---------------------------
-    // INNER MODEL FOR TABLE ROW
+    // ΕΣΩΤΕΡΙΚΟ ΜΟΝΤΕΛΟ ΓΙΑ ΣΕΙΡΑ ΠΙΝΑΚΑ
     // ---------------------------
 
 
@@ -97,9 +97,9 @@ public class DocumentsPageController {
 
             ContextMenu menu = new ContextMenu();
 
-            MenuItem edit = new MenuItem("Edit Device");
-            MenuItem upload = new MenuItem("Upload Document");
-            MenuItem download = new MenuItem("Download Documents");
+            MenuItem edit = new MenuItem("Επεξεργασία συσκευής");
+            MenuItem upload = new MenuItem("Ανεβάστε έγγραφο");
+            MenuItem download = new MenuItem("Λήψη εγγράφουs");
 
             edit.setOnAction(e -> onEditDevice(row.getItem()));
             upload.setOnAction(e -> onUpload(row.getItem()));
@@ -120,33 +120,7 @@ public class DocumentsPageController {
 
     }
 
-   /* private void onEditDevice(DeviceDocumentRow item) {
 
-
-        Long id = item.getDeviceID();
-        if (id == null) {
-            showWarning("Please select a device.");
-            return;
-        }
-
-        try {
-            DeviceModel d = deviceClient.getDevice(id);
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/edit_device.fxml"));
-            Parent root = loader.load();
-
-            EditDeviceController controller = loader.getController();
-            controller.loadDevice(d);
-
-            Stage stage = new Stage();
-            stage.setTitle("Edit Device");
-            stage.setScene(new Scene(root));
-            stage.show();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 
 
     private void showWarning(String msg) {
@@ -181,15 +155,13 @@ public class DocumentsPageController {
     private void onUpload(DeviceDocumentRow row) {
         if (row == null) return;
 
-        //DeviceModel d = deviceClient.getDeviceByName(row.getDeviceName());
-        //OpenWindows.showUploadDocumentWindow(d.getDeviceId());
+
     }
 
     private void onDownload(DeviceDocumentRow row) {
         if (row == null) return;
 
-        //DeviceModel d = deviceClient.getDeviceByName(row.getDeviceName());
-        //OpenWindows.showDocumentListWindow(d.getDeviceId());
+
     }
 
 }

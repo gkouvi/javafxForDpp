@@ -1,0 +1,127 @@
+/* -----------------------------------------------
+   DEVICE CARD – MAIN PANEL
+------------------------------------------------*/
+.device-card-root {
+    -fx-background-color: #F7F9FC;
+    -fx-padding: 20 30 30 30;
+    -fx-spacing: 20;
+}
+
+/* -----------------------------------------------
+   HEADER TEXT
+------------------------------------------------*/
+.device-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0D1B2A;
+}
+
+.device-subtitle {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #1B263B;
+}
+
+/* -----------------------------------------------
+   LABELS (Property grid)
+------------------------------------------------*/
+.device-info-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #415A77;
+    -fx-font-weight: 600;
+}
+
+.device-info-value {
+    -fx-font-size: 13px;
+    -fx-text-fill: #0D1B2A;
+}
+
+/* -----------------------------------------------
+   SECTION TITLES
+------------------------------------------------*/
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1B263B;
+    -fx-padding: 15 0 5 0;
+}
+
+/* -----------------------------------------------
+   QR IMAGE
+------------------------------------------------*/
+.qr-box {
+    -fx-padding: 10;
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #A0AEC0;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
+/* -----------------------------------------------
+   BUTTONS
+------------------------------------------------*/
+.action-btn {
+    -fx-background-color: #0EA5E9;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10 20;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.action-btn:hover {
+    -fx-background-color: #38BDF8;
+}
+
+.action-btn:pressed {
+    -fx-background-color: #0284C7;
+}
+
+/* -----------------------------------------------
+   MAINTENANCE INTERVAL TAGS (badges)
+------------------------------------------------*/
+.interval-tag {
+    -fx-background-color: #1B263B;
+    -fx-text-fill: #E0E6ED;
+    -fx-padding: 5 12;
+    -fx-background-radius: 12;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
+    -fx-margin: 4;
+}
+
+/* -----------------------------------------------
+   TABPANE STYLE
+------------------------------------------------*/
+.tab-pane {
+    -fx-background-color: transparent;
+}
+
+.tab-header-area .tab {
+    -fx-background-color: #E2E8F0;
+    -fx-background-radius: 6 6 0 0;
+    -fx-padding: 6 18;
+    -fx-font-size: 14px;
+}
+
+.tab-header-area .tab-selected {
+    -fx-background-color: #1B263B;
+}
+
+.tab-header-area .tab-selected .tab-label {
+    -fx-text-fill: white;
+}
+/* ΚΟΚΚΙΝΟ — overdue */
+.chip-danger {
+    -fx-background-color: #D32F2F;
+    -fx-text-fill: white;
+}
+
+/* ΠΟΡΤΟΚΑΛΙ — κοντά */
+.chip-warning {
+    -fx-background-color: #F57C00;
+    -fx-text-fill: white;
+}
+
+

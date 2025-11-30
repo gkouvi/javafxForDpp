@@ -395,7 +395,7 @@ public class MainController {
 
         Long id = SelectionContext.selectedDeviceId;
         if (id == null) {
-            showWarning("Please select a device.");
+            showWarning("Παρακαλώ επιλέξτε μια συσκευήe.");
             return;
         }
 
@@ -409,7 +409,7 @@ public class MainController {
             controller.loadDevice(d);
 
             Stage stage = new Stage();
-            stage.setTitle("Edit Device");
+            stage.setTitle("Επεξεργασία συσκευής");
             stage.setScene(new Scene(root));
             stage.show();
 
@@ -571,43 +571,38 @@ public class MainController {
                     switch (item.getType()) {
 
                         case "site" -> {
-                            MenuItem edit = new MenuItem("Edit Site");
+                            MenuItem edit = new MenuItem("Επεξεργασία Μονάδας");
                             edit.setOnAction(e -> onEditSite());
 
-                            MenuItem del = new MenuItem("Delete Site");
+                            MenuItem del = new MenuItem("Διαγραφή Μονάδας");
                             del.setOnAction(e -> onDeleteSite());
 
-                            MenuItem addB = new MenuItem("Add Building");
+                            MenuItem addB = new MenuItem("Προσθήκη κτιρίου");
                             addB.setOnAction(e -> onAddBuilding());
 
                             menu.getItems().addAll(edit, addB, del);
                         }
 
                         case "building" -> {
-                            MenuItem edit = new MenuItem("Edit Building");
+                            MenuItem edit = new MenuItem("Επεξεργασία κτιρίου");
                             edit.setOnAction(e -> onEditBuilding());
 
-                            MenuItem del = new MenuItem("Delete Building");
+                            MenuItem del = new MenuItem("Διαγραφή κτιρίου");
                             del.setOnAction(e -> onDeleteBuilding());
 
-                            MenuItem addDev = new MenuItem("Add Device");
+                            MenuItem addDev = new MenuItem("Προσθήκη συσκευής");
                             addDev.setOnAction(e -> onAddDevice());
 
                             menu.getItems().addAll(edit, addDev, del);
                         }
 
                         case "device" -> {
-                            MenuItem edit = new MenuItem("Edit Device");
+                            MenuItem edit = new MenuItem("Επεξεργασία συσκευής");
                             edit.setOnAction(e -> onEditDevice());
 
-                            MenuItem del = new MenuItem("Delete Device");
+                            MenuItem del = new MenuItem("Διαγραφή συσκευής");
                             del.setOnAction(e -> onDeleteDevice());
 
-                           /* MenuItem exportQR = new MenuItem("Export QR");
-                            exportQR.setOnAction(e -> onExportSelectedQR());
-
-                            MenuItem printQR = new MenuItem("Print QR");
-                            printQR.setOnAction(e -> onPrintSelectedQR());*/
 
                             menu.getItems().addAll(edit, del);
                         }
@@ -676,6 +671,7 @@ public class MainController {
     }
 
     public void handleScannedQR(String code) {
+        System.out.println("from iside mainClass + "+code);
 
         if (code == null || code.isEmpty()) return;
 
@@ -695,7 +691,7 @@ public class MainController {
             return;
         }
 
-        // ---- BUILDING ----
+        // ---- ΚΤΙΡΙΟ ----
         if (code.startsWith("DPP://building/")) {
             long id = Long.parseLong(code.substring("DPP://building/".length()));
             selectBuildingInTree(id);
@@ -716,7 +712,7 @@ public class MainController {
             Parent root = loader.load();
 
             Stage stage = new Stage();
-            stage.setTitle("QR Scanner");
+            stage.setTitle("QR Σαρωτής");
             stage.setScene(new Scene(root));
             stage.show();
 
@@ -726,35 +722,16 @@ public class MainController {
     }
 
 
-
-
-
-
-
-    /*private void onExportSelectedQR() {
-        Long id = SelectionContext.selectedDeviceId;
-        if (id == null) return;
-
-        MetadataController.exportQR(id);
-    }
-
-    private void onPrintSelectedQR() {
-        Long id = SelectionContext.selectedDeviceId;
-        if (id == null) return;
-
-        MetadataController.printQR(id);
-    }*/
-
     public void openDeviceCard(Long deviceId) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/device-card.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/deviceCard.fxml"));
             Parent root = loader.load();
 
             DeviceCardController controller = loader.getController();
             controller.loadDevice(deviceId);
 
             Stage stage = new Stage();
-            stage.setTitle("Device Details");
+            stage.setTitle("Λεπτομέρειες συσκευής");
             stage.setScene(new Scene(root));
             stage.show();
 

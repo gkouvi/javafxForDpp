@@ -10,7 +10,8 @@ import java.net.http.HttpClient;
  */
 public abstract class ApiClient {
 
-    protected static final String BASE_URL = "http://localhost:8080";
+    //protected static final String BASE_URL = "http://localhost:8080";
+    protected static final String BASE_URL = "https://192.168.0.105:8443";
 
     protected final HttpClient httpClient;
     protected final ObjectMapper mapper;

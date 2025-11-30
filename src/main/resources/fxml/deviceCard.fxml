@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DeviceCardController">
+
+    <!-- ================= HEADER ================= -->
+    <top>
+        <VBox spacing="10" styleClass="device-card-root">
+            <Label fx:id="deviceNameLabel" styleClass="device-title"/>
+
+            <HBox spacing="25">
+                <Label text="Τύπος:" styleClass="device-info-label"/>
+                <Label fx:id="deviceTypeLabel" styleClass="device-info-value"/>
+
+                <Label text="Σειρά:" styleClass="device-info-label"/>
+                <Label fx:id="serialLabel" styleClass="device-info-value"/>
+
+                <Label text="Κατάσταση:" styleClass="device-info-label"/>
+                <Label fx:id="statusLabel" styleClass="device-info-value"/>
+            </HBox>
+
+            <HBox spacing="25">
+                <Label text="Εγκατάσταση:" styleClass="device-info-label"/>
+                <Label fx:id="installationLabel" styleClass="device-info-value"/>
+
+                <Label text="Firmware:" styleClass="device-info-label"/>
+                <Label fx:id="firmwareLabel" styleClass="device-info-value"/>
+
+                <Label text="IP:" styleClass="device-info-label"/>
+                <Label fx:id="ipLabel" styleClass="device-info-value"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- ================= CENTER TABS ================= -->
+    <center>
+        <TabPane fx:id="tabPane" styleClass="tab-pane">
+
+            <!-- ========== ΕΠΙΣΚΟΠΗΣΗ ========== -->
+            <Tab text="Επισκόπηση" closable="false">
+                <VBox spacing="20" >
+                    <padding>
+                        <Insets bottom="20" left="20" right="20" top="20" />
+                    </padding>
+
+                    <VBox alignment="CENTER">
+                        <ImageView fx:id="qrImage" fitHeight="200" preserveRatio="true"
+                                   styleClass="qr-box"/>
+                    </VBox>
+                    <padding>
+                        <Insets bottom="20" left="20" right="20" top="20" />
+                    </padding>
+
+                    <HBox spacing="10">
+                        <Label text="Επόμενη συντήρηση:" styleClass="device-info-label"/>
+                        <Label fx:id="nextMaintenanceLabel" styleClass="device-info-value"/>
+                    </HBox>
+
+                    <Label text="Διαστήματα συντήρησης:" styleClass="section-title"/>
+                    <FlowPane fx:id="intervalsFlow" hgap="8" vgap="8"/>
+
+                    <Button fx:id="createMaintenanceBtn"
+                            text="Δημιουργία συντήρησης τώρα"
+                            styleClass="action-btn"
+                            onAction="#onAddMaintenance"/>
+                </VBox>
+            </Tab>
+
+            <!-- ========== ΙΣΤΟΡΙΚΟ ΣΥΝΤΗΡΗΣΗΣ ========== -->
+            <Tab text="Ιστορικό συντήρησης" closable="false">
+                <VBox spacing="15" >
+                    <padding>
+                        <Insets bottom="15" left="15" right="15" top="15" />
+                    </padding>
+
+                    <Label text="Ιστορικό καταχωρήσεων"
+                           styleClass="section-title"/>
+
+                    <TableView fx:id="maintenanceTable">
+                        <columns>
+                            <TableColumn fx:id="mDateCol" text="Ημερομηνία"/>
+                            <TableColumn fx:id="mIntervalCol" text="Διάστημα"/>
+                            <TableColumn fx:id="mNotesCol" text="Σημειώσεις"/>
+                        </columns>
+                    </TableView>
+
+                    <Button fx:id="addMaintenanceBtn"
+                            text="Προσθήκη συντήρησης"
+                            styleClass="action-btn"
+                            onAction="#onCreateMaintenance"/>
+                </VBox>
+            </Tab>
+
+            <!-- ========== ΕΙΔΟΠΟΙΗΣΕΙΣ ========== -->
+            <Tab text="Ειδοποιήσεις" closable="false">
+                <VBox spacing="15" >
+                    <padding>
+                        <Insets bottom="15" left="15" right="15" top="15" />
+                    </padding>
+                    <Label text="Πρόσφατες ειδοποιήσεις" styleClass="section-title"/>
+
+                    <TableView fx:id="alertsTable">
+                        <columns>
+                            <TableColumn fx:id="aTimeCol" text="Χρόνος"/>
+                            <TableColumn fx:id="aTypeCol" text="Τύπος"/>
+                            <TableColumn fx:id="aMsgCol" text="Μήνυμα"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+            </Tab>
+
+            <!-- ========== ΕΓΓΡΑΦΑ ========== -->
+            <Tab text="Έγγραφα" closable="false">
+                <VBox spacing="15" >
+                    <padding>
+                        <Insets bottom="15" left="15" right="15" top="15" />
+                    </padding>
+                    <Label text="Ανεβασμένα έγγραφα" styleClass="section-title"/>
+
+                    <TableView fx:id="documentsTable">
+                        <columns>
+                            <TableColumn fx:id="dNameCol" text="Όνομα"/>
+                            <TableColumn fx:id="dDateCol" text="Ημερομηνία"/>
+                        </columns>
+                    </TableView>
+
+                    <HBox spacing="10">
+                        <Button fx:id="uploadBtn" text="Ανέβασμα"
+                                styleClass="action-btn"
+                                onAction="#onUploadDocument"/>
+
+                        <Button fx:id="downloadBtn" text="Λήψη"
+                                styleClass="action-btn"
+                                onAction="#onDownloadDocument"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+        </TabPane>
+    </center>
+
+</BorderPane>
