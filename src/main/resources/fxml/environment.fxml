@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.EnvironmentController">
+
+    <VBox spacing="15" AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10" AnchorPane.topAnchor="10">
+
+        <Label style="-fx-font-size: 20; -fx-font-weight: bold;" text="Περιβαλλοντικές Πληροφορίες Συσκευών" />
+
+        <TableView fx:id="envTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+            <columns>
+
+                <TableColumn fx:id="colDeviceName" prefWidth="200" text="Συσκευή" />
+                <TableColumn fx:id="colType" prefWidth="100" text="Τύπος" />
+                <TableColumn fx:id="colRecyclability" prefWidth="150" text="Ανακυκλωσιμότητα %" />
+                <TableColumn fx:id="colHazard" prefWidth="200" text="Επικίνδυνα Υλικά" />
+                <TableColumn fx:id="colScore" prefWidth="120" text="Eco Score" />
+                <TableColumn fx:id="colEdit" text="Επεξεργασία" prefWidth="120"/>
+
+
+            </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+        </TableView>
+
+    </VBox>
+
+</AnchorPane>

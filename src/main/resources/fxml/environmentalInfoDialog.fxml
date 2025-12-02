@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="15" style="-fx-padding: 20; -fx-background-color: #1e1e2f;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.EnvironmentalInfoDialogController">
+
+    <Label style="-fx-font-size: 19px; -fx-font-weight: bold;" text="Περιβαλλοντικές Πληροφορίες" textFill="WHITE" />
+
+    <Label text="Περιβαλλοντική βαθμολογία:" />
+    <Label fx:id="envScoreLabel" styleClass="env-score-badge" />
+
+    <Label text="Σύνθεση Υλικών:" textFill="WHITE" />
+    <TextArea fx:id="materialsArea" prefHeight="90" />
+
+    <Label text="Οδηγίες Ανακύκλωσης:" textFill="WHITE" />
+    <TextArea fx:id="recyclingArea" prefHeight="90" />
+
+    <Label text="Επικίνδυνα Υλικά:" textFill="WHITE" />
+    <TextArea fx:id="hazardousArea" prefHeight="90" />
+
+    <HBox spacing="10">
+        <VBox spacing="5">
+            <Label text="Ποσοστό Ανακυκλωσιμότητας (%)" textFill="WHITE" />
+            <TextField fx:id="recyclabilityField" />
+        </VBox>
+
+        <VBox spacing="5">
+            <Label text="Βάρος Συσκευής (kg)" textFill="WHITE" />
+            <TextField fx:id="weightField" />
+        </VBox>
+    </HBox>
+
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Button onAction="#onCancel" text="Ακύρωση" />
+        <Button onAction="#onSave" style="-fx-background-color: #3a7afe; -fx-text-fill: white;" text="Αποθήκευση" />
+    </HBox>
+
+</VBox>

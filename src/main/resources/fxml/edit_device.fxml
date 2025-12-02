@@ -119,6 +119,7 @@
     </GridPane>
 
     <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Button fx:id="envBtn" text="Περιβαλλοντικές Πληροφορίες" onAction="#onEditEnvironmental"/>
         <Button onAction="#onCancel" text="Ακύρωση" />
         <Button onAction="#onSave" text="Αποθήκευση αλλαγών" />
     </HBox>

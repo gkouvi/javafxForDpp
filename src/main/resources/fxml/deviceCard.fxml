@@ -1,39 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DeviceCardController">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DeviceCardController">
 
     <!-- ================= HEADER ================= -->
     <top>
         <VBox spacing="10" styleClass="device-card-root">
-            <Label fx:id="deviceNameLabel" styleClass="device-title"/>
+            <Label fx:id="deviceNameLabel" styleClass="device-title" />
 
             <HBox spacing="25">
-                <Label text="Τύπος:" styleClass="device-info-label"/>
-                <Label fx:id="deviceTypeLabel" styleClass="device-info-value"/>
+                <Label styleClass="device-info-label" text="Τύπος:" />
+                <Label fx:id="deviceTypeLabel" styleClass="device-info-value" />
 
-                <Label text="Σειρά:" styleClass="device-info-label"/>
-                <Label fx:id="serialLabel" styleClass="device-info-value"/>
+                <Label styleClass="device-info-label" text="Σειρά:" />
+                <Label fx:id="serialLabel" styleClass="device-info-value" />
 
-                <Label text="Κατάσταση:" styleClass="device-info-label"/>
-                <Label fx:id="statusLabel" styleClass="device-info-value"/>
+                <Label styleClass="device-info-label" text="Κατάσταση:" />
+                <Label fx:id="statusLabel" styleClass="device-info-value" />
             </HBox>
 
             <HBox spacing="25">
-                <Label text="Εγκατάσταση:" styleClass="device-info-label"/>
-                <Label fx:id="installationLabel" styleClass="device-info-value"/>
+                <Label styleClass="device-info-label" text="Εγκατάσταση:" />
+                <Label fx:id="installationLabel" styleClass="device-info-value" />
 
-                <Label text="Firmware:" styleClass="device-info-label"/>
-                <Label fx:id="firmwareLabel" styleClass="device-info-value"/>
+                <Label styleClass="device-info-label" text="Firmware:" />
+                <Label fx:id="firmwareLabel" styleClass="device-info-value" />
 
-                <Label text="IP:" styleClass="device-info-label"/>
-                <Label fx:id="ipLabel" styleClass="device-info-value"/>
+                <Label styleClass="device-info-label" text="IP:" />
+                <Label fx:id="ipLabel" styleClass="device-info-value" />
             </HBox>
         </VBox>
     </top>
@@ -43,104 +51,133 @@
         <TabPane fx:id="tabPane" styleClass="tab-pane">
 
             <!-- ========== ΕΠΙΣΚΟΠΗΣΗ ========== -->
-            <Tab text="Επισκόπηση" closable="false">
-                <VBox spacing="20" >
+            <Tab closable="false" text="Επισκόπηση">
+                <VBox spacing="20">
                     <padding>
                         <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
 
                     <VBox alignment="CENTER">
-                        <ImageView fx:id="qrImage" fitHeight="200" preserveRatio="true"
-                                   styleClass="qr-box"/>
+                        <ImageView fx:id="qrImage" fitHeight="200" preserveRatio="true" styleClass="qr-box" />
                     </VBox>
+
+                    <HBox spacing="10">
+                        <Label styleClass="device-info-label" text="Επόμενη συντήρηση:" />
+                        <Label fx:id="nextMaintenanceLabel" styleClass="device-info-value" />
+                    </HBox>
+
+                    <Label styleClass="section-title" text="Διαστήματα συντήρησης:" />
+                    <FlowPane fx:id="intervalsFlow" hgap="8" vgap="8" />
+
+                    <Button fx:id="createMaintenanceBtn" onAction="#onAddMaintenance" styleClass="action-btn" text="Δημιουργία συντήρησης τώρα" />
                     <padding>
                         <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
-
-                    <HBox spacing="10">
-                        <Label text="Επόμενη συντήρηση:" styleClass="device-info-label"/>
-                        <Label fx:id="nextMaintenanceLabel" styleClass="device-info-value"/>
-                    </HBox>
-
-                    <Label text="Διαστήματα συντήρησης:" styleClass="section-title"/>
-                    <FlowPane fx:id="intervalsFlow" hgap="8" vgap="8"/>
-
-                    <Button fx:id="createMaintenanceBtn"
-                            text="Δημιουργία συντήρησης τώρα"
-                            styleClass="action-btn"
-                            onAction="#onAddMaintenance"/>
                 </VBox>
             </Tab>
 
             <!-- ========== ΙΣΤΟΡΙΚΟ ΣΥΝΤΗΡΗΣΗΣ ========== -->
-            <Tab text="Ιστορικό συντήρησης" closable="false">
-                <VBox spacing="15" >
+            <Tab closable="false" text="Ιστορικό συντήρησης">
+                <VBox spacing="15">
                     <padding>
                         <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
 
-                    <Label text="Ιστορικό καταχωρήσεων"
-                           styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Ιστορικό καταχωρήσεων" />
 
                     <TableView fx:id="maintenanceTable">
                         <columns>
-                            <TableColumn fx:id="mDateCol" text="Ημερομηνία"/>
-                            <TableColumn fx:id="mIntervalCol" text="Διάστημα"/>
-                            <TableColumn fx:id="mNotesCol" text="Σημειώσεις"/>
+                            <TableColumn fx:id="mDateCol" text="Ημερομηνία" />
+                            <TableColumn fx:id="mIntervalCol" text="Διάστημα" />
+                            <TableColumn fx:id="mNotesCol" text="Σημειώσεις" />
                         </columns>
                     </TableView>
 
-                    <Button fx:id="addMaintenanceBtn"
-                            text="Προσθήκη συντήρησης"
-                            styleClass="action-btn"
-                            onAction="#onCreateMaintenance"/>
+                    <Button fx:id="addMaintenanceBtn" onAction="#onCreateMaintenance" styleClass="action-btn" text="Προσθήκη συντήρησης" />
                 </VBox>
             </Tab>
 
             <!-- ========== ΕΙΔΟΠΟΙΗΣΕΙΣ ========== -->
-            <Tab text="Ειδοποιήσεις" closable="false">
-                <VBox spacing="15" >
+            <Tab closable="false" text="Ειδοποιήσεις">
+                <VBox spacing="15">
                     <padding>
                         <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
-                    <Label text="Πρόσφατες ειδοποιήσεις" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Πρόσφατες ειδοποιήσεις" />
 
                     <TableView fx:id="alertsTable">
                         <columns>
-                            <TableColumn fx:id="aTimeCol" text="Χρόνος"/>
-                            <TableColumn fx:id="aTypeCol" text="Τύπος"/>
-                            <TableColumn fx:id="aMsgCol" text="Μήνυμα"/>
+                            <TableColumn fx:id="aTimeCol" text="Χρόνος" />
+                            <TableColumn fx:id="aTypeCol" text="Τύπος" />
+                            <TableColumn fx:id="aMsgCol" text="Μήνυμα" />
                         </columns>
                     </TableView>
                 </VBox>
             </Tab>
 
             <!-- ========== ΕΓΓΡΑΦΑ ========== -->
-            <Tab text="Έγγραφα" closable="false">
-                <VBox spacing="15" >
+            <Tab closable="false" text="Έγγραφα">
+                <VBox spacing="15">
                     <padding>
                         <Insets bottom="15" left="15" right="15" top="15" />
                     </padding>
-                    <Label text="Ανεβασμένα έγγραφα" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Ανεβασμένα έγγραφα" />
 
                     <TableView fx:id="documentsTable">
                         <columns>
-                            <TableColumn fx:id="dNameCol" text="Όνομα"/>
-                            <TableColumn fx:id="dDateCol" text="Ημερομηνία"/>
+                            <TableColumn fx:id="dNameCol" text="Όνομα" />
+                            <TableColumn fx:id="dDateCol" text="Ημερομηνία" />
                         </columns>
                     </TableView>
 
                     <HBox spacing="10">
-                        <Button fx:id="uploadBtn" text="Ανέβασμα"
-                                styleClass="action-btn"
-                                onAction="#onUploadDocument"/>
+                        <Button fx:id="uploadBtn" onAction="#onUploadDocument" styleClass="action-btn" text="Ανέβασμα" />
 
-                        <Button fx:id="downloadBtn" text="Λήψη"
-                                styleClass="action-btn"
-                                onAction="#onDownloadDocument"/>
+                        <Button fx:id="downloadBtn" onAction="#onDownloadDocument" styleClass="action-btn" text="Λήψη" />
                     </HBox>
                 </VBox>
             </Tab>
+
+            <!-- ==========ΠΕΡΙΒΑΛΛΟΝ=========-->
+            <Tab closable="false" text="Περιβάλλον">
+            <ScrollPane>
+               <content>
+                      <VBox spacing="10">
+                          <padding>
+                              <Insets bottom="15" left="15" right="15" top="15" />
+                          </padding>
+      
+                          <Label text="Περιβαλλοντική βαθμολογία:" />
+                          <Label fx:id="envScoreLabel" styleClass="env-score-badge" />
+      
+                          <Label styleClass="section-title" text="Υλικά Συσκευής" />
+                          <TextArea fx:id="materialsArea" editable="false" prefHeight="70.0" prefWidth="478.0" />
+      
+                          <Label styleClass="section-title" text="Ανακύκλωση / Απόρριψη" />
+                          <TextArea fx:id="recyclingArea" editable="false" prefHeight="70.0" prefWidth="478.0" />
+      
+                          <Label styleClass="section-title" text="Επικίνδυνα Υλικά" />
+                          <TextArea fx:id="hazardousArea" editable="false" prefHeight="70.0" prefWidth="478.0" />
+      
+                          <HBox spacing="20">
+                              <Label styleClass="device-info-label" text="Ανακυκλωσιμότητα:" />
+                              <Label fx:id="recyclabilityLabel" styleClass="device-info-value" />
+                          </HBox>
+      
+                          <HBox spacing="20">
+                              <Label styleClass="device-info-label" text="Βάρος:" />
+                              <Label fx:id="weightLabel" styleClass="device-info-value" />
+                          </HBox>
+                          <HBox spacing="20">
+                              <Button onAction="#onEditEnvironmental" text="Επεξεργασία" />
+                          </HBox>
+      
+      
+                      </VBox>
+               </content>
+            </ScrollPane>
+            </Tab>
+
         </TabPane>
     </center>
 

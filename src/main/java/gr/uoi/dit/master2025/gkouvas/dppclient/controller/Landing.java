@@ -92,5 +92,10 @@ public class Landing {
     public void onQrcode(ActionEvent actionEvent) {
         loadView("/dialogs/QRScannerDialog.fxml");
     }
+    @FXML
+    public void onEnvironmentClick(ActionEvent actionEvent) {
+
+        loadView("/fxml/environment.fxml");
+    }
 }
 

@@ -34,6 +34,7 @@ import java.util.List;
 public class MainController {
     //σε localhost, το QR από το κινητό ΔΕ ΘΑ ΛΕΙΤΟΥΡΓΕΙ.
     private static final String BASE_URL = "http://192.168.1.20:8080";
+    public Tab environmentTab;
     ;
     @FXML private TreeView<TreeNodeData> treeView;
 
@@ -41,6 +42,7 @@ public class MainController {
     @FXML private AnchorPane alertsPane;
     @FXML private AnchorPane maintenancePane;
     @FXML private AnchorPane documentsPane;
+    @FXML private AnchorPane environmentPane;
 
     private final SiteServiceClient siteClient = new SiteServiceClient();
     private final BuildingServiceClient buildingClient = new BuildingServiceClient();
@@ -53,6 +55,7 @@ public class MainController {
     private AlertsController alertsController;
     private MaintenanceController maintenanceController;
     private DocumentsController documentsController;
+    private EnvironmentalInfoDialogController environmentalInfoDialogController;
 
 
     // ---------------- SELECTED CONTEXT --------------------
@@ -181,7 +184,11 @@ public class MainController {
 
         documentsController = (DocumentsController)
                 loadAndAttach(documentsPane, "/tabs/documents.fxml");
+        environmentalInfoDialogController = (EnvironmentalInfoDialogController)
+                loadAndAttach(environmentPane,"/fxml/environmentalInfoDialog.fxml");
+
     }
+
 
 
     /**
@@ -204,7 +211,7 @@ public class MainController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Failed to load " + fxml);
+            throw new RuntimeException("Αποτυχία φόρτωσης " + fxml);
         }
     }
 
@@ -251,6 +258,7 @@ public class MainController {
                     alertsController.refresh(SelectionContext.selectedDeviceId);
                     maintenanceController.refresh(SelectionContext.selectedDeviceId);
                     documentsController.refresh(SelectionContext.selectedDeviceId);
+                    environmentalInfoDialogController.refresh(SelectionContext.selectedDeviceId);
                 }
             }
         });

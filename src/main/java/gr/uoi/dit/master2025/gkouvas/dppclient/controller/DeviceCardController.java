@@ -1,12 +1,10 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.controller;
 
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.*;
-import gr.uoi.dit.master2025.gkouvas.dppclient.rest.AlertServiceClient;
-import gr.uoi.dit.master2025.gkouvas.dppclient.rest.DeviceServiceClient;
-import gr.uoi.dit.master2025.gkouvas.dppclient.rest.MaintenanceServiceClient;
-import gr.uoi.dit.master2025.gkouvas.dppclient.rest.DocumentServiceClient;
+import gr.uoi.dit.master2025.gkouvas.dppclient.rest.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -35,6 +33,12 @@ public class DeviceCardController {
     public Button addMaintenanceBtn;
     public Button uploadBtn;
     public Button downloadBtn;
+    public TextArea materialsArea;
+    public TextArea recyclingArea;
+    public TextArea hazardousArea;
+    public Label recyclabilityLabel;
+    public Label weightLabel;
+    public Label envScoreLabel;
     @FXML private Label deviceNameLabel;
     @FXML private Label deviceTypeLabel;
     @FXML private Label serialLabel;
@@ -64,18 +68,28 @@ public class DeviceCardController {
     @FXML private ImageView qrImage;
 
     private Long deviceId;
+    private final EnvironmentalInfoServiceClient envClient = new EnvironmentalInfoServiceClient();
+
 
     private final DeviceServiceClient deviceClient = new DeviceServiceClient();
     private final MaintenanceServiceClient maintenanceClient = new MaintenanceServiceClient();
     private final AlertServiceClient alertClient = new AlertServiceClient();
     private final DocumentServiceClient documentClient = new DocumentServiceClient();
 
-    public void setDeviceId(Long id) {
-        this.deviceId = id;
+
+    /*@FXML
+    public void initialize() {
+
         loadDevice();
         loadMaintenance();
         loadAlerts();
         loadDocuments();
+        loadEnvironmentalInfo();
+
+    }*/
+    public void setDeviceId(Long id) {
+        this.deviceId = id;
+
     }
 
     // -----------------------
@@ -94,6 +108,7 @@ public class DeviceCardController {
 
         renderIntervals(d.getMaintenanceIntervals());
         nextMaintenanceLabel.setText(d.getNextMaintenanceDate().toString());
+
     }
 
    /* private void renderIntervals(List<MaintenanceInterval> intervals) {
@@ -276,6 +291,102 @@ public class DeviceCardController {
         }
     }
 
+    // -----------------------
+    // ΚΑΡΤΕΛΑ ΠΕΡΙΒΑΛΛΟΝ
+    // -----------------------
+
+    private void loadEnvironmentalInfo() {
+
+        EnvironmentalInfoModel env = envClient.getByDevice(deviceId);
+
+        if (env == null) {
+            // Αν δεν υπάρχουν δεδομένα, εμφάνισε "-”
+            materialsArea.setText("—");
+            recyclingArea.setText("—");
+            hazardousArea.setText("—");
+            recyclabilityLabel.setText("—");
+            weightLabel.setText("—");
+            return;
+        }
+
+        materialsArea.setText(defaultIfNull(env.getMaterialsComposition(), "—"));
+        recyclingArea.setText(defaultIfNull(env.getRecyclingInstructions(), "—"));
+        hazardousArea.setText(defaultIfNull(env.getHazardousMaterials(), "—"));
+
+        recyclabilityLabel.setText(
+                env.getRecyclabilityPercentage() != null
+                        ? env.getRecyclabilityPercentage() + "%"
+                        : "—"
+        );
+
+        weightLabel.setText(
+                env.getDeviceWeightKg() != null
+                        ? env.getDeviceWeightKg() + " kg"
+                        : "—"
+        );
+        int score = env.computeEnvironmentalScore();
+        envScoreLabel.setText(score + "/100");
+
+        envScoreLabel.getStyleClass().removeAll(
+                "env-score-green", "env-score-yellow", "env-score-red"
+        );
+
+        if (score >= 70) envScoreLabel.getStyleClass().add("env-score-green");
+        else if (score >= 40) envScoreLabel.getStyleClass().add("env-score-yellow");
+        else envScoreLabel.getStyleClass().add("env-score-red");
+
+        Tooltip tp = buildEnvironmentalTooltip(env, score);
+        Tooltip.install(envScoreLabel, tp);
+
+
+    }
+
+    private String defaultIfNull(String v, String def) {
+        return (v == null || v.isBlank()) ? def : v;
+    }
+    private Tooltip buildEnvironmentalTooltip(EnvironmentalInfoModel info, int score) {
+
+        double recyclability = info.getRecyclabilityPercentage() != null
+                ? info.getRecyclabilityPercentage()
+                : 0;
+
+        double weight = info.getDeviceWeightKg() != null
+                ? info.getDeviceWeightKg()
+                : 0;
+
+        String hazards = info.getHazardousMaterials() != null
+                ? info.getHazardousMaterials()
+                : "—";
+
+        // Recompute detailed subscores
+        double weightScore =
+                weight < 1 ? 100 :
+                        weight < 3 ? 70 :
+                                weight < 10 ? 40 :
+                                        10;
+
+        double hazardScore =
+                hazards.isBlank() ? 100 :
+                        hazards.toLowerCase().contains("pb") ||
+                                hazards.toLowerCase().contains("hg") ||
+                                hazards.toLowerCase().contains("cr6")
+                                ? 20 : 60;
+
+        String text =
+                "♻ Ανακυκλωσιμότητα: " + recyclability + "%\n" +
+                        "⚖ Βάρος: " + weight + " kg → score: " + (int)weightScore + "\n" +
+                        "☣ Επικίνδυνα υλικά: " + hazards + " → score: " + (int)hazardScore + "\n\n" +
+                        "📊 Τελικό περιβαλλοντικό σκορ: " + score + "/100";
+
+        Tooltip tp = new Tooltip(text);
+        tp.setStyle("-fx-font-size: 14px; -fx-font-weight: normal;");
+
+        return tp;
+    }
+
+
+
+
 
     public void loadDevice(Long deviceId) {
         this.deviceId = deviceId;
@@ -295,11 +406,11 @@ public class DeviceCardController {
         if (next != null) nextMaintenanceLabel.setText(next.toString());
         else nextMaintenanceLabel.setText("—");
 
-
         loadQr(d);
         loadMaintenance();
         loadAlerts();
         loadDocuments();
+        loadEnvironmentalInfo();
     }
     private LocalDate computeNextMaintenance(DeviceModel d) {
 
@@ -509,6 +620,27 @@ public class DeviceCardController {
     }
 
 
+    public void onEditEnvironmental(ActionEvent actionEvent) {
 
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EnvironmentalInfoDialog.fxml"));
+            Parent root = loader.load();
+
+            EnvironmentalInfoDialogController ctrl = loader.getController();
+            ctrl.setDeviceId(deviceId);
+
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Περιβαλλοντικές Πληροφορίες");
+            stage.setScene(new Scene(root));
+            stage.showAndWait();
+
+            loadEnvironmentalInfo(); // refresh tab
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Σφάλμα", "Αποτυχία ανοίγματος παραθύρου.");
+        }
+    }
 }
 

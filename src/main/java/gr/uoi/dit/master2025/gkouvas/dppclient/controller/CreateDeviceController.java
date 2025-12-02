@@ -99,19 +99,22 @@ public class CreateDeviceController {
 */
 package gr.uoi.dit.master2025.gkouvas.dppclient.controller;
 
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.DeviceModel;
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceInterval;
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.ModelForSiteAndBuilding;
+import gr.uoi.dit.master2025.gkouvas.dppclient.model.*;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.BuildingServiceClient;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.DeviceServiceClient;
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.BuildingModel;
+import gr.uoi.dit.master2025.gkouvas.dppclient.rest.EnvironmentalInfoServiceClient;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.SiteServiceClient;
 import gr.uoi.dit.master2025.gkouvas.dppclient.util.QRUtil;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.awt.image.BufferedImage;
@@ -143,6 +146,9 @@ public class CreateDeviceController {
     private final SiteServiceClient siteClient = new SiteServiceClient();
     private final BuildingServiceClient buildingClient = new BuildingServiceClient();
     private final ObservableList<BuildingModel> modelList = FXCollections.observableArrayList();
+    private EnvironmentalInfoModel tempEnvInfo;
+    private final EnvironmentalInfoServiceClient envClient = new EnvironmentalInfoServiceClient();
+
 
     private Long selectedBuildingId = null;
 
@@ -202,7 +208,7 @@ public class CreateDeviceController {
     public void onCreate() {
         try {
 
-            // 1. Collect maintenance intervals
+            // 1. Συλλογή διαστημάτων συντήρησης
             List<MaintenanceInterval> intervals = new ArrayList<>();
 
             if (dailyCheck.isSelected()) intervals.add(MaintenanceInterval.DAILY);
@@ -210,7 +216,7 @@ public class CreateDeviceController {
             if (sixMonthCheck.isSelected()) intervals.add(MaintenanceInterval.SEMI_ANNUAL);
             if (yearlyCheck.isSelected()) intervals.add(MaintenanceInterval.ANNUAL);
 
-            // 2. Construct device model
+            // 2. Construct device modeΚατασκευή μοντέλου συσκευήςl
             DeviceModel device = new DeviceModel();
             device.setName(nameField.getText());
             device.setType(typeField.getText());
@@ -224,18 +230,22 @@ public class CreateDeviceController {
             device.setBuildingId(selectedBuildingId);
             device.setMaintenanceIntervals(intervals);
 
-            // 3. Create Device
+            // 3. Δημιουργία συσκευής και περιβάλλον
             DeviceModel created = deviceClient.createDevice(device);
             Long newId = created.getDeviceId();
+            if (tempEnvInfo != null) {
+                tempEnvInfo.setDeviceId(created.getDeviceId());
+                envClient.saveEnvironmentalInfo(tempEnvInfo);
+            }
 
-            // 4. Generate QR
+            // 4. Δημιουργία QR
             String payload = "DPP://device/" + newId;
             BufferedImage qr = QRUtil.generateQRCode(payload, 300);
 
-            // 5. Upload QR
+            // 5. Ανεβάστε QR
             deviceClient.uploadDeviceQr(newId, qr);
 
-            // 6. Refresh UI
+            // 6. Ανανέωση UI
             if (selectedBuildingId != null) {
                 MainController.instance.refreshDevicesForBuilding(selectedBuildingId);
             }
@@ -253,4 +263,40 @@ public class CreateDeviceController {
 
 
     }
+
+
+    @FXML
+    private void onEditEnvironmental() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/EnvironmentalInfoDialog.fxml"));
+
+            Parent root = loader.load();
+            EnvironmentalInfoDialogController ctrl = loader.getController();
+
+            // Φόρτωση υπάρχοντων τιμών
+            if (tempEnvInfo != null) {
+                ctrl.setInfo(tempEnvInfo);
+            }
+
+            Stage st = new Stage();
+            st.initModality(Modality.APPLICATION_MODAL);
+            st.setTitle("Περιβαλλοντικές πληροφορίες");
+            st.setScene(new Scene(root));
+            st.showAndWait();
+
+            // Αν ο χρήστης ΠΑΤΗΣΕ CANCEL → ΜΗΝ κάνεις overwrite το tempInfo
+            if (!ctrl.isSaved()) {
+                return;
+            }
+
+            // Αν πατήθηκε Save → κράτα τις τιμές
+            tempEnvInfo = ctrl.getInfo();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

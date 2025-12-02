@@ -123,5 +123,37 @@
     -fx-background-color: #F57C00;
     -fx-text-fill: white;
 }
+.env-score-badge {
+    -fx-font-size: 16px;
+    -fx-padding: 6px 10px;
+    -fx-background-radius: 12;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.env-score-green {
+    -fx-background-color: #2ecc71;
+}
+
+.env-score-yellow {
+    -fx-background-color: #f1c40f;
+}
+
+.env-score-red {
+    -fx-background-color: #e74c3c;
+}
+.action-btn {
+    -fx-background-color: #2a73ff;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-padding: 4 12;
+    -fx-font-size: 13px;
+}
+
+.action-btn:hover {
+    -fx-background-color: #1f5ed1;
+}
+
+
 
 

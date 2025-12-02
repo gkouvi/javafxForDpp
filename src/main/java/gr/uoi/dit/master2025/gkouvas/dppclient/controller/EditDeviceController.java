@@ -1,16 +1,19 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.controller;
 
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.BuildingModel;
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.DeviceModel;
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceInterval;
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.ModelForSiteAndBuilding;
+import gr.uoi.dit.master2025.gkouvas.dppclient.model.*;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.BuildingServiceClient;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.DeviceServiceClient;
+import gr.uoi.dit.master2025.gkouvas.dppclient.rest.EnvironmentalInfoServiceClient;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.SiteServiceClient;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
@@ -37,6 +40,8 @@ public class EditDeviceController {
     private final BuildingServiceClient buildingClient = new BuildingServiceClient();
     private final ObservableList<ModelForSiteAndBuilding> modelList = FXCollections.observableArrayList();
     private Long deviceId;
+    private EnvironmentalInfoModel tempEnvInfo;
+    private final EnvironmentalInfoServiceClient envClient = new EnvironmentalInfoServiceClient();
 
 
 
@@ -135,11 +140,49 @@ public class EditDeviceController {
 
 
             deviceClient.updateDevice(deviceId, d);
+            if (tempEnvInfo != null) {
+                tempEnvInfo.setDeviceId(deviceId);
+                envClient.saveEnvironmentalInfo(tempEnvInfo);
+            }
 
             /*MainController.instance.refreshDevicesForBuilding(
                     MainController.SelectionContext.selectedBuildingId);*/
 
             ((Stage) nameField.getScene().getWindow()).close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onEditEnvironmental() {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/fxml/EnvironmentalInfoDialog.fxml"));
+
+            Parent root = loader.load();
+            EnvironmentalInfoDialogController ctrl = loader.getController();
+
+            // Φόρτωση υπάρχοντων τιμών
+            tempEnvInfo = envClient.getByDevice(deviceId);
+            if (tempEnvInfo != null) {
+                ctrl.setInfo(tempEnvInfo);
+            }
+
+            Stage st = new Stage();
+            st.initModality(Modality.APPLICATION_MODAL);
+            st.setTitle("Περιβαλλοντικές πληροφορίες");
+            st.setScene(new Scene(root));
+            st.showAndWait();
+
+            // Αν ο χρήστης ΠΑΤΗΣΕ CANCEL → ΜΗΝ κάνεις overwrite το tempInfo
+            if (!ctrl.isSaved()) {
+                return;
+            }
+
+            // Αν πατήθηκε Save → κράτα τις τιμές
+            tempEnvInfo = ctrl.getInfo();
 
         } catch (Exception e) {
             e.printStackTrace();

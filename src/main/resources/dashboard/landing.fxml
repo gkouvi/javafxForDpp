@@ -50,6 +50,12 @@
                         <FontIcon iconColor="white" iconLiteral="mdi2f-file-document-multiple-outline" iconSize="18" />
                     </graphic>
                 </Button>
+                <Button text="Περιβαλλοντικά" onAction="#onEnvironmentClick" styleClass="sidebar-btn">
+                    <graphic>
+                        <FontIcon iconColor="white" iconLiteral="mdi2l-leaf" iconSize="18" />
+                    </graphic>
+                </Button>
+
                 <Button onAction="#onSettingsClick" styleClass="sidebar-btn" text="Διαχείριση">
                     <graphic>
                         <FontIcon iconColor="white" iconLiteral="mdi2c-cog-clockwise" iconSize="18" />
