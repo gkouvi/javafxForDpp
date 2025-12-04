@@ -33,7 +33,7 @@ import java.util.List;
 
 public class MainController {
     //σε localhost, το QR από το κινητό ΔΕ ΘΑ ΛΕΙΤΟΥΡΓΕΙ.
-    private static final String BASE_URL = "http://192.168.1.20:8080";
+    private static final String BASE_URL = "https://192.168.0.105:8443";
     public Tab environmentTab;
     ;
     @FXML private TreeView<TreeNodeData> treeView;
@@ -77,45 +77,6 @@ public class MainController {
     }
 
 
-
-
-    // ======================================================
-    //           LOAD HIERARCHY (Sites → Buildings → Devices)
-    // ======================================================
-   /* private void loadTreeData() {
-
-        TreeItem<TreeNodeData> root = new TreeItem<>(new TreeNodeData("root", 0L, "Sites"));
-        root.setExpanded(true);
-
-        List<SiteModel> sites = siteClient.getAllSites();
-
-        for (SiteModel site : sites) {
-            TreeItem<TreeNodeData> siteItem =
-                    new TreeItem<>(new TreeNodeData("site", site.getId(), site.getName()));
-
-            List<BuildingModel> buildings = buildingClient.getBuildingsBySite(site.getId());
-            for (BuildingModel b : buildings) {
-
-                TreeItem<TreeNodeData> buildingItem =
-                        new TreeItem<>(new TreeNodeData("building", b.getId(), b.getName()));
-
-                List<DeviceModel> devices = deviceClient.getDevicesByBuilding(b.getId());
-                for (DeviceModel d : devices) {
-
-                    TreeItem<TreeNodeData> deviceItem =
-                            new TreeItem<>(new TreeNodeData("device", d.getDeviceId(), d.getName()));
-
-                    buildingItem.getChildren().add(deviceItem);
-                }
-
-                siteItem.getChildren().add(buildingItem);
-            }
-
-            root.getChildren().add(siteItem);
-        }
-
-        treeView.setRoot(root);
-    }*/
     private void loadTreeData() {
 
         // 1️ΟΛΙΚΗ ΚΑΘΑΡΙΣΗ TREEVIEW (critical fix)

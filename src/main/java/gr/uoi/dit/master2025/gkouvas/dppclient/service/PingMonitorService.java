@@ -8,34 +8,74 @@ import gr.uoi.dit.master2025.gkouvas.dppclient.ui.DashboardPopup;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PingMonitorService implements Runnable {
 
     private final List<DeviceModel> devices;
     private final AlertServiceClient alertClient = new AlertServiceClient();
 
+    // τελευταία γνωστή κατάσταση per device (true = reachable, false = unreachable)
+    private final Map<Long, Boolean> lastReachable = new ConcurrentHashMap<>();
+
+    /*public PingMonitorService(List<DeviceModel> devices) {
+        this.devices = devices;
+        // αρχικοποίηση map (χωρίς alerts στο ξεκίνημα)
+        for (DeviceModel d : devices) {
+            if (d.getDeviceId() != null) {
+                lastReachable.put(d.getDeviceId(), null); // άγνωστη αρχική κατάσταση
+            }
+        }
+    }*/
     public PingMonitorService(List<DeviceModel> devices) {
         this.devices = devices;
+
+        for (DeviceModel d : devices) {
+            Long id = d.getDeviceId();
+
+            if (id == null) {
+               continue; // avoid crash
+            }
+
+            lastReachable.put(id, Boolean.FALSE); // άγνωστη αρχική κατάσταση
+        }
     }
+
 
     @Override
     public void run() {
-
-        while (true) {
+        while (!Thread.currentThread().isInterrupted()) {
             for (DeviceModel d : devices) {
-                //System.out.println(d.getName());
-                boolean reachable = isReachable(d.getIpAddress(), 10000);
 
-                //System.out.println(" offline: "+d.isOffline()+" reacheable "+reachable);
-                if (!reachable && !d.isOffline()) {
+                Long id = d.getDeviceId();
+                String ip = d.getIpAddress();
+
+                // skip αν δεν υπάρχει IP
+                if (id == null || ip == null || ip.isBlank()) {
+                    continue;
+                }
+
+                boolean reachable = isReachable(ip, 3000); // 3 sec timeout
+
+                Boolean last = lastReachable.get(id);
+
+                // 1η φορά για αυτή τη συσκευή → απλά αποθηκεύω την κατάσταση, ΔΕΝ στέλνω alert
+                if (last == null) {
+                    lastReachable.put(id, reachable);
+                    d.setOffline(!reachable);
+                    continue;
+                }
+
+                // transition: ONLINE -> OFFLINE
+                if (!reachable && last) {
+                    lastReachable.put(id, false);
                     d.setOffline(true);
 
-                    // ---- CREATE ALERT: DOWN ----
                     alertClient.createPingAlert(
                             d.getDeviceId(),
                             "Συσκευή Offline",
                             "Η συσκευή δεν ανταποκρίθηκε στο ping"
-
                     );
 
                     Platform.runLater(() ->
@@ -44,11 +84,13 @@ public class PingMonitorService implements Runnable {
                                     d.getName() + " ΔΕΝ είναι προσβάσιμη!"
                             )
                     );
+                }
 
-                } else if (reachable && d.isOffline()) {
+                // transition: OFFLINE -> ONLINE
+                else if (reachable && !last) {
+                    lastReachable.put(id, true);
                     d.setOffline(false);
 
-                    // ---- CREATE ALERT: UP ----
                     alertClient.createPingAlert(
                             d.getDeviceId(),
                             "Συσκευή Online",
@@ -62,11 +104,18 @@ public class PingMonitorService implements Runnable {
                             )
                     );
                 }
+                // αν δεν άλλαξε η κατάσταση, απλά ενημερώνουμε τον χάρτη
+                else {
+                    lastReachable.put(id, reachable);
+                    d.setOffline(!reachable);
+                }
             }
 
             try {
-                Thread.sleep(10000); // κάθε 10 sec
-            } catch (InterruptedException ignored) {}
+                Thread.sleep(10_000); // κάθε 10 sec
+            } catch (InterruptedException ignored) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 

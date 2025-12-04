@@ -15,53 +15,53 @@
 
                 <Label styleClass="sidebar-title" text="DPP ΠΙΝΑΚΑΣ ΕΛΕΓΧΟΥ" />
 
-                <Button onAction="#onDashboardClick" styleClass="sidebar-btn" text="Dashboard">
+                <Button fx:id="dashboardBtn" onAction="#onDashboardClick" styleClass="sidebar-btn" text="Dashboard">
                 <graphic>
                     <FontIcon iconColor="white" iconLiteral="mdi2v-view-dashboard" iconSize="18" />
                 </graphic>
                 </Button>
-                <Button onAction="#onSitesClick" styleClass="sidebar-btn" text="Μονάδες">
+                <Button fx:id="sitesBtn" onAction="#onSitesClick" styleClass="sidebar-btn" text="Μονάδες">
                     <graphic>
                         <FontIcon iconColor="white" iconLiteral="mdi2h-home-group" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onBuildingsClick" styleClass="sidebar-btn" text="Κτίρια">
+                <Button fx:id="builidingBtn" onAction="#onBuildingsClick" styleClass="sidebar-btn" text="Κτίρια">
                     <graphic>
                         <FontIcon iconColor="white" iconLiteral="mdi2o-office-building" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onDevicesClick" styleClass="sidebar-btn" text="Συσκευές">
+                <Button fx:id="devicesBtn" onAction="#onDevicesClick" styleClass="sidebar-btn" text="Συσκευές">
                     <graphic>
                         <FontIcon iconColor="white" iconLiteral="mdi2d-devices" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onAlertsClick" styleClass="sidebar-btn" text="Ειδοποιήσεις">
+                <Button fx:id="alertsBtn" onAction="#onAlertsClick" styleClass="sidebar-btn" text="Ειδοποιήσεις">
                     <graphic>
                         <FontIcon iconColor="white" iconLiteral="mdi2a-alert" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onMaintenanceClick" styleClass="sidebar-btn" text="Συντήρηση">
+                <Button fx:id="maintnanceBtn" onAction="#onMaintenanceClick" styleClass="sidebar-btn" text="Συντήρηση">
                     <graphic>
                         <FontIcon iconColor="white" iconLiteral="mdi2t-tools" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onDocumentsClick" styleClass="sidebar-btn" text="Έγγραφα">
+                <Button fx:id="documentBtn" onAction="#onDocumentsClick" styleClass="sidebar-btn" text="Έγγραφα">
                     <graphic>
                         <FontIcon iconColor="white" iconLiteral="mdi2f-file-document-multiple-outline" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button text="Περιβαλλοντικά" onAction="#onEnvironmentClick" styleClass="sidebar-btn">
+                <Button fx:id="envBtn" text="Περιβαλλοντικά" onAction="#onEnvironmentClick" styleClass="sidebar-btn">
                     <graphic>
                         <FontIcon iconColor="white" iconLiteral="mdi2l-leaf" iconSize="18" />
                     </graphic>
                 </Button>
 
-                <Button onAction="#onSettingsClick" styleClass="sidebar-btn" text="Διαχείριση">
+                <Button fx:id="settingsBtn" onAction="#onSettingsClick" styleClass="sidebar-btn" text="Διαχείριση">
                     <graphic>
                         <FontIcon iconColor="white" iconLiteral="mdi2c-cog-clockwise" iconSize="18" />
                     </graphic>
                 </Button>
-                <Button onAction="#onQrcode" styleClass="sidebar-btn" text="QR code Scanner">
+                <Button fx:id="qrBtn" onAction="#onQrcode" styleClass="sidebar-btn" text="QR code Scanner">
                     <graphic>
                         <FontIcon iconColor="white" iconLiteral="mdi2q-qrcode-scan" iconSize="18" />
                     </graphic>

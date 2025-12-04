@@ -13,23 +13,17 @@ public class MaintenanceModel {
     private Long logId;
     private Long deviceId;
     private LocalDate maintenanceDate;
+    private LocalDate plannedDate;
+    private LocalDate performedDate;
     private String description;
     private String technician;
     private Long  buildingId;
     private transient  String deviceName;
     private transient String buildingName;
-    private final BuildingServiceClient buildingClient = new BuildingServiceClient();
-    private final DeviceServiceClient deviceClient = new DeviceServiceClient();
+
 
     private MaintenanceInterval interval;
-
-   /* public BuildingServiceClient getBuildingClient() {
-        return buildingClient;
-    }
-
-    public DeviceServiceClient getDeviceClient() {
-        return deviceClient;
-    }*/
+    private MaintenanceStatus status;
 
     public MaintenanceInterval getInterval() {
         return interval;
@@ -38,16 +32,6 @@ public class MaintenanceModel {
     public void setInterval(MaintenanceInterval interval) {
         this.interval = interval;
     }
-
-    /*public String getDeviceName() {
-        if (deviceClient.getDevice(deviceId)!= null) {
-            this.setDeviceName(
-                    deviceClient.getDevice(deviceId).getName()
-            );
-        }
-
-        return deviceName;
-    }*/
 
     public void setDeviceName(String deviceName) {
         this.deviceName = deviceName;
@@ -113,8 +97,10 @@ public class MaintenanceModel {
 
     public String getTargetName() {
         StringBuilder builder = new StringBuilder();
-        if (buildingId != null) builder.append( buildingClient.getBuilding(buildingId).getName()+" / ");
-        if (deviceId != null) builder.append( deviceClient.getDevice(deviceId).getName() );
+          /*BuildingServiceClient buildingClient = new BuildingServiceClient();
+      DeviceServiceClient deviceClient = new DeviceServiceClient();*/
+        if (buildingId != null) builder.append( new BuildingServiceClient().getBuilding(buildingId).getName()+" / ");
+        if (deviceId != null) builder.append( new DeviceServiceClient().getDevice(deviceId).getName() );
 
         if(builder.isEmpty())
         return "-";
@@ -122,4 +108,39 @@ public class MaintenanceModel {
     }
 
 
+    public LocalDate getPlannedDate() {
+        return plannedDate;
+    }
+
+    public void setPlannedDate(LocalDate plannedDate) {
+        this.plannedDate = plannedDate;
+    }
+
+    public LocalDate getPerformedDate() {
+        return performedDate;
+    }
+
+    public void setPerformedDate(LocalDate performedDate) {
+        this.performedDate = performedDate;
+    }
+
+    public String getDeviceName() {
+        return deviceName;
+    }
+
+   /* public BuildingServiceClient getBuildingClient() {
+        return buildingClient;
+    }*/
+
+    /*public DeviceServiceClient getDeviceClient() {
+        return deviceClient;
+    }*/
+
+    public MaintenanceStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(MaintenanceStatus status) {
+        this.status = status;
+    }
 }

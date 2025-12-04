@@ -48,7 +48,7 @@
     -fx-padding: 15;
     -fx-background-radius: 12;
     -fx-effect: dropshadow(gaussian, #00000055, 10, 0.2, 0, 4);
-    -fx-min-width: 200px;
+    -fx-min-width: 120px;
 }
 
 .kpi-title {
@@ -137,3 +137,89 @@
 .vbox, .hbox {
     -fx-background-color: transparent;
 }
+.kpi-card {
+    -fx-background-color: #0e2a47;
+    -fx-background-radius: 12px;
+    -fx-padding: 18px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0.3, 0, 4);
+    -fx-cursor: hand;
+}
+
+.kpi-card:hover {
+    -fx-background-color: #123559;
+}
+
+.kpi-title {
+    -fx-font-size: 13pt;
+    -fx-text-fill: #d0e2ff;
+    -fx-font-weight: bold;
+}
+
+.kpi-value {
+    -fx-font-size: 26pt;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.kpi-icon {
+    -fx-font-size: 24pt;
+    -fx-text-fill: #74b3ff;
+}
+
+/* Dynamic uptime colors */
+.kpi-uptime-green {
+    -fx-background-color: #0d5f1f;
+}
+.kpi-uptime-yellow {
+    -fx-background-color: #b38b00;
+}
+.kpi-uptime-orange {
+    -fx-background-color: #b65e00;
+}
+.kpi-uptime-red {
+    -fx-background-color: #8b0000;
+}
+.alert-badge {
+    -fx-padding: 3 8;
+    -fx-background-radius: 8;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.badge-offline {
+    -fx-background-color: #d9534f; /* κόκκινο */
+}
+
+.badge-warning {
+    -fx-background-color: #f0ad4e; /* πορτοκαλί */
+}
+
+.badge-online {
+    -fx-background-color: #5cb85c; /* πράσινο */
+}
+
+.badge-info {
+    -fx-background-color: #5bc0de; /* μπλε */
+}
+.sidebar-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #cccccc;
+    -fx-padding: 12 18;
+    -fx-font-size: 14px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-background-radius: 6;
+}
+
+.sidebar-btn:hover {
+    -fx-background-color: #2a2f3a;
+    -fx-text-fill: white;
+}
+
+.sidebar-btn-active {
+    -fx-background-color: #3b82f6; /* Μπλε highlight */
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+}
+
+

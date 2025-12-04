@@ -114,7 +114,7 @@ public class AlertServiceClient extends ApiClient {
 
     public void createPingAlert(Long deviceId, String type, String message) {
         try {
-            System.out.println(type);
+            System.out.println(" ΙΝΣΙΔΕ ΨΡΕΑΤΕΠΙΝΓ ΑΛΕΡΤ + "+type);
             AlertModel model = new AlertModel();
             model.setDeviceId(deviceId);
             model.setStatus(type);

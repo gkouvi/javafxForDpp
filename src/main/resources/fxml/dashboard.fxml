@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
 
 <AnchorPane prefHeight="900.0" prefWidth="1200.0" stylesheets="@../dashboard/haf-theme.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DashboardController">
 
@@ -27,53 +26,82 @@
                 <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
             <!-- KPIs -->
-            <HBox spacing="20">
-                <VBox fx:id="kpi_sites" alignment="CENTER" styleClass="kpi-box">
-                    <Label styleClass="kpi-title" text="Μονάδες">
-                    <graphic>
-                        <FontIcon iconColor="white" iconLiteral="mdi2h-home-group" iconSize="18" />
-                    </graphic>
-                    </Label>
-                    <Label fx:id="sitesCount" alignment="CENTER" contentDisplay="CENTER" prefHeight="40.0" prefWidth="168.0" styleClass="kpi-value" />
-                </VBox>
+                  <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 10;">
 
-                      <VBox alignment="CENTER" styleClass="kpi-box">
-                    <Label styleClass="kpi-title" text="Κτίρια">
-                    <graphic>
-                    <FontIcon iconColor="white" iconLiteral="mdi2o-office-building" iconSize="18" />
-                </graphic>
-                </Label>
-                    <Label fx:id="buildingsCount" alignment="CENTER" prefHeight="40.0" prefWidth="165.0" styleClass="kpi-value" textAlignment="CENTER" />
-
+                      <!-- Μονάδες -->
+                      <VBox fx:id="card_units" spacing="5" styleClass="kpi-card">
+                          <HBox alignment="CENTER_LEFT" spacing="8">
+                              <Label styleClass="kpi-icon" text="🏢" />
+                              <Label styleClass="kpi-title" text="Μονάδες" />
+                          </HBox>
+                          <Label fx:id="sitesCount" styleClass="kpi-value" text="0" />
                       </VBox>
 
-                      <VBox alignment="CENTER" styleClass="kpi-box">
-                    <Label styleClass="kpi-title" text="Συσκευές">
-                        <graphic>
-                            <FontIcon iconColor="white" iconLiteral="mdi2d-devices" iconSize="18" />
-                        </graphic>
-                    </Label>
-                    <Label fx:id="devicesCount" styleClass="kpi-value" />
-                </VBox>
+                      <!-- Κτίρια -->
+                      <VBox fx:id="card_buildings" spacing="5" styleClass="kpi-card">
+                          <HBox alignment="CENTER_LEFT" spacing="8">
+                              <Label styleClass="kpi-icon" text="🏠" />
+                              <Label styleClass="kpi-title" text="Κτήρια" />
+                          </HBox>
+                          <Label fx:id="buildingsCount" styleClass="kpi-value" text="0" />
+                      </VBox>
 
-                      <VBox alignment="CENTER" styleClass="kpi-box">
-                    <Label styleClass="kpi-title" text="Ειδοποιήσεις">
-                        <graphic>
-                            <FontIcon iconColor="white" iconLiteral="mdi2a-alert" iconSize="18" />
-                        </graphic>
-                    </Label>
-                    <Label fx:id="alertsCount" styleClass="kpi-value" />
-                </VBox>
+                      <!-- Συσκευές -->
+                      <VBox fx:id="card_devices" spacing="5" styleClass="kpi-card">
+                          <HBox alignment="CENTER_LEFT" spacing="8">
+                              <Label styleClass="kpi-icon" text="📡" />
+                              <Label styleClass="kpi-title" text="Συσκευές" />
+                          </HBox>
+                          <Label fx:id="devicesCount" styleClass="kpi-value" text="0" />
+                      </VBox>
 
-                      <VBox alignment="CENTER" styleClass="kpi-box">
-                    <Label styleClass="kpi-title" text="Αρχεία Συντήρησης">
-                        <graphic>
-                            <FontIcon iconColor="white" iconLiteral="mdi2t-tools" iconSize="18" />
-                        </graphic>
-                    </Label>
-                    <Label fx:id="maintenanceCount" styleClass="kpi-value" />
-                </VBox>
-            </HBox>
+                      <!-- Alerts -->
+                      <VBox fx:id="card_alerts" spacing="5" styleClass="kpi-card">
+                          <HBox alignment="CENTER_LEFT" spacing="8">
+                              <Label styleClass="kpi-icon" text="⚠️" />
+                              <Label styleClass="kpi-title" text="Ειδοποιήσεις" />
+                          </HBox>
+                          <Label fx:id="alertsCount" styleClass="kpi-value" text="0" />
+                      </VBox>
+
+                      <!--&lt;!&ndash; Εγγραφα &ndash;&gt;
+                      <VBox fx:id="card_documents" spacing="5" styleClass="kpi-card">
+                          <HBox spacing="8" alignment="CENTER_LEFT">
+                              <Label text="📄" styleClass="kpi-icon"/>
+                              <Label text="Αρχεία" styleClass="kpi-title"/>
+                          </HBox>
+                          <Label fx:id="maintenanceCount" text="0" styleClass="kpi-value"/>
+                      </VBox>-->
+
+                      <!-- Online -->
+                      <VBox fx:id="onlineDevicesBox" spacing="5" styleClass="kpi-card">
+                          <HBox spacing="8">
+                              <Label styleClass="kpi-icon" text="🟢" />
+                              <Label styleClass="kpi-title" text="Online" />
+                          </HBox>
+                          <Label fx:id="onlineDevicesLabel" styleClass="kpi-value" text="0" />
+                      </VBox>
+
+                      <!-- Offline -->
+                      <VBox fx:id="offlineDevicesBox" spacing="5" styleClass="kpi-card">
+                          <HBox spacing="8">
+                              <Label styleClass="kpi-icon" text="🔴" />
+                              <Label styleClass="kpi-title" text="Offline" />
+                          </HBox>
+                          <Label fx:id="offlineDevicesLabel" styleClass="kpi-value" text="0" />
+                      </VBox>
+
+                      <!-- Uptime -->
+                      <VBox fx:id="uptimeBox" spacing="5" styleClass="kpi-card">
+                          <HBox spacing="8">
+                              <Label styleClass="kpi-icon" text="❤️" />
+                              <Label styleClass="kpi-title" text="Uptime" />
+                          </HBox>
+                          <Label fx:id="uptimeLabel" styleClass="kpi-value" text="0%" />
+                      </VBox>
+
+                  </HBox>
+
 
                   <!-- CHARTS -->
             <HBox spacing="20">
@@ -86,14 +114,27 @@
                             <NumberAxis label="Ειδοποιήσεις" tickUnit="1" />
                         </yAxis>
                     </BarChart>
-
-                          <Label alignment="CENTER" prefHeight="38.0" prefWidth="601.0" styleClass="section-title" text="Τελευταίες ειδοποιήσεις" />
-                    <TableView fx:id="alertsTable" prefHeight="200" VBox.vgrow="ALWAYS">
-                        <columns>
-                            <TableColumn fx:id="colAlertDevice" prefWidth="200" text="Συσκευή" />
-                            <TableColumn fx:id="colAlertMsg" prefWidth="400" text="Μήνυμα" />
-                        </columns>
-                    </TableView>
+            <AnchorPane VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox maxHeight="400.0" prefHeight="400.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+                     <children>
+            
+                                      <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="section-title" text="Τελευταίες ειδοποιήσεις" />
+                                <TableView fx:id="alertsTable" VBox.vgrow="ALWAYS">
+                                    <columns>
+                                        <TableColumn fx:id="colAlertDevice" minWidth="100.0" prefWidth="100.0" text="Συσκευή" />
+                                        <TableColumn fx:id="colAlertMsg" minWidth="100.0" prefWidth="200.0" text="Μήνυμα" />
+                                        <TableColumn fx:id="aDateCol" minWidth="100.0" prefWidth="100.0" text="Ημερομηνία" />
+                                        <TableColumn fx:id="aTypeCol" minWidth="100.0" prefWidth="100.0" text="Τύπος" />
+                                    </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                                </TableView>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
                 </VBox>
 
                       <VBox HBox.hgrow="ALWAYS">

@@ -2,9 +2,8 @@ package gr.uoi.dit.master2025.gkouvas.dppclient.controller;
 
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.*;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.*;
-import gr.uoi.dit.master2025.gkouvas.dppclient.service.PingMonitorService;
-import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -15,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -27,6 +27,20 @@ import static java.util.Comparator.naturalOrder;
 
 public class DashboardController {
 
+
+    /*public VBox totalDevicesBox;
+    public Label totalDevicesLab*/
+    public VBox onlineDevicesBox;
+    public Label onlineDevicesLabel;
+    public VBox offlineDevicesBox;
+    public Label offlineDevicesLabel;
+    public VBox uptimeBox;
+    public Label uptimeLabel;
+    public VBox card_units;
+    public VBox card_buildings;
+    public VBox card_devices;
+    public VBox card_alerts;
+   //public VBox card_documents;
 
     // ===== KPIs =====
     @FXML private Label sitesCount;
@@ -44,11 +58,13 @@ public class DashboardController {
     @FXML private TableView<AlertModel> alertsTable;
     @FXML private TableColumn<AlertModel, String> colAlertDevice;
     @FXML private TableColumn<AlertModel, String> colAlertMsg;
+    @FXML private TableColumn<AlertModel, String> aDateCol;
+    @FXML private TableColumn<AlertModel, String> aTypeCol;
 
     @FXML private TableView<MaintenanceModel> maintenanceTable;
-    @FXML private TableColumn<MaintenanceModel, String> colMaintBuilding;
+    /*@FXML private TableColumn<MaintenanceModel, String> colMaintBuilding;
     @FXML private TableColumn<MaintenanceModel, String> colMaintTech;
-    @FXML private TableColumn<MaintenanceModel, String> colMaintDesc;
+    @FXML private TableColumn<MaintenanceModel, String> colMaintDesc;*/
 
     @FXML private TableView<UpcomingMaintenanceItem> upcomingMaintenanceTable;
 
@@ -70,13 +86,34 @@ public class DashboardController {
 
     @FXML
     public void initialize() {
-        setupTables();
+        //setupMaintenanceTables();
+        //setupAlertTable();
         loadKPIs();
         loadAlertsChart();
         loadMaintenanceChart();
         loadLatestAlertsTable();
         loadLatestMaintenanceTable();
-        setupUpcomingTable();
+        //setupUpcomingTable();
+        //loadHealthKpis();
+        //alerts
+        aDateCol.setSortType(TableColumn.SortType.DESCENDING);
+        //alertsTable.getSortOrder().add(aDateCol);
+        colAlertMsg.setCellFactory(col -> new TableCell<>() {
+            @Override
+            protected void updateItem(String msg, boolean empty) {
+                super.updateItem(msg, empty);
+                if (empty || msg == null) {
+                    setText(null);
+                    setTooltip(null);
+                } else {
+                    setText(msg.length() > 35 ? msg.substring(0, 35) + "..." : msg);
+                    Tooltip t = new Tooltip(msg);
+                    setTooltip(t);
+                }
+            }
+        });
+
+
         upIntervalCol.setCellFactory(column -> new TableCell<>() {
             @Override
             protected void updateItem(MaintenanceInterval  intervalName, boolean empty) {
@@ -129,93 +166,131 @@ public class DashboardController {
             }
         });
 
+       /* upcomingMaintenanceTable.setRowFactory(table -> {
 
-        upcomingMaintenanceTable.setRowFactory(table -> new TableRow<>() {
-            @Override
-            protected void updateItem(UpcomingMaintenanceItem item, boolean empty) {
-                super.updateItem(item, empty);
+            TableRow<UpcomingMaintenanceItem> row = new TableRow<>() {
+                @Override
+                protected void updateItem(UpcomingMaintenanceItem item, boolean empty) {
+                    super.updateItem(item, empty);
 
-                if (empty || item == null) {
-                    setStyle("");
-                    return;
+                    if (empty || item == null) {
+                        setStyle("");
+                        return;
+                    }
+
+                    LocalDate next = item.getNextMaintenanceDate();
+                    LocalDate today = LocalDate.now();
+
+                    long days = ChronoUnit.DAYS.between(today, next);
+
+                    if (days <= 3) {
+                        setStyle("-fx-background-color: #8B0000; -fx-text-fill: white;");
+                    } else if (days <= 7) {
+                        setStyle("-fx-background-color: #FF8C00; -fx-text-fill: black;");
+                    } else if (days <= 14) {
+                        setStyle("-fx-background-color: #FFD700; -fx-text-fill: black;");
+                    } else {
+                        setStyle("-fx-background-color: #006400; -fx-text-fill: white;");
+                    }
                 }
-
-                LocalDate next = item.getNextMaintenanceDate();
-                LocalDate today = LocalDate.now();
-
-                long days = ChronoUnit.DAYS.between(today, next);
-
-                if (days <= 3) {
-                    setStyle("-fx-background-color: #8B0000; -fx-text-fill: white;");
-                } else if (days <= 7) {
-                    setStyle("-fx-background-color: #FF8C00; -fx-text-fill: black;");
-                } else if (days <= 14) {
-                    setStyle("-fx-background-color: #FFD700; -fx-text-fill: black;");
-                } else {
-                    setStyle("-fx-background-color: #006400; -fx-text-fill: white;");
-                }
-            }
-        });
-
-        upcomingMaintenanceTable.setRowFactory(table -> {
-            TableRow<UpcomingMaintenanceItem> row = new TableRow<>();
+            };
 
             row.setOnMouseClicked(event -> {
-                if (! row.isEmpty()) {
+                if (!row.isEmpty()) {
 
                     UpcomingMaintenanceItem item = row.getItem();
 
                     // ΑΡΙΣΤΕΡΟ ΚΛΙΚ
                     if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 1) {
-
-                        Long deviceId = item.getDeviceId();
-                        openDeviceCard(deviceId);
+                        openDeviceCard(item.getDeviceId());
                     }
 
                     // ΔΕΞΙ ΚΛΙΚ
                     if (event.getButton() == MouseButton.SECONDARY) {
-                        showMaintenanceContextMenu(row, item, event.getScreenX(), event.getScreenY());
+                        //showMaintenanceContextMenu(row, item, event.getScreenX(), event.getScreenY());
                     }
                 }
             });
 
             return row;
-        });
+        });*/
 
 
-        List<DeviceModel> allDevices = deviceClient.getAllDevices();
-        Thread pingThread = new Thread(new PingMonitorService(allDevices));
-        pingThread.start();
 
-    }
+        }
 
     // ===================================================================
     // TABLE ΡΥΘΜΙΣΗ
     // ===================================================================
-    private void setupTables() {
+    /*private void setupAlertTable() {
+        colAlertDevice.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDeviceName()));
+        colAlertMsg.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getMessage()));
+        aDateCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDueDate().toString()));
 
-        colAlertDevice.setCellValueFactory(new PropertyValueFactory<>("deviceName"));
-        colAlertMsg.setCellValueFactory(new PropertyValueFactory<>("message"));
+        // === Custom renderer for severity / type ===
+        aTypeCol.setCellFactory(column -> new TableCell<AlertModel, String>() {
+            @Override
+            protected void updateItem(String type, boolean empty) {
+                super.updateItem(type, empty);
+                if (empty || type == null) {
+                    setText(null);
+                    setGraphic(null);
+                    return;
+                }
+
+                Label badge = new Label(type);
+                badge.getStyleClass().add("alert-badge");
+
+                switch (type.toUpperCase()) {
+                    case "OFFLINE":
+                        badge.getStyleClass().add("badge-offline"); break;
+                    case "ONLINE":
+                        badge.getStyleClass().add("badge-online"); break;
+                    case "PING_TIMEOUT":
+                        badge.getStyleClass().add("badge-warning"); break;
+                    default:
+                        badge.getStyleClass().add("badge-info"); break;
+                }
+
+                setGraphic(badge);
+            }
+        });
+
+        // Double-click opens device card
+        alertsTable.setRowFactory(tv -> {
+            TableRow<AlertModel> row = new TableRow<>();
+            row.setOnMouseClicked(e -> {
+                if (e.getClickCount() == 2 && !row.isEmpty()) {
+                    AlertModel alert = row.getItem();
+                    openDeviceCard(alert.getDeviceId());
+                }
+            });
+            return row;
+        });
+    }*/
+
+//διαγραφή
+    /*private void setupMaintenanceTables() {
 
         colMaintBuilding.setCellValueFactory(new PropertyValueFactory<>("buildingName"));
         colMaintTech.setCellValueFactory(new PropertyValueFactory<>("technician"));
         colMaintDesc.setCellValueFactory(new PropertyValueFactory<>("description"));
-           }
+           }*/
 
-    private void setupUpcomingTable() {
+    /*private void setupUpcomingTable() {
         upNameCol.setCellValueFactory(new PropertyValueFactory<>("deviceName"));
         upIntervalCol.setCellValueFactory(c ->
                 new SimpleObjectProperty<>(c.getValue().getInterval()));
 
         upNextDateCol.setCellValueFactory(new PropertyValueFactory<>("nextMaintenanceDate"));
 
-        refreshMaintenanceTable();
-    }
-    public void refreshMaintenanceTable() {
+        //refreshMaintenanceTable();
+    }*/
+    /*public void refreshMaintenanceTable() {
         List<UpcomingMaintenanceItem> list = deviceClient.getUpcomingMaintenanceDetails();
         upcomingMaintenanceTable.getItems().setAll(list);
-    }
-    private void showMaintenanceContextMenu(TableRow<UpcomingMaintenanceItem> row,
+    }*/
+   /* private void showMaintenanceContextMenu(TableRow<UpcomingMaintenanceItem> row,
                                             UpcomingMaintenanceItem item,
                                             double x, double y) {
 
@@ -230,17 +305,17 @@ public class DashboardController {
         menu.getItems().addAll(createNow, openDevice);
 
         menu.show(row, x, y);
-    }
+    }*/
 
-    private void openCreateMaintenanceDialog(UpcomingMaintenanceItem item) {
+    /*private void openCreateMaintenanceDialog(UpcomingMaintenanceItem item) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MaintenanceCreateDialog.fxml"));
             Parent root = loader.load();
 
             MaintenanceCreateDialogController controller = loader.getController();
             controller.setDeviceId(item.getDeviceId());
-            controller.prefillInterval(item.getInterval());    // optional
-            controller.prefillDate(LocalDate.now());
+            //controller.prefillInterval(item.getInterval());    // optional
+            //controller.prefillDate(LocalDate.now());
 
             Stage stage = new Stage();
             stage.setTitle("Νέα Συντήρηση");
@@ -254,7 +329,7 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
-
+*/
     public void openDeviceCard(Long deviceId) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/deviceCard.fxml"));
@@ -313,7 +388,7 @@ public class DashboardController {
             overdueKpiLabel.setText(String.valueOf(kpi.getOverdue()));
             monthKpiLabel.setText(String.valueOf(kpi.getThisMonth()));
 
-            maintenanceCount.setText(String.valueOf(maintenanceClient.getAll().size()));
+            //maintenanceCount.setText(String.valueOf(maintenanceClient.getAll().size()));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -453,15 +528,53 @@ public class DashboardController {
         }
 
 
-
-
         maintenanceTable.getItems().setAll(
                 logs.stream()
-                        .sorted(Comparator.comparing(MaintenanceModel::getMaintenanceDate).reversed())
+                        .sorted(
+                                Comparator.comparing(
+                                        MaintenanceModel::getMaintenanceDate,
+                                        Comparator.nullsLast(Comparator.naturalOrder())
+                                ).reversed()
+                        )
                         .limit(10)
                         .toList()
         );
+
     }
+/*//to delete
+        private void loadHealthKpis() {
+        try {
+            OverallHealthModel health = deviceClient.getFleetHealth();
+
+            //totalDevicesLabel.setText(String.valueOf(health.totalDevices));
+            onlineDevicesLabel.setText(String.valueOf(health.onlineCount));
+            offlineDevicesLabel.setText(String.valueOf(health.offlineCount));
+            uptimeLabel.setText(String.format("%.1f%%", health.fleetUptimePercent));
+
+            // Dynamic coloring
+            uptimeBox.getStyleClass().removeAll(
+                    "kpi-uptime-green",
+                    "kpi-uptime-yellow",
+                    "kpi-uptime-orange",
+                    "kpi-uptime-red"
+            );
+
+            if (health.fleetUptimePercent >= 97)
+                uptimeBox.getStyleClass().add("kpi-uptime-green");
+            else if (health.fleetUptimePercent >= 90)
+                uptimeBox.getStyleClass().add("kpi-uptime-yellow");
+            else
+                uptimeBox.getStyleClass().add("kpi-uptime-orange");
+
+            if (health.offlineCount > 0)
+                offlineDevicesBox.getStyleClass().add("kpi-uptime-red");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }*/
+
+
 
 
 

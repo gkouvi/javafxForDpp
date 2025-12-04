@@ -90,10 +90,24 @@
                             <TableColumn fx:id="mDateCol" text="Ημερομηνία" />
                             <TableColumn fx:id="mIntervalCol" text="Διάστημα" />
                             <TableColumn fx:id="mNotesCol" text="Σημειώσεις" />
+                            <TableColumn fx:id="mStatusCol" text="Κατάσταση" />
+
                         </columns>
                     </TableView>
 
-                    <Button fx:id="addMaintenanceBtn" onAction="#onCreateMaintenance" styleClass="action-btn" text="Προσθήκη συντήρησης" />
+                    <!--<Button fx:id="addMaintenanceBtn" onAction="#onCreateMaintenance" styleClass="action-btn" text="Προσθήκη συντήρησης" />-->
+                    <HBox spacing="10">
+                        <Button fx:id="addMaintenanceBtn"
+                                text="Προσθήκη συντήρησης"
+                                styleClass="action-btn"
+                                onAction="#onCreateMaintenance"/>
+
+                        <Button fx:id="completeMaintenanceBtn"
+                                text="Ολοκλήρωση επιλεγμένης"
+                                styleClass="action-btn"
+                                onAction="#onCompleteMaintenance"/>
+                    </HBox>
+
                 </VBox>
             </Tab>
 

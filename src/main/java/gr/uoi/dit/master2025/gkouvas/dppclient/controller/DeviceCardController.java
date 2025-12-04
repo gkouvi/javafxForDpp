@@ -67,6 +67,9 @@ public class DeviceCardController {
 
     @FXML private ImageView qrImage;
 
+    @FXML private TableColumn<MaintenanceModel, String> mStatusCol;
+    @FXML private Button completeMaintenanceBtn;
+
     private Long deviceId;
     private final EnvironmentalInfoServiceClient envClient = new EnvironmentalInfoServiceClient();
 
@@ -247,6 +250,17 @@ public class DeviceCardController {
             return new SimpleStringProperty(notes != null ? notes : "");
         });
 
+        mStatusCol.setCellValueFactory(c -> {
+            MaintenanceStatus st = c.getValue().getStatus();
+            if (st == null) return new SimpleStringProperty("—");
+            return new SimpleStringProperty(
+                    switch (st) {
+                        case COMPLETED -> "Ολοκληρωμένη";
+                        case PLANNED -> "Προγραμματισμένη";
+                        case OVERDUE -> "Εκπρόθεσμη";
+                    }
+            );
+        });
         maintenanceTable.getItems().setAll(
                 maintenanceClient.getMaintenanceByDevice((long) deviceId)
         );
@@ -642,5 +656,33 @@ public class DeviceCardController {
             showError("Σφάλμα", "Αποτυχία ανοίγματος παραθύρου.");
         }
     }
+
+    @FXML
+    private void onCompleteMaintenance() {
+        MaintenanceModel selected =
+                maintenanceTable.getSelectionModel().getSelectedItem();
+
+        if (selected == null) {
+            showError("Επιλογή", "Παρακαλώ επιλέξτε μια εγγραφή συντήρησης.");
+            return;
+        }
+
+        if (selected.getStatus() == MaintenanceStatus.COMPLETED) {
+            showError("Ήδη ολοκληρωμένη", "Η συγκεκριμένη συντήρηση έχει ήδη ολοκληρωθεί.");
+            return;
+        }
+
+        MaintenanceModel updated = maintenanceClient.completeMaintenance(selected.getLogId());
+        if (updated == null) {
+            showError("Σφάλμα", "Αποτυχία ολοκλήρωσης συντήρησης.");
+            return;
+        }
+
+        loadMaintenance();
+        // ανανέωση επόμενης συντήρησης
+        loadDevice(deviceId);
+        showInfo("Επιτυχία", "Η συντήρηση ολοκληρώθηκε.");
+    }
+
 }
 

@@ -153,7 +153,45 @@
 .action-btn:hover {
     -fx-background-color: #1f5ed1;
 }
+.kpi-card {
+    -fx-background-color: #0e2a47;
+    -fx-background-radius: 12px;
+    -fx-padding: 18px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 12, 0.3, 0, 4);
+    -fx-cursor: hand;
+}
 
+.kpi-card:hover {
+    -fx-background-color: #123559;
+}
 
+.kpi-title {
+    -fx-font-size: 13pt;
+    -fx-text-fill: #d0e2ff;
+    -fx-font-weight: bold;
+}
 
+.kpi-value {
+    -fx-font-size: 26pt;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
 
+.kpi-icon {
+    -fx-font-size: 24pt;
+    -fx-text-fill: #74b3ff;
+}
+
+/* Dynamic uptime colors */
+.kpi-uptime-green {
+    -fx-background-color: #0d5f1f;
+}
+.kpi-uptime-yellow {
+    -fx-background-color: #b38b00;
+}
+.kpi-uptime-orange {
+    -fx-background-color: #b65e00;
+}
+.kpi-uptime-red {
+    -fx-background-color: #8b0000;
+}

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DashboardContentController">
+
+    <children>
+
+        <VBox spacing="25" styleClass="dashboard-root" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+
+            <!-- ========================== KPI ROW ============================ -->
+            <HBox alignment="CENTER" spacing="20" styleClass="kpi-row">
+
+                <VBox fx:id="onlineDevicesBox" alignment="CENTER" styleClass="kpi-card">
+                    <Label styleClass="kpi-title" text="🟢 Online" />
+                    <Label fx:id="onlineLabel" styleClass="kpi-value" text="0" />
+                </VBox>
+
+                <VBox fx:id="offlineDevicesBox" alignment="CENTER" styleClass="kpi-card">
+                    <Label styleClass="kpi-title" text="🔴 Offline" />
+                    <Label fx:id="offlineDevicesLabel" styleClass="kpi-value" text="0" />
+                </VBox>
+
+                <VBox fx:id="uptimeBox" alignment="CENTER" styleClass="kpi-card">
+                    <Label styleClass="kpi-title" text="⏱️ Uptime" />
+                    <Label fx:id="uptimeLabel" styleClass="kpi-value" text="0%" />
+                </VBox>
+
+                <VBox fx:id="dueMaintBox" alignment="CENTER" styleClass="kpi-card">
+                    <Label styleClass="kpi-title" text="📅 Συντηρήσεις" />
+                    <Label fx:id="dueMaintLabel" styleClass="kpi-value" text="0" />
+                </VBox>
+            <VBox alignment="CENTER" layoutX="464.0" layoutY="10.0" styleClass="kpi-card">
+               <children>
+                  <Label styleClass="kpi-title" text="⏱️ Εκπρόθεσμες" />
+                  <Label fx:id="overdueLabel" styleClass="kpi-value" text="0%" />
+               </children>
+            </VBox>
+
+                <VBox fx:id="riskBox" alignment="CENTER" styleClass="kpi-card">
+                    <Label styleClass="kpi-title" text="⚠️ Risk Level" />
+                    <Label fx:id="riskLabel" styleClass="kpi-value" text="0%" />
+                </VBox>
+
+            </HBox>
+
+
+
+            <!-- ====================== GRID AREA 2 × 2 ======================= -->
+            <GridPane hgap="25" vgap="25">
+                <columnConstraints>
+                    <ColumnConstraints maxWidth="800.0" percentWidth="50" />
+                    <ColumnConstraints maxWidth="800.0" percentWidth="50" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints percentHeight="50" />
+                    <RowConstraints percentHeight="50" />
+                </rowConstraints>
+
+                <!-- === Cell 0,0: Alerts Bar Chart === -->
+                <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="chart-title" text="Ειδοποιήσεις ανά συσκευή" />
+                    <BarChart fx:id="alertsChart" legendVisible="false">
+                        <xAxis>
+                            <CategoryAxis fx:id="alertsXAxis" label="Συσκευή" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="alertsYAxis" label="Σύνολο" />
+                        </yAxis>
+                    </BarChart>
+                </VBox>
+
+                <!-- === Cell 0,1: Maintenance Forecast LineChart === -->
+                <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="chart-title" text="Πρόβλεψη Συντηρήσεων (6 μήνες)" />
+                    <LineChart fx:id="maintenanceChart" legendVisible="false">
+                        <xAxis>
+                            <CategoryAxis fx:id="maintXAxis" label="Μήνας" />
+                        </xAxis>
+                        <yAxis>
+                            <NumberAxis fx:id="maintYAxis" label="Πλήθος" />
+                        </yAxis>
+                    </LineChart>
+                </VBox>
+
+                <!-- === Cell 1,0: Failures Heatmap === -->
+                <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                    <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="chart-title" text="Heatmap Βλαβών (Ώρα × Ημέρα)" />
+                    <VBox spacing="10">
+                        <StackPane fx:id="heatmapPane" maxWidth="800.0">
+                            <Canvas fx:id="heatmapCanvas" height="220" width="800.0" />
+                            <Pane fx:id="heatmapOverlay" maxWidth="800.0" pickOnBounds="false" />
+                        </StackPane>
+
+                    </VBox>
+
+                </VBox>
+
+                <!-- === Cell 1,1: Risk Gauge === -->
+                <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                    <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="chart-title" text="Risk Gauge" />
+                    <StackPane fx:id="riskGaugePane" prefHeight="300" />
+                </VBox>
+
+            </GridPane>
+
+        </VBox>
+
+    </children>
+
+</AnchorPane>

@@ -2,9 +2,7 @@ package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.DeviceModel;
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceKpiModel;
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.UpcomingMaintenanceItem;
+import gr.uoi.dit.master2025.gkouvas.dppclient.model.*;
 import gr.uoi.dit.master2025.gkouvas.dppclient.util.MultipartUtil;
 
 import javax.imageio.ImageIO;
@@ -233,6 +231,40 @@ public class DeviceServiceClient extends ApiClient {
             return new MaintenanceKpiModel();
         }
     }
+
+    public OverallHealthModel getFleetHealth() {
+        try {
+            HttpRequest req = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/devices/health"))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+            return mapper.readValue(res.body(), OverallHealthModel.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new OverallHealthModel();
+        }
+    }
+
+    public List<FailureHeatCell> getFailureHeatmap() {
+        try {
+            HttpRequest req = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/monitoring/heatmap"))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+
+            return Arrays.asList(mapper.readValue(res.body(), FailureHeatCell[].class));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+
 
 
 

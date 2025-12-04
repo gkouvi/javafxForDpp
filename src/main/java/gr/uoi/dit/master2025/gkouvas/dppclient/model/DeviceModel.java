@@ -5,6 +5,7 @@ package gr.uoi.dit.master2025.gkouvas.dppclient.model;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.BuildingServiceClient;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,33 @@ public class DeviceModel {
     private String qrBase64;
     private String ipAddress;
     private boolean offline = false;
+    private boolean online;
+    private Double uptimePercent;
+    public LocalDateTime lastCheck;
+
+    public LocalDateTime getLastCheck() {
+        return lastCheck;
+    }
+
+    public void setLastCheck(LocalDateTime lastCheck) {
+        this.lastCheck = lastCheck;
+    }
+
+    public Double getUptimePercent() {
+        return uptimePercent;
+    }
+
+    public void setUptimePercent(Double uptimePercent) {
+        this.uptimePercent = uptimePercent;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
 
     private LocalDate lastMaintenanceDate;
     private LocalDate nextMaintenanceDate;

@@ -1,0 +1,55 @@
+.dashboard-root {
+    -fx-padding: 20;
+    -fx-background-color: #0f172a;
+}
+
+.kpi-row {
+    -fx-padding: 10 0 10 0;
+}
+
+.kpi-card {
+    -fx-background-color: #1e293b;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 15;
+    -fx-min-width: 150;
+    -fx-min-height: 90;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 8, 0, 0, 2);
+}
+
+.kpi-title {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 14;
+}
+
+.kpi-value {
+    -fx-text-fill: white;
+    -fx-font-size: 26;
+    -fx-font-weight: bold;
+}
+
+.chart-title {
+    -fx-text-fill: #cbd5e1;
+    -fx-font-size: 18;
+    -fx-padding: 0 0 5 0;
+}
+
+.heatmap-panel {
+    -fx-background-color: #1e293b;
+    -fx-background-radius: 12;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-horizontal-grid-lines,
+.chart-vertical-grid-lines {
+    -fx-stroke: rgba(255,255,255,0.1);
+}
+
+.chart-alternative-row-fill,
+.chart-alternative-column-fill {
+    -fx-fill: transparent;
+}
+

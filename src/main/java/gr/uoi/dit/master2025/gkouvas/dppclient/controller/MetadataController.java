@@ -165,7 +165,7 @@ import java.io.File;
  */
 public class MetadataController {
 
-    private static final String BASE_URL = "http://localhost:8080";
+    private static final String BASE_URL = "https://192.168.0.105:8443";
 
     @FXML private VBox infoBox;
     @FXML private ImageView qrImage;

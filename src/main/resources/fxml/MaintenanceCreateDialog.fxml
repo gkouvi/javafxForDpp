@@ -1,79 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/17"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.MaintenanceCreateDialogController"
-            prefWidth="480" prefHeight="420"
-            style="-fx-background-color: #0D1B2A;">
+<AnchorPane prefHeight="420" prefWidth="480" style="-fx-background-color: #0D1B2A;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.MaintenanceCreateDialogController">
 
-    <VBox spacing="15" AnchorPane.topAnchor="15" AnchorPane.leftAnchor="20"
-          AnchorPane.rightAnchor="20" AnchorPane.bottomAnchor="20">
+    <VBox spacing="15" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="15">
 
         <!-- TITLE -->
-        <Label text="Δημιουργία Συντήρησης"
-               style="-fx-text-fill: #00C1FF; -fx-font-size: 20; -fx-font-weight: bold;" />
+        <Label style="-fx-text-fill: #00C1FF; -fx-font-size: 20; -fx-font-weight: bold;" text="Δημιουργία Συντήρησης" />
 
         <!-- DEVICE -->
-        <Label fx:id="deviceLabel"
-               text="Συσκευή #?"
-               style="-fx-text-fill: white; -fx-font-size: 14;" />
+        <Label fx:id="deviceLabel" style="-fx-text-fill: white; -fx-font-size: 14;" text="Συσκευή #?" />
 
         <!-- FORM GRID -->
-        <GridPane hgap="10" vgap="12">
+        <GridPane hgap="10" style="-fx-background-color: wjite;" vgap="12">
             <columnConstraints>
                 <ColumnConstraints halignment="RIGHT" minWidth="140" />
                 <ColumnConstraints hgrow="ALWAYS" />
             </columnConstraints>
 
             <!-- Interval -->
-            <Label text="Τύπος Συντήρησης:"
-                   GridPane.rowIndex="0" GridPane.columnIndex="0"
-                   style="-fx-text-fill: white;" />
-            <ComboBox fx:id="intervalCombo"
-                      GridPane.rowIndex="0" GridPane.columnIndex="1"
-                      style="-fx-background-color: #1B263B; -fx-text-fill: white;" />
+            <Label style="-fx-text-fill: white;" text="Τύπος Συντήρησης:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <ComboBox fx:id="intervalCombo" prefHeight="26.0" prefWidth="284.0" style="-fx-background-color: white; -fx-text-fill: black;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
             <!-- Date -->
-            <Label text="Ημερομηνία:"
-                   GridPane.rowIndex="1" GridPane.columnIndex="0"
-                   style="-fx-text-fill: white;" />
-            <DatePicker fx:id="datePicker"
-                        GridPane.rowIndex="1" GridPane.columnIndex="1"
-                        style="-fx-background-color: #1B263B; -fx-text-fill: white;" />
+            <Label style="-fx-text-fill: white;" text="Ημερομηνία:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <DatePicker fx:id="datePicker" prefHeight="26.0" prefWidth="286.0" style="-fx-background-color: #1B263B; -fx-text-fill: black;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
             <!-- Technician -->
-            <Label text="Τεχνικός:"
-                   GridPane.rowIndex="2" GridPane.columnIndex="0"
-                   style="-fx-text-fill: white;" />
-            <TextField fx:id="technicianField" promptText="Όνομα τεχνικού"
-                       GridPane.rowIndex="2" GridPane.columnIndex="1"
-                       style="-fx-background-color: #1B263B; -fx-text-fill: white;" />
+            <Label style="-fx-text-fill: white;" text="Τεχνικός:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="techField" promptText="Όνομα τεχνικού" style="-fx-background-color: #1B263B; -fx-text-fill: white;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
             <!-- Description -->
-            <Label text="Περιγραφή:"
-                   GridPane.rowIndex="3" GridPane.columnIndex="0"
-                   style="-fx-text-fill: white;" />
-            <TextArea fx:id="descriptionField" promptText="Λεπτομέρειες εργασίας"
-                      GridPane.rowIndex="3" GridPane.columnIndex="1"
-                      prefRowCount="4"
-                      style="-fx-background-color: #1B263B; -fx-text-fill: white;" />
+            <Label style="-fx-text-fill: white;" text="Περιγραφή:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextArea fx:id="descArea" prefRowCount="4" promptText="Λεπτομέρειες εργασίας" style="-fx-background-color: #1B263B; -fx-text-fill: black;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
 
         </GridPane>
 
         <!-- BUTTONS -->
-        <HBox spacing="15" alignment="CENTER_RIGHT">
-            <Button text="Άκυρο"
-                    onAction="#onCancel"
-                    style="-fx-background-color: #3E4A5A; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20;" />
+        <HBox alignment="CENTER_RIGHT" spacing="15">
+         <CheckBox fx:id="completedNowCheck" mnemonicParsing="false" prefHeight="18.0" prefWidth="152.0" text="Ολοκληρώθηκε τώρα" textFill="WHITE" />
+            <Button onAction="#onCancel" style="-fx-background-color: #3E4A5A; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 20;" text="Άκυρο" />
 
-            <Button text="Δημιουργία"
-                    onAction="#onCreate"
-                    style="-fx-background-color: #00C1FF; -fx-text-fill: #0D1B2A; -fx-font-weight: bold; -fx-padding: 8 20;" />
+            <Button onAction="#onSave" style="-fx-background-color: #00C1FF; -fx-text-fill: #0D1B2A; -fx-font-weight: bold; -fx-padding: 8 20;" text="Δημιουργία" />
         </HBox>
 
     </VBox>
