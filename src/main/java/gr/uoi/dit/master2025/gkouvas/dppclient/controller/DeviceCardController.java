@@ -540,7 +540,7 @@ public class DeviceCardController {
         log.setDeviceId((long) deviceId);
         log.setMaintenanceDate(today);
         log.setInterval(closest);
-        log.setDescription("Συντήρηση αυτοκινήτου που δημιουργήθηκε από την κάρτα συσκευής");
+        log.setDescription("Αυτόματη συντήρηση που δημιουργήθηκε από την κάρτα συσκευής");
 
         MaintenanceModel ok = maintenanceClient.createMaintenance(log);
 
@@ -553,7 +553,7 @@ public class DeviceCardController {
         // REFRESH UI
         // ===========================================================
         loadMaintenance();
-        showInfo("Δημιουργία συντήρησης", "Η συντήρηση του αυτοκινήτου δημιουργήθηκε με επιτυχία.");
+        showInfo("Δημιουργία συντήρησης", "Η αυτόματη συντήρηση δημιουργήθηκε με επιτυχία.");
     }
 
     // ===========================================================

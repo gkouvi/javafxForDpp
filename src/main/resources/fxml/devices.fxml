@@ -9,7 +9,9 @@
     <Label alignment="CENTER" layoutX="7.0" layoutY="20" prefHeight="18.0" prefWidth="391.0" text="Συσκευές" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="20.0" />
     <TableView fx:id="devicesTable" layoutY="60" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="60.0">
         <columns>
+
             <TableColumn fx:id="nameColumn" text="Όνομα" />
+            <TableColumn fx:id="onlineCol" text="Κατάσταση" prefWidth="120"/>
             <TableColumn fx:id="typeColumn" text="Τύπος" />
             <TableColumn fx:id="serialColumn" text="Σειριακός Αριθμός" />
             <TableColumn fx:id="buildingIdColumn" text="Κτίριο" />

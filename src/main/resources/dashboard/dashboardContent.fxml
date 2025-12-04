@@ -43,7 +43,7 @@
                     <Label styleClass="kpi-title" text="📅 Συντηρήσεις" />
                     <Label fx:id="dueMaintLabel" styleClass="kpi-value" text="0" />
                 </VBox>
-            <VBox alignment="CENTER" layoutX="464.0" layoutY="10.0" styleClass="kpi-card">
+            <VBox fx:id="overdueBox" alignment="CENTER" layoutX="464.0" layoutY="10.0" styleClass="kpi-card">
                <children>
                   <Label styleClass="kpi-title" text="⏱️ Εκπρόθεσμες" />
                   <Label fx:id="overdueLabel" styleClass="kpi-value" text="0%" />

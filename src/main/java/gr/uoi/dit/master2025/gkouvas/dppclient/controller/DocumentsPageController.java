@@ -12,8 +12,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.List;
 
 public class DocumentsPageController {
@@ -98,14 +102,13 @@ public class DocumentsPageController {
             ContextMenu menu = new ContextMenu();
 
             MenuItem edit = new MenuItem("Επεξεργασία συσκευής");
-            MenuItem upload = new MenuItem("Ανεβάστε έγγραφο");
-            MenuItem download = new MenuItem("Λήψη εγγράφουs");
+            MenuItem upload = new MenuItem("Άνοιγμα καρτέλας");
 
             edit.setOnAction(e -> onEditDevice(row.getItem()));
-            upload.setOnAction(e -> onUpload(row.getItem()));
-            download.setOnAction(e -> onDownload(row.getItem()));
+            upload.setOnAction(e -> openDeviceCard(row.getItem().getDeviceID()));
 
-            menu.getItems().addAll(edit, upload, download);
+
+            menu.getItems().addAll(edit, upload);
 
             row.contextMenuProperty().bind(
                     javafx.beans.binding.Bindings.when(row.emptyProperty())
@@ -118,6 +121,29 @@ public class DocumentsPageController {
 
 
 
+    }
+    public void openDeviceCard(Long deviceId) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/deviceCard.fxml"));
+            Parent root = loader.load();
+
+
+            DeviceCardController controller = loader.getController();
+            controller.loadDevice(deviceId);
+
+            Stage stage = new Stage();
+            stage.setTitle("Συσκευή " + deviceClient.getDevice(deviceId).getName());
+            stage.initModality(Modality.APPLICATION_MODAL);
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(
+                    getClass().getResource("/css/app.css").toExternalForm()
+            );
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -152,17 +178,9 @@ public class DocumentsPageController {
         }
     }
 
-    private void onUpload(DeviceDocumentRow row) {
-        if (row == null) return;
 
 
-    }
 
-    private void onDownload(DeviceDocumentRow row) {
-        if (row == null) return;
-
-
-    }
 
 }
 

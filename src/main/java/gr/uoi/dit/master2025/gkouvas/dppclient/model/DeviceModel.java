@@ -47,7 +47,7 @@ public class DeviceModel {
     }
 
     public boolean isOnline() {
-        return online;
+        return !offline;
     }
 
     public void setOnline(boolean online) {

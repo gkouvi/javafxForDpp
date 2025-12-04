@@ -2,6 +2,8 @@ package gr.uoi.dit.master2025.gkouvas.dppclient.controller;
 
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.*;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.*;
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -17,6 +19,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.util.Duration;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -38,6 +41,7 @@ public class DashboardContentController {
     public NumberAxis maintYAxis;
     public StackPane heatmapPane;
     public Pane heatmapOverlay;
+    public VBox overdueBox;
     @FXML private Canvas heatmapCanvas;
        // ===== CHARTS =====
     @FXML private BarChart<String, Number> alertsChart;
@@ -75,15 +79,10 @@ public class DashboardContentController {
         loadAlertsChart();
         loadHeatmap();
         styleChart(alertsChart);
-        styleChart(maintenanceChart);
+        //styleChart(maintenanceChart);
         double riskPercent = computeRisk(health, overdueMaint);
         updateKpis();
-
-
-
-
-
-        System.out.println("DashboardContentController initialized.");
+        setupKpiTooltips();
 
         // Αποφυγή NullPointer
         if (maintenanceChart != null) {
@@ -93,44 +92,9 @@ public class DashboardContentController {
         if (riskGaugePane != null) {
             renderRiskGauge(riskPercent);// demo value
         }
+
     }
 
-  /*  private void loadKPIs() {
-        try {
-            *//*List<SiteModel> sites = siteClient.getAllSites();
-            sitesCount.setText(String.valueOf(sites.size()));
-
-            long buildingTotal = sites.stream()
-                    .mapToLong(s -> buildingClient.getBuildingsBySite(s.getId()).size())
-                    .sum();
-            buildingsCount.setText(String.valueOf(buildingTotal));
-
-            long deviceTotal = sites.stream()
-                    .flatMap(s -> buildingClient.getBuildingsBySite(s.getId()).stream())
-                    .mapToLong(b -> deviceClient.getDevicesByBuilding(b.getId()).size())
-                    .sum();
-            devicesCount.setText(String.valueOf(deviceTotal));
-
-            long alertTotal = sites.stream()
-                    .flatMap(s -> buildingClient.getBuildingsBySite(s.getId()).stream())
-                    .flatMap(b -> deviceClient.getDevicesByBuilding(b.getId()).stream())
-                    .mapToLong(d -> alertClient.getAlertsForDevice(d.getDeviceId()).size())
-                    .sum();
-            alertsCount.setText(String.valueOf(alertTotal))*//*;
-            //MaintenanceKpiModel kpi = deviceClient.getMaintenanceKpis();
-
-
-            //dueMaintLabel.setText(String.valueOf(deviceClient.getAllDevices().size()));
-           *//* criticalKpiLabel.setText(String.valueOf(kpi.getCritical()));
-            overdueKpiLabel.setText(String.valueOf(kpi.getOverdue()));
-            monthKpiLabel.setText(String.valueOf(kpi.getThisMonth()));*//*
-
-            //maintenanceCount.setText(String.valueOf(maintenanceClient.getAll().size()));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }*/
 
     private Long loadMaintenanceKpi() {
         List<MaintenanceModel> all = maintenanceClient.getAll();
@@ -241,7 +205,69 @@ public class DashboardContentController {
     // -----------------------------------------
     // MAINTENANCE FORECAST
     // -----------------------------------------
+
     private void loadMaintenanceForecast() {
+        try {
+            Map<String, Long> monthCounts = maintenanceClient.getUpcomingByMonth();
+
+            // --- Create series ---
+            XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+            monthCounts.forEach((month, count) -> {
+                XYChart.Data<String, Number> point = new XYChart.Data<>(month, count);
+                series.getData().add(point);
+
+                // --- Tooltip for each point ---
+                Tooltip.install(point.getNode(), new Tooltip(month + ": " + count + " εργασίες"));
+            });
+
+            maintenanceChart.getData().setAll(series);
+
+            // --- Modern Styling ---
+            styleMaintenanceChart(series);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    private void styleMaintenanceChart(XYChart.Series<String, Number> series) {
+        // Remove symbols
+        maintenanceChart.setCreateSymbols(false);
+
+        // Colors (dashboard blue gradient)
+        maintenanceChart.lookup(".chart-series-line").setStyle(
+                "-fx-stroke: linear-gradient(to right, #4da3ff, #004e92);" +
+                        "-fx-stroke-width: 3px;"
+        );
+
+        // Gridlines minimal
+        maintenanceChart.setHorizontalGridLinesVisible(false);
+        maintenanceChart.setVerticalGridLinesVisible(false);
+
+        // Better tick label style
+        maintenanceChart.getXAxis().setTickLabelFill(Color.web("#cccccc"));
+        maintenanceChart.getYAxis().setTickLabelFill(Color.web("#cccccc"));
+
+        // Smooth fade animation for the chart
+        FadeTransition ft = new FadeTransition(Duration.millis(800), maintenanceChart);
+        ft.setFromValue(0);
+        ft.setToValue(1);
+        ft.play();
+
+        // Custom round nodes (after animation)
+        Platform.runLater(() -> {
+            for (XYChart.Data<String, Number> d : series.getData()) {
+                StackPane node = (StackPane) d.getNode();
+                if (node != null) {
+                    node.setStyle("-fx-background-radius: 5px; -fx-background-color: #4da3ff;");
+                    node.setPrefSize(8, 8);
+                }
+            }
+        });
+    }
+
+
+    /*private void loadMaintenanceForecast() {
         try {
 
             Map<String, Long> monthCounts = maintenanceClient.getUpcomingByMonth();
@@ -258,7 +284,7 @@ public class DashboardContentController {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
+    }*/
 
     private void loadAlertsChart() {
 
@@ -404,6 +430,35 @@ public class DashboardContentController {
             return Color.color(1, 1 - k, 0);   // (R=1, G=1-k, B=0)
         }
     }
+
+    private void setupKpiTooltips() {
+
+        Tooltip.install(onlineDevicesBox, new Tooltip(
+                "Συσκευές που απαντούν στο ping ή έχουν last_check < 2 λεπτά."
+        ));
+
+        Tooltip.install(offlineDevicesBox, new Tooltip(
+                "Συσκευές που δεν απάντησαν στο ping για πάνω από 2 λεπτά."
+        ));
+
+        Tooltip.install(uptimeBox, new Tooltip(
+                "Συνολικό ποσοστό χρόνου λειτουργίας όλων των συσκευών (Uptime%)."
+        ));
+
+        Tooltip.install(dueMaintBox, new Tooltip(
+                "Πλήθος συντηρήσεων που ολοκληρώθηκαν τον τρέχοντα μήνα."
+        ));
+
+        Tooltip.install(overdueBox, new Tooltip(
+                "Συντηρήσεις που έχουν περάσει την προγραμματισμένη ημερομηνία."
+        ));
+
+        Tooltip.install(riskBox, new Tooltip(
+                "Risk Level = βάρος από outages + overdue + critical alerts.\n"
+                        + "Υψηλή τιμή υποδηλώνει υψηλό επιχειρησιακό ρίσκο."
+        ));
+    }
+
 
 
 

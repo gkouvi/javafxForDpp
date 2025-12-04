@@ -75,57 +75,7 @@ public class EnvironmentalInfoDialogController {
 
 
 
-    /*@FXML
-    private void onSave() {
-        try {
-            model.setMaterialsComposition(materialsArea.getText());
-            model.setRecyclingInstructions(recyclingArea.getText());
-            model.setHazardousMaterials(hazardousArea.getText());
 
-            if (!recyclabilityField.getText().isBlank())
-                model.setRecyclabilityPercentage(Double.parseDouble(recyclabilityField.getText()));
-
-            if (!weightField.getText().isBlank())
-                model.setDeviceWeightKg(Double.parseDouble(weightField.getText()));
-
-            EnvironmentalInfoModel saved = envClient.save(model);
-
-            if (saved == null) {
-                showError("Σφάλμα", "Η αποθήκευση απέτυχε.");
-                return;
-            }
-
-            close();
-        } catch (Exception ex) {
-            showError("Σφάλμα", "Λάθος δεδομένα: " + ex.getMessage());
-        }
-    }*/
-   /* @FXML
-    private void onSave() {
-        try {
-            // ενημέρωση μοντέλου
-            getInfo();
-            model.setDeviceId(deviceId);
-
-            EnvironmentalInfoModel saved = envClient.save(model);
-
-
-            if (saved == null) {
-                System.out.println("Save failed");
-
-                showError("Σφάλμα", "Η αποθήκευση απέτυχε.");
-                return;
-            }
-
-            this.model = saved;
-            this.saved = true;
-            close();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            showError("Σφάλμα", "Λάθος δεδομένα: \n" + ex.getMessage());
-        }
-    }*/
     @FXML
     private void onSave() {
         try {
@@ -204,26 +154,7 @@ public class EnvironmentalInfoDialogController {
 
     public EnvironmentalInfoModel getInfo() {
 
-       /* if (this.model == null) {
-            this.model = new EnvironmentalInfoModel();
-        }
 
-        model.setMaterialsComposition(materialsArea.getText());
-        model.setRecyclingInstructions(recyclingArea.getText());
-        model.setHazardousMaterials(hazardousArea.getText());
-
-        if (!recyclabilityField.getText().isBlank()) {
-            model.setRecyclabilityPercentage(Double.parseDouble(recyclabilityField.getText()));
-        } else {
-            model.setRecyclabilityPercentage(null);
-        }
-
-        if (!weightField.getText().isBlank()) {
-            model.setDeviceWeightKg(Double.parseDouble(weightField.getText()));
-        } else {
-            model.setDeviceWeightKg(null);
-        }
-*/
         return model;
     }
     private Tooltip buildEnvironmentalTooltip(EnvironmentalInfoModel info, int score) {

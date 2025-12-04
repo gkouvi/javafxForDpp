@@ -25,7 +25,7 @@
         <Label fx:id="deviceLabel" style="-fx-text-fill: white; -fx-font-size: 14;" text="Συσκευή #?" />
 
         <!-- FORM GRID -->
-        <GridPane hgap="10" style="-fx-background-color: wjite;" vgap="12">
+        <GridPane alignment="CENTER" vgap="5.0">
             <columnConstraints>
                 <ColumnConstraints halignment="RIGHT" minWidth="140" />
                 <ColumnConstraints hgrow="ALWAYS" />
@@ -33,11 +33,11 @@
 
             <!-- Interval -->
             <Label style="-fx-text-fill: white;" text="Τύπος Συντήρησης:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <ComboBox fx:id="intervalCombo" prefHeight="26.0" prefWidth="284.0" style="-fx-background-color: white; -fx-text-fill: black;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <ComboBox fx:id="intervalCombo" prefHeight="26.0" prefWidth="298.0" style="-fx-background-color: white; -fx-text-fill: black;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
             <!-- Date -->
             <Label style="-fx-text-fill: white;" text="Ημερομηνία:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <DatePicker fx:id="datePicker" prefHeight="26.0" prefWidth="286.0" style="-fx-background-color: #1B263B; -fx-text-fill: black;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <DatePicker fx:id="datePicker" prefHeight="26.0" prefWidth="299.0" style="-fx-background-color: #1B263B; -fx-text-fill: black;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
             <!-- Technician -->
             <Label style="-fx-text-fill: white;" text="Τεχνικός:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
