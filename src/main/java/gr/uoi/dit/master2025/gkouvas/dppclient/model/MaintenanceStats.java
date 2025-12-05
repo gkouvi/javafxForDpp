@@ -8,6 +8,7 @@ public class MaintenanceStats {
     public long today;
     public long overdue;
 
+
     public MaintenanceStats(long total, long thisMonth, long thisWeek, long today, long overdue) {
         this.total = total;
         thisMonth = thisMonth;

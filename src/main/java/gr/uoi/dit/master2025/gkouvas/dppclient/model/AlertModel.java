@@ -57,6 +57,7 @@ import java.time.LocalDate;
 }*///221125
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * UI Model for representing an alert associated with a device.
@@ -68,6 +69,17 @@ public class AlertModel {
     private String message;
     private LocalDate dueDate;
     private String status;
+
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    private LocalDateTime createdAt;
 
     // 👇 ΝΕΟ ΠΕΔΙΟ
     private String deviceName;

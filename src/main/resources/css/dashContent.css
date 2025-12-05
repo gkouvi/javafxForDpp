@@ -59,4 +59,25 @@
     -fx-padding: 10;
     -fx-background-radius: 6;
 }
+.chart-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #c5c5c5;
+}
+
+.chart-series-line {
+    -fx-stroke-width: 3px;
+}
+
+.default-color0.chart-series-line {
+    -fx-stroke: #00E676; /* planned */
+}
+
+.default-color1.chart-series-line {
+    -fx-stroke: #40C4FF; /* completed */
+}
+
+.chart-legend-item-symbol {
+    -fx-background-radius: 4px;
+}
 

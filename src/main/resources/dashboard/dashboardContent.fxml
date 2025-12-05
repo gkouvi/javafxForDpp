@@ -86,24 +86,28 @@
                 <!-- === Cell 0,1: Maintenance Forecast LineChart === -->
                 <VBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="0">
                     <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="chart-title" text="Πρόβλεψη Συντηρήσεων (6 μήνες)" />
-                    <LineChart fx:id="maintenanceChart" legendVisible="false">
+                    <LineChart fx:id="dualMaintenanceChart" legendVisible="true">
                         <xAxis>
-                            <CategoryAxis fx:id="maintXAxis" label="Μήνας" />
+                            <CategoryAxis label="Μήνας" />
                         </xAxis>
                         <yAxis>
-                            <NumberAxis fx:id="maintYAxis" label="Πλήθος" />
+                            <NumberAxis fx:id="leftYAxis" label="Προγραμματισμένες" />
                         </yAxis>
                     </LineChart>
+
                 </VBox>
 
                 <!-- === Cell 1,0: Failures Heatmap === -->
                 <VBox spacing="10" GridPane.columnIndex="0" GridPane.rowIndex="1">
                     <Label alignment="CENTER" maxWidth="1.7976931348623157E308" styleClass="chart-title" text="Heatmap Βλαβών (Ώρα × Ημέρα)" />
                     <VBox spacing="10">
-                        <StackPane fx:id="heatmapPane" maxWidth="800.0">
-                            <Canvas fx:id="heatmapCanvas" height="220" width="800.0" />
-                            <Pane fx:id="heatmapOverlay" maxWidth="800.0" pickOnBounds="false" />
-                        </StackPane>
+
+
+                            <Pane fx:id="heatmapOverlayPane" pickOnBounds="false">
+                            <Canvas fx:id="heatmapCanvas" width="800" height="300"/>
+                            </Pane>
+
+
 
                     </VBox>
 

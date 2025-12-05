@@ -14,6 +14,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class AlertsPageController {
 
 
@@ -27,6 +32,8 @@ public class AlertsPageController {
 
     private final AlertServiceClient alertClient = new AlertServiceClient();
     private final DeviceServiceClient deviceClient = new DeviceServiceClient();
+    private static final DateTimeFormatter FORMATTER =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
 
     @FXML
@@ -93,7 +100,11 @@ public class AlertsPageController {
     private void setupAlertTable() {
         deviceColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDeviceName()));
         messageColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getMessage()));
-        timestampColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDueDate().toString()));
+        timestampColumn.setCellValueFactory(cellData -> {
+            LocalDateTime ts = cellData.getValue().getCreatedAt();
+            String formatted = ts != null ? ts.format(FORMATTER) : "";
+            return new SimpleStringProperty(formatted);
+        });
         aTypeCol.setCellValueFactory(c->new SimpleStringProperty(c.getValue().getStatus()));
         timestampColumn.setSortType(TableColumn.SortType.DESCENDING);
 

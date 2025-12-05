@@ -1,5 +1,6 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.*;
@@ -8,7 +9,9 @@ import gr.uoi.dit.master2025.gkouvas.dppclient.util.MultipartUtil;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URL;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Arrays;
@@ -248,16 +251,18 @@ public class DeviceServiceClient extends ApiClient {
         }
     }
 
-    public List<FailureHeatCell> getFailureHeatmap() {
+
+    public List<FailureHeatmapCell> getFailureHeatmap() {
         try {
             HttpRequest req = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/monitoring/heatmap"))
+                    .uri(URI.create(BASE_URL + "/analytics/heatmap"))
                     .GET()
                     .build();
 
             HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
 
-            return Arrays.asList(mapper.readValue(res.body(), FailureHeatCell[].class));
+            return Arrays.asList(mapper.readValue(res.body(), FailureHeatmapCell[].class));
+
         } catch (Exception e) {
             e.printStackTrace();
             return List.of();
@@ -265,7 +270,15 @@ public class DeviceServiceClient extends ApiClient {
     }
 
 
-
-
-
 }
+
+
+
+
+
+
+
+
+
+
+

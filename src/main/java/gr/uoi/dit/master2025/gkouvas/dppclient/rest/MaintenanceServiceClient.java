@@ -2,6 +2,7 @@ package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceBarChartStats;
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceModel;
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceStats;
 
@@ -31,7 +32,7 @@ public class MaintenanceServiceClient extends ApiClient {
                     .build();
 
             HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
-            System.out.println("MAINTENANCE JSON = " + res.body());
+
             return Arrays.asList(mapper.readValue(res.body(), MaintenanceModel[].class));
         } catch (Exception e) {
             e.printStackTrace();
@@ -175,6 +176,22 @@ public class MaintenanceServiceClient extends ApiClient {
             return new MaintenanceStats();
         }
     }
+    public MaintenanceBarChartStats getMonthlyStats() {
+        try {
+            HttpRequest req = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/maintenance/stats/monthly"))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
+            return mapper.readValue(res.body(), MaintenanceBarChartStats.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new MaintenanceBarChartStats();
+        }
+    }
+
 
 
 }

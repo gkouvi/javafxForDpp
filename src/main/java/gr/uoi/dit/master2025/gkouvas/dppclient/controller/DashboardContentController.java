@@ -2,8 +2,7 @@ package gr.uoi.dit.master2025.gkouvas.dppclient.controller;
 
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.*;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.*;
-import javafx.animation.FadeTransition;
-import javafx.application.Platform;
+import gr.uoi.dit.master2025.gkouvas.dppclient.ui.HeatmapComponent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -11,7 +10,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -19,29 +17,23 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
-import javafx.util.Duration;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class DashboardContentController {
 
-    @FXML public Pane onlineCard;
-    @FXML public Pane offlineCard;
-    @FXML public Pane alertsCard;
-    @FXML public Pane maintDueCard;
-    @FXML public Pane riskCard;
+
     public CategoryAxis alertsXAxis;
     public NumberAxis alertsYAxis;
-    public LineChart maintenanceChart;
-    public CategoryAxis maintXAxis;
-    public NumberAxis maintYAxis;
-    public StackPane heatmapPane;
-    public Pane heatmapOverlay;
+
+    public Pane heatmapOverlayPane;
+
     public VBox overdueBox;
+    public LineChart dualMaintenanceChart;
+    public NumberAxis leftYAxis;
+    //public StackPane heatmapContainer;
     @FXML private Canvas heatmapCanvas;
        // ===== CHARTS =====
     @FXML private BarChart<String, Number> alertsChart;
@@ -54,6 +46,8 @@ public class DashboardContentController {
     private final DeviceServiceClient deviceClient = new DeviceServiceClient();
     private final AlertServiceClient alertClient = new AlertServiceClient();
     private final MaintenanceServiceClient maintenanceClient = new MaintenanceServiceClient();
+    private static final int CELL_W = 30;
+    private static final int CELL_H = 25;
     public VBox dueMaintBox;
     public Label onlineLabel;
     public Label dueMaintLabel;
@@ -66,7 +60,10 @@ public class DashboardContentController {
     public Label offlineDevicesLabel;
     public Label uptimeLabel;
     OverallHealthModel health = deviceClient.getFleetHealth();
-    private static final String[] DAYS = {"Κυρ", "Δευ", "Τρι", "Τετ", "Πεμ", "Παρ", "Σαβ"};
+    private static final String[] WEEKDAYS = {
+            "Κυρ", "Δευ", "Τρι", "Τετ", "Πεμ", "Παρ", "Σαβ"
+    };
+
 
     // -----------------------------------------
     // INITIALIZE – καλείται μόλις φορτωθεί το FXML
@@ -85,8 +82,10 @@ public class DashboardContentController {
         setupKpiTooltips();
 
         // Αποφυγή NullPointer
-        if (maintenanceChart != null) {
-            loadMaintenanceForecast();
+        if (dualMaintenanceChart != null) {
+            dualMaintenanceChart.getStylesheets().add(getClass().getResource("/css/charts.css").toExternalForm());
+            //loadMaintenanceForecast();
+            loadDualMaintenanceChart();
         }
 
         if (riskGaugePane != null) {
@@ -205,86 +204,64 @@ public class DashboardContentController {
     // -----------------------------------------
     // MAINTENANCE FORECAST
     // -----------------------------------------
+    private void loadDualMaintenanceChart() {
+        MaintenanceBarChartStats stats = maintenanceClient.getMonthlyStats();
+        if (stats == null) return;
 
-    private void loadMaintenanceForecast() {
-        try {
-            Map<String, Long> monthCounts = maintenanceClient.getUpcomingByMonth();
+        // --- gather month list (sorted)
+        Set<String> allMonths = new TreeSet<>();
 
-            // --- Create series ---
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
+        if (stats.planned != null)
+            stats.planned.forEach(m -> allMonths.add(m.getMonth()));
+        if (stats.completed != null)
+            stats.completed.forEach(m -> allMonths.add(m.getMonth()));
 
-            monthCounts.forEach((month, count) -> {
-                XYChart.Data<String, Number> point = new XYChart.Data<>(month, count);
-                series.getData().add(point);
+        // --- SERIES 1: PLANNED
+        XYChart.Series<String, Number> plannedSeries = new XYChart.Series<>();
+        plannedSeries.setName("Προγραμματισμένες");
 
-                // --- Tooltip for each point ---
-                Tooltip.install(point.getNode(), new Tooltip(month + ": " + count + " εργασίες"));
-            });
+        for (String m : allMonths) {
+            long value = stats.planned.stream()
+                    .filter(x -> x.getMonth().equals(m))
+                    .map(MonthCountModel::getCount)
+                    .findFirst()
+                    .orElse(0L);
 
-            maintenanceChart.getData().setAll(series);
-
-            // --- Modern Styling ---
-            styleMaintenanceChart(series);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            plannedSeries.getData().add(new XYChart.Data<>(m, value));
         }
-    }
-    private void styleMaintenanceChart(XYChart.Series<String, Number> series) {
-        // Remove symbols
-        maintenanceChart.setCreateSymbols(false);
 
-        // Colors (dashboard blue gradient)
-        maintenanceChart.lookup(".chart-series-line").setStyle(
-                "-fx-stroke: linear-gradient(to right, #4da3ff, #004e92);" +
-                        "-fx-stroke-width: 3px;"
+        // --- SERIES 2: COMPLETED
+        XYChart.Series<String, Number> completedSeries = new XYChart.Series<>();
+        completedSeries.setName("Ολοκληρωμένες");
+
+        for (String m : allMonths) {
+            long value = stats.completed.stream()
+                    .filter(x -> x.getMonth().equals(m))
+                    .map(MonthCountModel::getCount)
+                    .findFirst()
+                    .orElse(0L);
+
+            completedSeries.getData().add(new XYChart.Data<>(m, value));
+        }
+
+        dualMaintenanceChart.getData().setAll(plannedSeries, completedSeries);
+
+        // TOOLTIP για κάθε σημείο
+        plannedSeries.getData().forEach(d ->
+                Tooltip.install(d.getNode(),
+                        new Tooltip("Προγραμματισμένες: " + d.getYValue()))
         );
 
-        // Gridlines minimal
-        maintenanceChart.setHorizontalGridLinesVisible(false);
-        maintenanceChart.setVerticalGridLinesVisible(false);
-
-        // Better tick label style
-        maintenanceChart.getXAxis().setTickLabelFill(Color.web("#cccccc"));
-        maintenanceChart.getYAxis().setTickLabelFill(Color.web("#cccccc"));
-
-        // Smooth fade animation for the chart
-        FadeTransition ft = new FadeTransition(Duration.millis(800), maintenanceChart);
-        ft.setFromValue(0);
-        ft.setToValue(1);
-        ft.play();
-
-        // Custom round nodes (after animation)
-        Platform.runLater(() -> {
-            for (XYChart.Data<String, Number> d : series.getData()) {
-                StackPane node = (StackPane) d.getNode();
-                if (node != null) {
-                    node.setStyle("-fx-background-radius: 5px; -fx-background-color: #4da3ff;");
-                    node.setPrefSize(8, 8);
-                }
-            }
-        });
+        completedSeries.getData().forEach(d ->
+                Tooltip.install(d.getNode(),
+                        new Tooltip("Ολοκληρωμένες: " + d.getYValue()))
+        );
     }
 
 
-    /*private void loadMaintenanceForecast() {
-        try {
 
-            Map<String, Long> monthCounts = maintenanceClient.getUpcomingByMonth();
 
-            XYChart.Series<String, Number> series = new XYChart.Series<>();
-            //series.setName("Συντηρήσεις / Μήνα");
 
-            monthCounts.forEach((month, count) ->
-                    series.getData().add(new XYChart.Data<>(month, count))
-            );
-
-            maintenanceChart.getData().setAll(series);
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }*/
 
     private void loadAlertsChart() {
 
@@ -365,70 +342,9 @@ public class DashboardContentController {
 
     }
     public void loadHeatmap() {
-        List<FailureHeatCell> data = deviceClient.getFailureHeatmap();
-        drawHeatmap(data);
-    }
-
-    private void drawHeatmap(List<FailureHeatCell> cells) {
-        GraphicsContext gc = heatmapCanvas.getGraphicsContext2D();
-        gc.setFill(Color.web("#1E1E1E"));
-        gc.fillRect(0, 0, heatmapCanvas.getWidth(), heatmapCanvas.getHeight());
-
-        int cellW = 30;
-        int cellH = 25;
-
-        long max = cells.stream().mapToLong(c -> c.count).max().orElse(1);
-
-        // Labels
-        gc.setFill(Color.WHITE);
-        gc.setFont(Font.font(12));
-        for (int h = 0; h < 24; h++) {
-            gc.fillText(String.valueOf(h), h * cellW + 35, 12);
-        }
-        for (int d = 0; d < 7; d++) {
-            gc.fillText(DAYS[d], 2, d * cellH + 40);
-        }
-
-        // Draw cells
-        for (FailureHeatCell c : cells) {
-            int dIndex = c.day % 7;  // 🔥 ΕΔΩ η διόρθωση
-
-            double intensity = (double) c.count / max;
-
-            Color color =
-                    (intensity == 0 ? Color.web("#222")
-                            : Color.color(
-                            1.0,
-                            0.4 * (1 - intensity),
-                            0.4 * (1 - intensity)
-                    ));
-
-            gc.setFill(color);
-
-            gc.fillRect(
-                    c.hour * cellW + 30,
-                    dIndex * cellH + 20,
-                    cellW - 2,
-                    cellH - 2
-            );
-        }
-    }
-
-
-
-    private Color colorForIntensity(double t) {
-        // Clamp 0..1
-        t = Math.max(0, Math.min(1, t));
-
-        if (t < 0.5) {
-            // Green → Yellow
-            double k = t / 0.5;
-            return Color.color(1 * k, 1, 0);   // (R=k, G=1, B=0)
-        } else {
-            // Yellow → Red
-            double k = (t - 0.5) / 0.5;
-            return Color.color(1, 1 - k, 0);   // (R=1, G=1-k, B=0)
-        }
+        List<FailureHeatmapCell> data = deviceClient.getFailureHeatmap();
+        HeatmapComponent heatmap = new HeatmapComponent(data);
+        heatmapOverlayPane.getChildren().setAll(heatmap);
     }
 
     private void setupKpiTooltips() {
