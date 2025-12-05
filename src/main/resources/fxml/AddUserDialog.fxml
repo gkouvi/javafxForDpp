@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<DialogPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.AddUserDialogController"
+            prefWidth="380" prefHeight="350">
+
+    <content>
+        <VBox spacing="15">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <Label text="Δημιουργία νέου χρήστη"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+
+            <TextField fx:id="usernameField" promptText="Όνομα χρήστη"/>
+
+            <PasswordField fx:id="passwordField" promptText="Κωδικός πρόσβασης"/>
+            <PasswordField fx:id="confirmPasswordField" promptText="Επιβεβαίωση κωδικού πρόσβασης"/>
+
+            <Label fx:id="errorLabel" textFill="red" visible="false"/>
+
+            <VBox spacing="5">
+                <CheckBox fx:id="adminRole" text="ADMIN"/>
+                <CheckBox fx:id="supervisorRole" text="SUPERVISOR"/>
+                <CheckBox fx:id="techRole" text="TECHNICIAN"/>
+            </VBox>
+
+        </VBox>
+    </content>
+
+    <buttonTypes>
+        <ButtonType fx:id="createButton" text="Create" buttonData="OK_DONE"/>
+        <ButtonType text="Cancel" buttonData="CANCEL_CLOSE"/>
+    </buttonTypes>
+
+</DialogPane>
