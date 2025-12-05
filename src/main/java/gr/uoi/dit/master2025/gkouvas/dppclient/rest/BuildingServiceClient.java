@@ -1,6 +1,7 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.BuildingModel;
+import gr.uoi.dit.master2025.gkouvas.dppclient.session.UserSession;
 import gr.uoi.dit.master2025.gkouvas.dppclient.util.MultipartUtil;
 
 import javax.imageio.ImageIO;
@@ -21,6 +22,7 @@ public class BuildingServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/buildings"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -39,6 +41,7 @@ public class BuildingServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/buildings/" + id))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -61,6 +64,7 @@ public class BuildingServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/buildings/site/" + siteId))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -84,6 +88,7 @@ public class BuildingServiceClient extends ApiClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/buildings"))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
@@ -109,6 +114,7 @@ public class BuildingServiceClient extends ApiClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/buildings/" + buildingId + "/qr"))
                     .header("Content-Type", "multipart/form-data; boundary=" + boundary)
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .POST(HttpRequest.BodyPublishers.ofByteArray(multipart))
                     .build();
 
@@ -125,6 +131,7 @@ public class BuildingServiceClient extends ApiClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/buildings/" + buildingId))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .PUT(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
@@ -139,6 +146,7 @@ public class BuildingServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/buildings/" + buildingId))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .DELETE()
                     .build();
 

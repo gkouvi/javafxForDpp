@@ -10,6 +10,7 @@ import gr.uoi.dit.master2025.gkouvas.dppclient.rest.BuildingServiceClient;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.DeviceServiceClient;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.SiteServiceClient;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -56,6 +57,8 @@ public class MainController {
     private MaintenanceController maintenanceController;
     private DocumentsController documentsController;
     private EnvironmentalInfoDialogController environmentalInfoDialogController;
+
+
 
 
     // ---------------- SELECTED CONTEXT --------------------
@@ -293,6 +296,24 @@ public class MainController {
         if (item == null) return;
         item.setExpanded(true);
         item.getChildren().forEach(this::expandAll);
+    }
+    public void onUserManagement(ActionEvent actionEvent) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/UserManagementView.fxml"));
+            Parent root = loader.load();
+
+            UserManagementController controller = loader.getController();
+
+
+            Stage stage = new Stage();
+            stage.setTitle("Διαχείριση Χρηστών");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
@@ -640,7 +661,6 @@ public class MainController {
     }
 
     public void handleScannedQR(String code) {
-        System.out.println("from iside mainClass + "+code);
 
         if (code == null || code.isEmpty()) return;
 

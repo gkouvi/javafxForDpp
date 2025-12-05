@@ -94,6 +94,11 @@
                     <MenuItem mnemonicParsing="false" onAction="#onScanQrInMenu" text="Σκανάρισμα" />
                   </items>
                 </Menu>
+                  <Menu mnemonicParsing="false" text="Χρήστες">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onUserManagement" text="Διαχείριση" />
+                     </items>
+                  </Menu>
               </menus>
             </MenuBar>
          </top>

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.*;
+import gr.uoi.dit.master2025.gkouvas.dppclient.session.UserSession;
 import gr.uoi.dit.master2025.gkouvas.dppclient.util.MultipartUtil;
 
 import javax.imageio.ImageIO;
@@ -44,6 +45,7 @@ public class DeviceServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/devices/" + id))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -51,16 +53,14 @@ public class DeviceServiceClient extends ApiClient {
                     httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
-                System.err.println("GET /devices/"+id+" returned " + response.statusCode());
-                System.err.println(response.body());
+
                 return null;
             }
 
             try {
                 return mapper.readValue(response.body(), DeviceModel.class);
             } catch (Exception ex) {
-                System.err.println("JSON parse failed for device " + id);
-                System.err.println("BODY = " + response.body());
+
                 ex.printStackTrace();
                 return null;
             }
@@ -77,6 +77,7 @@ public class DeviceServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/devices/building/" + buildingId))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -106,6 +107,7 @@ public class DeviceServiceClient extends ApiClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/devices/" + deviceId + "/qr"))
                     .header("Content-Type", "multipart/form-data; boundary=" + boundary)
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .POST(HttpRequest.BodyPublishers.ofByteArray(multipart))
                     .build();
 
@@ -124,6 +126,7 @@ public class DeviceServiceClient extends ApiClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/devices"))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
@@ -145,6 +148,7 @@ public class DeviceServiceClient extends ApiClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/devices/" + deviceId))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .PUT(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
@@ -159,6 +163,7 @@ public class DeviceServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/devices/" + deviceId))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .DELETE()
                     .build();
 
@@ -175,6 +180,7 @@ public class DeviceServiceClient extends ApiClient {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(endpoint))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -182,8 +188,7 @@ public class DeviceServiceClient extends ApiClient {
                     httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() != 200) {
-                System.out.println("Backend returned status: " + response.statusCode());
-                System.out.println("Body: " + response.body());
+
                 return List.of();
             }
 
@@ -201,6 +206,7 @@ public class DeviceServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/devices/upcoming-maintenance/details"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -221,6 +227,7 @@ public class DeviceServiceClient extends ApiClient {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -239,6 +246,7 @@ public class DeviceServiceClient extends ApiClient {
         try {
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/devices/health"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -256,6 +264,7 @@ public class DeviceServiceClient extends ApiClient {
         try {
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/analytics/heatmap"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 

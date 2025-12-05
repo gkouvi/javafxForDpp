@@ -1,6 +1,7 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.AlertModel;
+import gr.uoi.dit.master2025.gkouvas.dppclient.session.UserSession;
 import javafx.scene.control.TextField;
 
 import java.net.URI;
@@ -17,6 +18,7 @@ public class AlertServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/alerts/device/" + deviceId))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -37,6 +39,7 @@ public class AlertServiceClient extends ApiClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/alerts"))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
@@ -55,6 +58,7 @@ public class AlertServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/alerts"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -77,6 +81,7 @@ public class AlertServiceClient extends ApiClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/alerts/" + alert.getAlertId()))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .PUT(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
@@ -96,6 +101,7 @@ public class AlertServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/alerts/device/" + deviceId))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -111,10 +117,10 @@ public class AlertServiceClient extends ApiClient {
             return null;
         }
     }
-
+//δεν απαιτείται
     public void createPingAlert(Long deviceId, String type, String message) {
         try {
-            System.out.println(" ΙΝΣΙΔΕ ΨΡΕΑΤΕΠΙΝΓ ΑΛΕΡΤ + "+type);
+
             AlertModel model = new AlertModel();
             model.setDeviceId(deviceId);
             model.setStatus(type);
@@ -133,7 +139,6 @@ public class AlertServiceClient extends ApiClient {
             HttpResponse<String> response =
                     httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            System.out.println("Ping Alert Created: " + response.body());
 
         } catch (Exception e) {
             e.printStackTrace();

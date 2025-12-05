@@ -276,7 +276,7 @@ public class DeviceCardController {
         aMsgCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getMessage()));
 
         alertsTable.getItems().setAll(alertClient.getAlertsForDevice((long) deviceId));
-        System.out.println(alertClient.getAlertsForDevice((long) deviceId));
+
     }
 
     // -----------------------
@@ -406,7 +406,7 @@ public class DeviceCardController {
         this.deviceId = deviceId;
         DeviceModel d = deviceClient.getDevice((long) deviceId);
 
-        System.out.println("loadDevice " + deviceId);
+
 
         deviceNameLabel.setText(d.getName());
         deviceTypeLabel.setText(d.getType());

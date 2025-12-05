@@ -60,6 +60,7 @@ public class EnvironmentalInfoServiceClient extends ApiClient {
 package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.EnvironmentalInfoModel;
+import gr.uoi.dit.master2025.gkouvas.dppclient.session.UserSession;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
@@ -75,6 +76,7 @@ public class EnvironmentalInfoServiceClient extends ApiClient {
         try {
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/environment/device/" + deviceId))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -100,25 +102,7 @@ public class EnvironmentalInfoServiceClient extends ApiClient {
         }
     }
 
-   /* public EnvironmentalInfoModel getByDevice(Long deviceId) {
-        try {
-            HttpRequest req = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/environment/device/" + deviceId))
-                    .GET()
-                    .build();
 
-            HttpResponse<String> resp =
-                    httpClient.send(req, HttpResponse.BodyHandlers.ofString());
-
-            if (resp.statusCode() == 404) return null;
-
-            return mapper.readValue(resp.body(), EnvironmentalInfoModel.class);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }*/
 
     // --------------------------
     // SAVE / UPDATE
@@ -131,6 +115,7 @@ public class EnvironmentalInfoServiceClient extends ApiClient {
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/environment"))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 

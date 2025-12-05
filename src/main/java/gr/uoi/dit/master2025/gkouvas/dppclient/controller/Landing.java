@@ -1,5 +1,6 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.controller;
 
+import gr.uoi.dit.master2025.gkouvas.dppclient.session.UserSession;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,7 +30,33 @@ public class Landing {
         instance = this;   // 🔥 Κρατάμε το instance
         setActive(dashboardBtn);
         loadView("/dashboard/dashboardContent.fxml");
+        applyRoleVisibility();
     }
+
+    private void applyRoleVisibility() {
+        // TECHNICIAN = μόνο Maintenance & Alerts
+        if (UserSession.isTechnician()) {
+            sitesBtn.setDisable(true);
+            builidingBtn.setDisable(true);
+            settingsBtn.setDisable(true);
+        }
+
+        // SUPERVISOR = Alerts, Documents, Maintenance
+        if (UserSession.isSupervisor()) {
+            settingsBtn.setDisable(true);
+
+        }
+
+        // ADMIN = όλα enabled
+        /*if (UserSession.isAdmin()) {
+            metadataTab.setDisable(false);
+            alertsTab.setDisable(false);
+            maintenanceTab.setDisable(false);
+            documentsTab.setDisable(false);
+            adminTab.setDisable(false);
+        }*/
+    }
+
 
     // ---------------- ΦΟΡΤΩΣΤΕ ΟΠΟΙΟΔΗΠΟΤΕ FXML ΣΤΟ ΚΕΝΤΡΟ ----------------
     private void loadView(String fxmlName) {

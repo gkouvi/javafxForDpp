@@ -1,6 +1,7 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.SiteModel;
+import gr.uoi.dit.master2025.gkouvas.dppclient.session.UserSession;
 import gr.uoi.dit.master2025.gkouvas.dppclient.util.MultipartUtil;
 
 import javax.imageio.ImageIO;
@@ -21,6 +22,7 @@ public class SiteServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/sites"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -39,6 +41,7 @@ public class SiteServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/sites/" + id))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -60,6 +63,7 @@ public class SiteServiceClient extends ApiClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/sites"))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .POST(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
@@ -86,6 +90,7 @@ public class SiteServiceClient extends ApiClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/sites/" + siteId + "/qr"))
                     .header("Content-Type", "multipart/form-data; boundary=" + boundary)
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .POST(HttpRequest.BodyPublishers.ofByteArray(multipart))
                     .build();
 
@@ -101,6 +106,7 @@ public class SiteServiceClient extends ApiClient {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/sites/" + siteId))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .PUT(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
@@ -115,6 +121,7 @@ public class SiteServiceClient extends ApiClient {
         try {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/sites/" + siteId))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .DELETE()
                     .build();
 

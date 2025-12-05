@@ -5,6 +5,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceBarChartStats;
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceModel;
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceStats;
+import gr.uoi.dit.master2025.gkouvas.dppclient.session.UserSession;
 
 import java.net.URI;
 import java.net.http.HttpRequest;
@@ -28,6 +29,7 @@ public class MaintenanceServiceClient extends ApiClient {
         try {
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/maintenance/all"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -44,6 +46,7 @@ public class MaintenanceServiceClient extends ApiClient {
         try {
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/maintenance/device/" + deviceId))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
@@ -62,6 +65,7 @@ public class MaintenanceServiceClient extends ApiClient {
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/maintenance"))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
@@ -82,6 +86,7 @@ public class MaintenanceServiceClient extends ApiClient {
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/maintenance/" + id))
                     .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .PUT(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
@@ -99,6 +104,7 @@ public class MaintenanceServiceClient extends ApiClient {
         try {
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/maintenance/" + id + "/complete"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .POST(HttpRequest.BodyPublishers.noBody())
                     .build();
 
@@ -116,13 +122,14 @@ public class MaintenanceServiceClient extends ApiClient {
         try {
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/maintenance/upcoming-months"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
             HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
 
             if (res.statusCode() != 200) {
-                System.out.println("UPCOMING MONTHS ERROR = " + res.body());
+
                 return Map.of(); // empty map
             }
 
@@ -180,6 +187,7 @@ public class MaintenanceServiceClient extends ApiClient {
         try {
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/maintenance/stats/monthly"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
                     .GET()
                     .build();
 
