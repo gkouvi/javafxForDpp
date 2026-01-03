@@ -173,7 +173,7 @@ public class MaintenanceCreateDialogController {
                 // Προγραμματισμένη συντήρηση
                 m.setPlannedDate(date);
                 m.setMaintenanceDate(date);
-                m.setStatus(MaintenanceStatus.PLANNED);
+                m.setStatus(MaintenanceStatus.PENDING);
             }
 
             MaintenanceModel saved = maintenanceClient.createMaintenance(m);

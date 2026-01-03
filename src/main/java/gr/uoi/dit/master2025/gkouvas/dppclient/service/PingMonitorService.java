@@ -72,11 +72,11 @@ public class PingMonitorService implements Runnable {
                     lastReachable.put(id, false);
                     d.setOffline(true);
 
-                    alertClient.createPingAlert(
+                    /*alertClient.createPingAlert(
                             d.getDeviceId(),
                             "Συσκευή Offline",
                             "Η συσκευή δεν ανταποκρίθηκε στο ping"
-                    );
+                    );*/
 
                     Platform.runLater(() ->
                             DashboardPopup.show(
@@ -91,11 +91,11 @@ public class PingMonitorService implements Runnable {
                     lastReachable.put(id, true);
                     d.setOffline(false);
 
-                    alertClient.createPingAlert(
+                   /* alertClient.createPingAlert(
                             d.getDeviceId(),
                             "Συσκευή Online",
                             "Η συσκευή είναι και πάλι προσβάσιμη"
-                    );
+                    );*/
 
                     Platform.runLater(() ->
                             DashboardPopup.show(

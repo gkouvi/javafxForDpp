@@ -157,7 +157,9 @@ import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.util.Base64;
 
 /**
  * Metadata tab controller (Site / Building / Device)
@@ -199,7 +201,7 @@ public class MetadataController {
 
         if (deviceId != null) {
             loadDeviceMetadata(deviceId);
-            loadQR("/qr/device/" + deviceId);
+            loadQrFromBase64(new DeviceServiceClient().getDevice(deviceId).getQrBase64());
 
             qrButtonsBox.setVisible(true);
             qrButtonsBox.setManaged(true);
@@ -208,7 +210,7 @@ public class MetadataController {
 
         if (buildingId != null) {
             loadBuildingMetadata(buildingId);
-            loadQR("/qr/building/" + buildingId);
+            loadQrFromBase64(new BuildingServiceClient().getBuilding(buildingId).getQrBase64());
 
             qrButtonsBox.setVisible(true);
             qrButtonsBox.setManaged(true);
@@ -258,7 +260,9 @@ public class MetadataController {
 
         infoBox.getChildren().add(new Label("Όνομα κτιρίου: " + b.getName()));
         infoBox.getChildren().add(new Label("Διεύθυνση: " + b.getAddress()));
-        infoBox.getChildren().add(new Label("ID Μονάδας: " + b.getSiteId()));
+        infoBox.getChildren().add(new Label("Μονάδα: " + b.getSiteFromID()));
+        infoBox.getChildren().add(new Label("Μορφή BIM: "+b.getBimFormat()));
+        infoBox.getChildren().add(new Label("Αναφορά μοντέλου BIM: "+b.getBimModelRef()));
     }
 
     private void loadDeviceMetadata(Long deviceId) {
@@ -270,7 +274,10 @@ public class MetadataController {
         infoBox.getChildren().add(new Label("Ημερομηνία εγκατάστασης: " + d.getInstallationDate()));
         infoBox.getChildren().add(new Label("Firmware: " + d.getFirmwareVersion()));
         infoBox.getChildren().add(new Label("Κατάσταση: " + d.getStatus()));
-        infoBox.getChildren().add(new Label("ID Κτίριο: " + d.getBuildingId()));
+        infoBox.getChildren().add(new Label("Κτίριο: " + buildingClient.getBuilding(d.getBuildingId()).getName()));
+        infoBox.getChildren().add(new Label("Κλάδος BIM: " + d.getBimDiscipline()));
+        infoBox.getChildren().add(new Label("IFC GlobalId: " + d.getBimElementId()));
+
     }
 
 
@@ -278,15 +285,19 @@ public class MetadataController {
     //  QR HANDLING
     // -------------------------------
 
-    private void loadQR(String path) {
+    private void loadQrFromBase64(String qrBase64) {
         try {
-            Image img = new Image(BASE_URL + path, true);
-            qrImage.setImage(img);
+            if (qrBase64 == null) return;
+
+            byte[] bytes = Base64.getDecoder().decode(qrBase64);
+            BufferedImage buffered = ImageIO.read(new ByteArrayInputStream(bytes));
+
+            qrImage.setImage(SwingFXUtils.toFXImage(buffered, null));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
 
     @FXML
     public void onExportQr() {

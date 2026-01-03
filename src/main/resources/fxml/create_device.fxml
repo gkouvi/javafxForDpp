@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -12,8 +13,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-
-<?import javafx.scene.control.CheckBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
 <VBox prefHeight="546.0" prefWidth="407.0" spacing="12" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.CreateDeviceController">
 
     <padding>
@@ -40,7 +41,7 @@
         <DatePicker fx:id="dateField" prefHeight="26.0" prefWidth="299.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
         <Label prefHeight="18.0" prefWidth="150.0" text="Κατάσταση:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <TextField fx:id="statusField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <ComboBox fx:id="statusField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
         <Label prefHeight="18.0" prefWidth="149.0" text="Κτίριο" GridPane.rowIndex="6" />
         <Label prefHeight="18.0" prefWidth="150.0" text="Διεύθυνση IP" GridPane.rowIndex="7" />
         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
@@ -100,6 +101,13 @@
                 </HBox>
             </children>
         </VBox>
+      <Label prefHeight="18.0" prefWidth="154.0" text="BIM" GridPane.rowIndex="10" />
+      <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
+         <children>
+            <TextField fx:id="bimElementIdField" promptText="IFC GlobalId (π.χ. 3FJk9D$abC...)" />
+            <ComboBox fx:id="bimDisciplineCombo" prefWidth="150.0" promptText="Κλάδος BIM" />
+         </children>
+      </HBox>
         <columnConstraints>
             <ColumnConstraints maxWidth="181.6" minWidth="145.599951171875" prefWidth="180.80001220703124" />
             <ColumnConstraints maxWidth="295.20001220703125" minWidth="300.0" prefWidth="264.79998779296875" />
@@ -115,12 +123,13 @@
             <RowConstraints minHeight="10.0" prefHeight="30.0" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" />
         </rowConstraints>
 
     </GridPane>
 
     <HBox alignment="CENTER_RIGHT" spacing="10">
-        <Button fx:id="envBtn" text="Περιβαλλοντικές Πληροφορίες" onAction="#onEditEnvironmental"/>
+        <Button fx:id="envBtn" onAction="#onEditEnvironmental" text="Περιβαλλοντικές Πληροφορίες" />
         <Button onAction="#onCancel" text="Ακύρωση" />
         <Button onAction="#onCreate" text="Δημιουργία συσκευής" />
     </HBox>

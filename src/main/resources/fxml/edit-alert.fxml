@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -24,25 +26,33 @@
             <Label text="ID Ειδοποίησης" GridPane.columnIndex="0" GridPane.rowIndex="1" />
             <TextField fx:id="deviceId" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <Label text="Μήνυμα" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <Label prefHeight="17.0" prefWidth="100.0" text="Μήνυμα" GridPane.columnIndex="0" GridPane.rowIndex="2" />
             <TextField fx:id="message" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-            <Label text="Ημερομηνία" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-            <DatePicker fx:id="dueDate" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-
-            <Label text="Κατάσταηση" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-            <TextField fx:id="status" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label text="Ημερομηνία" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+            <HBox spacing="10" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7">
+            <DatePicker fx:id="dueDate" prefHeight="25.0" prefWidth="163.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Spinner fx:id="timeSpinner" prefWidth="110" />
+            </HBox>
+            <Label text="Κατάσταση" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+         <Label prefHeight="17.0" prefWidth="103.0" text="Υλοποίηση Μέχρι" GridPane.rowIndex="7" />
+         <Label layoutX="10.0" layoutY="84.0" prefHeight="17.0" prefWidth="150.0" text="Επίπεδο Ειδοποίησης" GridPane.rowIndex="3" />
+         <ComboBox fx:id="severityCombo" prefHeight="25.0" prefWidth="159.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+         <ComboBox fx:id="statusCombo" prefHeight="25.0" prefWidth="161.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
          <columnConstraints>
-            <ColumnConstraints maxWidth="141.0" minWidth="94.0" prefWidth="103.0" />
+            <ColumnConstraints maxWidth="141.0" minWidth="150.0" prefWidth="103.0" />
             <ColumnConstraints maxWidth="169.0" minWidth="122.0" prefWidth="160.0" />
+            <ColumnConstraints />
          </columnConstraints>
          <rowConstraints>
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" />
          </rowConstraints>
 
         </GridPane>

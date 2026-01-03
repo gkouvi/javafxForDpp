@@ -33,7 +33,9 @@ public class EditDeviceController {
     @FXML private TextField serialField;
     @FXML private TextField firmwareField;
     @FXML private DatePicker dateField;
-    @FXML private TextField statusField;
+    @FXML private ComboBox<DeviceStatus> statusField;
+    @FXML private TextField bimElementIdField;
+    @FXML private ComboBox<String> bimDisciplineCombo;
 
     private final DeviceServiceClient deviceClient = new DeviceServiceClient();
     private final SiteServiceClient siteClient = new SiteServiceClient();
@@ -53,9 +55,13 @@ public class EditDeviceController {
         serialField.setText(d.getSerialNumber());
         firmwareField.setText(d.getFirmwareVersion());
         dateField.setValue(d.getInstallationDate());
-        statusField.setText(d.getStatus());
+        statusField.setValue(DeviceStatus.valueOf(d.getStatus()));
         ipAddressField.setText(d.getIpAddress());
         hasIPCheck.setSelected(true);
+        bimElementIdField.setText(nvl(d.getBimElementId()));
+       if (d.getBimDiscipline() != null) {
+            bimDisciplineCombo.setValue(d.getBimDiscipline());
+        }
         for(MaintenanceInterval interval :d.getMaintenanceIntervals()){
             switch(interval){
                 case DAILY:dailyCheck.setSelected(true);break;
@@ -95,6 +101,10 @@ public class EditDeviceController {
             }
         }
 
+        bimDisciplineCombo.getItems().setAll(
+                "HVAC", "Ηλεκτρικά", "Ασφάλεια", "Πυρασφάλεια", "Υδραυλικά", "IT/Δίκτυο", "Δομικά", "Άλλα"
+        );
+
 
 
 
@@ -115,7 +125,7 @@ public class EditDeviceController {
             d.setSerialNumber(serialField.getText());
             d.setFirmwareVersion(firmwareField.getText());
             d.setInstallationDate(dateField.getValue());
-            d.setStatus(statusField.getText());
+            d.setStatus(statusField.getValue().name());
             if(hasIPCheck.isSelected()){
                 d.setIpAddress(ipAddressField.getText());
 
@@ -138,12 +148,14 @@ public class EditDeviceController {
             }
             d.setMaintenanceIntervals(maintenanceIntervals);
 
-
+            d.setBimElementId(trimToNull(bimElementIdField.getText()));
+            d.setBimDiscipline(trimToNull(bimDisciplineCombo.getValue()));
             deviceClient.updateDevice(deviceId, d);
             if (tempEnvInfo != null) {
                 tempEnvInfo.setDeviceId(deviceId);
                 envClient.saveEnvironmentalInfo(tempEnvInfo);
             }
+
 
             /*MainController.instance.refreshDevicesForBuilding(
                     MainController.SelectionContext.selectedBuildingId);*/
@@ -188,5 +200,13 @@ public class EditDeviceController {
             e.printStackTrace();
         }
     }
+
+    private String nvl(String s) { return s == null ? "" : s; }
+    private String trimToNull(String s) {
+        if (s == null) return null;
+        String t = s.trim();
+        return t.isEmpty() ? null : t;
+    }
+
 }
 

@@ -13,6 +13,8 @@ import java.io.ByteArrayOutputStream;
 
 public class CreateBuildingController {
 
+    @FXML private TextField bimModelRefField;
+    @FXML private ComboBox<String> bimFormatCombo;
     @FXML private TextField nameField;
     @FXML private TextField addressField;
     @FXML private TextField siteIdField;
@@ -25,9 +27,10 @@ public class CreateBuildingController {
         this.siteId = id;
 
         if (id == null) {
-            siteIdField.setText("No site selected");
+            siteIdField.setText("Δεν έχει επιλεγεί Μονάδα");
         } else {
             siteIdField.setText(id.toString());
+            bimFormatCombo.getItems().addAll("IFC", "RVT", "DWG");
         }
     }
 
@@ -45,13 +48,27 @@ public class CreateBuildingController {
             b.setAddress(addressField.getText());
             b.setSiteId(siteId);
 
+
+
+
             BuildingModel created = buildingClient.createBuilding(b);
+            loadBuilding(b);
 
             Long newId = created.getId();
 
             // 2. ΔΗΜΙΟΥΡΓΙΑ QR
-            String qrUrl = "http://localhost:8080/buildings/qr/" + newId;
-            BufferedImage qr = QRUtil.generateQRCode(qrUrl, 300);
+            String payload = "DPP://building/" + newId;
+            if (payload == null || !payload.startsWith("DPP://")) {
+                throw new IllegalArgumentException("Invalid DPP QR");
+            }
+
+            // DPP://device/42
+            String[] parts = payload.replace("DPP://", "").split("/");
+
+            if (parts.length != 2) {
+                throw new IllegalArgumentException("Invalid DPP format");
+            }
+            BufferedImage qr = QRUtil.generateQRCode(payload, 300);
 
             // 3. Ανέβασμα QR
             buildingClient.uploadBuildingQr(newId, qr);
@@ -66,4 +83,9 @@ public class CreateBuildingController {
             e.printStackTrace();
         }
     }
+    private void loadBuilding(BuildingModel b) {
+        bimModelRefField.setText(b.getBimModelRef());
+        bimFormatCombo.setValue(b.getBimFormat());
+    }
+
 }

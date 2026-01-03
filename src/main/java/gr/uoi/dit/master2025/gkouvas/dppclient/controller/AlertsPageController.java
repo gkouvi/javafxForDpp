@@ -1,6 +1,7 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.controller;
 
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.AlertModel;
+import gr.uoi.dit.master2025.gkouvas.dppclient.model.AlertSeverity;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.AlertServiceClient;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.DeviceServiceClient;
 import javafx.beans.property.SimpleStringProperty;
@@ -45,6 +46,24 @@ public class AlertsPageController {
         alertsTable.setItems(FXCollections
                 .observableArrayList(alertClient.getAllAlerts()));
         setupContextMenu();
+
+        alertsTable.setRowFactory(tv -> new TableRow<>() {
+            @Override
+            protected void updateItem(AlertModel a, boolean empty) {
+                super.updateItem(a, empty);
+
+                if (a == null || empty) {
+                    setStyle("");
+                    return;
+                }
+
+                if (a.getSeverity() == AlertSeverity.CRITICAL) {
+                    setStyle("-fx-background-color: rgba(244,67,54,0.30);"
+                            + "-fx-font-weight: bold;");
+                }
+            }
+        });
+
     }
 
 
@@ -105,7 +124,7 @@ public class AlertsPageController {
             String formatted = ts != null ? ts.format(FORMATTER) : "";
             return new SimpleStringProperty(formatted);
         });
-        aTypeCol.setCellValueFactory(c->new SimpleStringProperty(c.getValue().getStatus()));
+        aTypeCol.setCellValueFactory(c->new SimpleStringProperty(c.getValue().getStatus().getLabel()));
         timestampColumn.setSortType(TableColumn.SortType.DESCENDING);
 
         // === Custom renderer for severity / type ===

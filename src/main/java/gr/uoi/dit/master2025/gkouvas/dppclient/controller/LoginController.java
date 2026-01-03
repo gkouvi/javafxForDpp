@@ -26,13 +26,15 @@ public class LoginController {
         try {
             SSLUtil.disableCertificateValidation();
 
-            String username = usernameField.getText().trim();
-            String password = passwordField.getText().trim();
+           /* String username = usernameField.getText().trim();
+            String password = passwordField.getText().trim();*/
 
-
+            String username="admin";
+            String password = "admin123";
 
 
             URL url = new URL("https://192.168.0.105:8443/auth/login");
+
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
             conn.setDoOutput(true);

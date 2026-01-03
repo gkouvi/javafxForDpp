@@ -69,6 +69,10 @@ public class DeviceCardController {
 
     @FXML private TableColumn<MaintenanceModel, String> mStatusCol;
     @FXML private Button completeMaintenanceBtn;
+//για BIM ready
+    @FXML private Label bimElementIdLabel;
+    @FXML private Label bimModelRefLabel;
+    @FXML private Label bimDisciplineLabel;
 
     private Long deviceId;
     private final EnvironmentalInfoServiceClient envClient = new EnvironmentalInfoServiceClient();
@@ -80,16 +84,6 @@ public class DeviceCardController {
     private final DocumentServiceClient documentClient = new DocumentServiceClient();
 
 
-    /*@FXML
-    public void initialize() {
-
-        loadDevice();
-        loadMaintenance();
-        loadAlerts();
-        loadDocuments();
-        loadEnvironmentalInfo();
-
-    }*/
     public void setDeviceId(Long id) {
         this.deviceId = id;
 
@@ -114,75 +108,7 @@ public class DeviceCardController {
 
     }
 
-   /* private void renderIntervals(List<MaintenanceInterval> intervals) {
-        intervalsFlow.getChildren().clear();
 
-        if (intervals == null) return;
-        for (MaintenanceInterval interval : intervals) {
-
-            Label chip = new Label();  // 👉 Πρέπει ΝΑ ΤΟ ΔΗΜΙΟΥΡΓΕΙΣ ΕΔΩ
-
-            switch (interval) {
-                case DAILY -> chip.setText("Ημερήσια");
-                case MONTHLY -> chip.setText("Μηνιαία");
-                case SEMI_ANNUAL -> chip.setText("Εξαμηνιαία");
-                case ANNUAL -> chip.setText("Ετήσια");
-            }
-
-            chip.getStyleClass().add("chip");
-            chip.getStyleClass().add("chip-" + interval.name().toLowerCase());
-
-            intervalsFlow.getChildren().add(chip);
-        }
-
-
-       *//* for (MaintenanceInterval interval : intervals) {
-            switch (interval.name()){
-                case "DAILY":{
-                    Label chip = new Label(); // ή interval.getName() αν έχεις custom field
-                    chip.setText("Ημερήσια");
-                    chip.getStyleClass().add("chip");              // βασικό στυλ
-                    chip.getStyleClass().add("chip-" + interval.name().toLowerCase()); // χρώμα ανά interval
-
-                    intervalsFlow.getChildren().add(chip);
-                    break;
-                }
-                case "MONTHLY":{
-                    Label chip = new Label(); // ή interval.getName() αν έχεις custom field
-                    chip.setText("ΜΗΝΙΑΙΑ");
-                    chip.getStyleClass().add("chip");              // βασικό στυλ
-                    chip.getStyleClass().add("chip-" + interval.name().toLowerCase()); // χρώμα ανά interval
-
-                    intervalsFlow.getChildren().add(chip);
-                    break;
-                }
-                case "SEMI_ANNUAL":{
-                    Label chip = new Label(); // ή interval.getName() αν έχεις custom field
-                    chip.setText("Εξαμηνιαία");
-                    chip.getStyleClass().add("chip");              // βασικό στυλ
-                    chip.getStyleClass().add("chip-" + interval.name().toLowerCase()); // χρώμα ανά interval
-
-                    intervalsFlow.getChildren().add(chip);
-                    break;
-                }
-                case "ANNUAL":{
-                    Label chip = new Label(); // ή interval.getName() αν έχεις custom field
-                    chip.setText("Ετήσια");
-                    chip.getStyleClass().add("chip");              // βασικό στυλ
-                    chip.getStyleClass().add("chip-" + interval.name().toLowerCase()); // χρώμα ανά interval
-
-                    intervalsFlow.getChildren().add(chip);
-                    break;
-                }
-            }
-
-
-            *//**//*chip.getStyleClass().add("chip");              // βασικό στυλ
-            chip.getStyleClass().add("chip-" + interval.name().toLowerCase()); // χρώμα ανά interval
-
-            intervalsFlow.getChildren().add(chip);*//**//*
-        }*//*
-    }*/
    private void renderIntervals(List<MaintenanceInterval> intervals) {
        intervalsFlow.getChildren().clear();
        if (intervals == null) return;
@@ -256,8 +182,9 @@ public class DeviceCardController {
             return new SimpleStringProperty(
                     switch (st) {
                         case COMPLETED -> "Ολοκληρωμένη";
-                        case PLANNED -> "Προγραμματισμένη";
-                        case OVERDUE -> "Εκπρόθεσμη";
+                        case CANCELLED -> "Ακυρωμένη";
+                        case PENDING -> "Δεν έχει Ολοκληρωθεί Ακόμα ";
+                        default -> throw new IllegalStateException("Απροσδόκητη τιμή: " + st);
                     }
             );
         });
@@ -271,8 +198,8 @@ public class DeviceCardController {
     // ΚΑΡΤΕΛΑ ΕΙΔΟΠΟΙΗΣΕΙΣ
     // -----------------------
     private void loadAlerts() {
-        aTimeCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getDueDate().toString()));
-        aTypeCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getStatus()));
+        aTimeCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getCreatedAt().toString()));
+        aTypeCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getStatus().getLabel()));
         aMsgCol.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getMessage()));
 
         alertsTable.getItems().setAll(alertClient.getAlertsForDevice((long) deviceId));
@@ -415,6 +342,9 @@ public class DeviceCardController {
         installationLabel.setText(String.valueOf(d.getInstallationDate()));
         firmwareLabel.setText(d.getFirmwareVersion());
         ipLabel.setText(d.getIpAddress());
+        bimElementIdLabel.setText(nullToDash(d.getBimElementId()));
+
+        bimDisciplineLabel.setText(nullToDash(d.getBimDiscipline()));
 
         renderIntervals(d.getMaintenanceIntervals());LocalDate next = computeNextMaintenance(d);
         if (next != null) nextMaintenanceLabel.setText(next.toString());
@@ -497,7 +427,7 @@ public class DeviceCardController {
 
 
         if (d == null) {
-            showError("Device Error", "Unable to load device from server.");
+            showError("Σφάλμα συσκευής", "Δεν είναι δυνατή η φόρτωση της συσκευής από τον διακομιστή.");
             return;
         }
 
@@ -545,7 +475,7 @@ public class DeviceCardController {
         MaintenanceModel ok = maintenanceClient.createMaintenance(log);
 
         if (ok==null) {
-            showError("Server Error", "Αποτυχία δημιουργίας συντήρησης.");
+            showError("Σφάλμα διακομιστή", "Αποτυχία δημιουργίας συντήρησης.");
             return;
         }
 
@@ -662,10 +592,10 @@ public class DeviceCardController {
         MaintenanceModel selected =
                 maintenanceTable.getSelectionModel().getSelectedItem();
 
-        if (selected == null) {
+       /* if (selected == null) {
             showError("Επιλογή", "Παρακαλώ επιλέξτε μια εγγραφή συντήρησης.");
             return;
-        }
+        }*/
 
         if (selected.getStatus() == MaintenanceStatus.COMPLETED) {
             showError("Ήδη ολοκληρωμένη", "Η συγκεκριμένη συντήρηση έχει ήδη ολοκληρωθεί.");
@@ -682,6 +612,10 @@ public class DeviceCardController {
         // ανανέωση επόμενης συντήρησης
         loadDevice(deviceId);
         showInfo("Επιτυχία", "Η συντήρηση ολοκληρώθηκε.");
+    }
+
+    private String nullToDash(String s) {
+        return (s == null || s.isBlank()) ? "-" : s;
     }
 
 }

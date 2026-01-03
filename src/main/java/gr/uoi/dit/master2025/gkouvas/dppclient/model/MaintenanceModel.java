@@ -18,8 +18,8 @@ public class MaintenanceModel {
     private String description;
     private String technician;
     private Long  buildingId;
-    private transient  String deviceName;
-    private transient String buildingName;
+    /*private transient  String deviceName;
+    private transient String buildingName;*/
 
 
     private MaintenanceInterval interval;
@@ -33,17 +33,17 @@ public class MaintenanceModel {
         this.interval = interval;
     }
 
-    public void setDeviceName(String deviceName) {
-        this.deviceName = deviceName;
-    }
+    //public void setDeviceName(String deviceName) {
+      //  this.deviceName = deviceName;
+    //}
 
-    public String getBuildingName() {
-        return buildingName;
-    }
+    //public String getBuildingName() {
+      // return buildingName;
+    //}
 
-    public void setBuildingName(String buildingName) {
-        this.buildingName = buildingName;
-    }
+   // public void setBuildingName(String buildingName) {
+       // this.buildingName = buildingName;
+   // }
 
     public Long  getBuildingId() {
         return buildingId;
@@ -124,9 +124,9 @@ public class MaintenanceModel {
         this.performedDate = performedDate;
     }
 
-    public String getDeviceName() {
+    /*public String getDeviceName() {
         return deviceName;
-    }
+    }*/
 
    /* public BuildingServiceClient getBuildingClient() {
         return buildingClient;
@@ -143,4 +143,6 @@ public class MaintenanceModel {
     public void setStatus(MaintenanceStatus status) {
         this.status = status;
     }
+
+
 }

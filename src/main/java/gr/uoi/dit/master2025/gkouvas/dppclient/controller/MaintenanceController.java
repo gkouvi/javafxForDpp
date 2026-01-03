@@ -2,6 +2,8 @@ package gr.uoi.dit.master2025.gkouvas.dppclient.controller;
 
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceModel;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.MaintenanceServiceClient;
+import gr.uoi.dit.master2025.gkouvas.dppclient.util.MaintenanceCategory;
+import gr.uoi.dit.master2025.gkouvas.dppclient.util.MaintenanceRules;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,6 +12,7 @@ import javafx.scene.layout.GridPane;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Controller for the Maintenance tab.
@@ -50,6 +53,30 @@ public class MaintenanceController {
         maintenanceTable.setItems(data);
 
         addLogButton.setOnAction(e -> showAddLogDialog());
+        maintenanceTable.setRowFactory(tv -> new TableRow<>() {
+            @Override
+            protected void updateItem(MaintenanceModel m, boolean empty) {
+                super.updateItem(m, empty);
+
+                if (m == null || empty) {
+                    setStyle("");
+                    return;
+                }
+
+                switch (m.getStatus()) {
+                    case PENDING ->
+                            setStyle("-fx-background-color: rgba(255,193,7,0.15);");
+                    case AUTO_CLOSED ->
+                            setStyle("-fx-background-color: rgba(76,175,80,0.15);");
+                    case ESCALATED ->
+                            setStyle("-fx-background-color: rgba(244,67,54,0.25);");
+                    default ->
+                            setStyle("");
+                }
+            }
+        });
+
+
     }
 
 
@@ -126,5 +153,21 @@ public class MaintenanceController {
             }
         });
     }
+    public void loadData(LocalDate date, MaintenanceCategory category) {
+
+        List<MaintenanceModel> all = client.getAll();
+        LocalDate today = LocalDate.now();
+
+        List<MaintenanceModel> filtered =
+                all.stream()
+                        .filter(m -> MaintenanceRules.matches(m, date, category, today))
+                        .toList();
+
+        maintenanceTable.setItems(
+                FXCollections.observableArrayList(filtered)
+        );
+    }
+
+
 
 }

@@ -37,3 +37,9 @@
     -fx-font-size: 14px;
 
 }
+
+.default-color0.chart-bar { -fx-bar-fill: #2E7D32; } /* planned */
+.default-color1.chart-bar { -fx-bar-fill: #0277BD; } /* completed */
+.default-color2.chart-bar { -fx-bar-fill: #F9A825; } /* pending */
+.default-color3.chart-bar { -fx-bar-fill: #D32F2F; } /* overdue */
+

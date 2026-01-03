@@ -186,14 +186,14 @@ public class QRScannerDialogController {
         try {
             if (webcam != null && webcam.isOpen()) {
                 webcam.close();
-                cameraView.setImage(null);
+                cameraView. setImage(null);
             }
 
         } catch (Exception ignored) {
         }
         Landing.instance.loadDashboard();
-        Stage stage = (Stage) cameraView.getScene().getWindow();
-        stage.close();
+       /* Stage stage = (Stage) cameraView.getScene().getWindow();
+        stage.close();*/
     }
     public void openDeviceCard(Long deviceId) {
         try {

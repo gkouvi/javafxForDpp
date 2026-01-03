@@ -29,6 +29,25 @@ public class DeviceModel {
     private boolean online;
     private Double uptimePercent;
     public LocalDateTime lastCheck;
+    private String bimElementId;
+
+    private String bimDiscipline;
+
+    public String getBimElementId() {
+        return bimElementId;
+    }
+
+    public void setBimElementId(String bimElementId) {
+        this.bimElementId = bimElementId;
+    }
+
+    public String getBimDiscipline() {
+        return bimDiscipline;
+    }
+
+    public void setBimDiscipline(String bimDiscipline) {
+        this.bimDiscipline = bimDiscipline;
+    }
 
     public LocalDateTime getLastCheck() {
         return lastCheck;

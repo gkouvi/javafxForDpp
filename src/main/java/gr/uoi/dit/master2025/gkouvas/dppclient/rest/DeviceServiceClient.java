@@ -102,7 +102,7 @@ public class DeviceServiceClient extends ApiClient {
 
             String boundary = "----DPPQRUPLOAD1234";
 
-            byte[] multipart = MultipartUtil.buildMultipart(png, boundary, "file", "qr.png");
+            byte[] multipart = MultipartUtil.buildMultipart(png, boundary, "file", deviceId+".png");
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/devices/" + deviceId + "/qr"))

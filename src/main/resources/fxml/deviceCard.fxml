@@ -11,8 +11,11 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.DeviceCardController">
@@ -68,12 +71,37 @@
 
                     <Label styleClass="section-title" text="Διαστήματα συντήρησης:" />
                     <FlowPane fx:id="intervalsFlow" hgap="8" vgap="8" />
+                    <VBox spacing="6" styleClass="card-section">
+                        <Label alignment="CENTER" minWidth="-Infinity" prefHeight="18.0" prefWidth="469.0" styleClass="section-title" text="Πληροφορίες BIM" />
+
+                        <GridPane hgap="10" vgap="8">
+                            <Label text="BIM Element ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <Label fx:id="bimElementIdLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                            <Label text="BIM Model Ref:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <Label fx:id="bimModelRefLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                            <Label text="Discipline:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <Label fx:id="bimDisciplineLabel" text="-" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                     <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
+                        </GridPane>
+                    </VBox>
+
 
                     <Button fx:id="createMaintenanceBtn" onAction="#onAddMaintenance" styleClass="action-btn" text="Δημιουργία συντήρησης τώρα" />
                     <padding>
                         <Insets bottom="20" left="20" right="20" top="20" />
                     </padding>
                 </VBox>
+
             </Tab>
 
             <!-- ========== ΙΣΤΟΡΙΚΟ ΣΥΝΤΗΡΗΣΗΣ ========== -->
@@ -85,7 +113,7 @@
 
                     <Label styleClass="section-title" text="Ιστορικό καταχωρήσεων" />
 
-                    <TableView fx:id="maintenanceTable">
+                    <TableView fx:id="maintenanceTable" maxWidth="1.7976931348623157E308">
                         <columns>
                             <TableColumn fx:id="mDateCol" text="Ημερομηνία" />
                             <TableColumn fx:id="mIntervalCol" text="Διάστημα" />
@@ -93,19 +121,16 @@
                             <TableColumn fx:id="mStatusCol" text="Κατάσταση" />
 
                         </columns>
+                  <columnResizePolicy>
+                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                  </columnResizePolicy>
                     </TableView>
 
                     <!--<Button fx:id="addMaintenanceBtn" onAction="#onCreateMaintenance" styleClass="action-btn" text="Προσθήκη συντήρησης" />-->
                     <HBox spacing="10">
-                        <Button fx:id="addMaintenanceBtn"
-                                text="Προσθήκη συντήρησης"
-                                styleClass="action-btn"
-                                onAction="#onCreateMaintenance"/>
+                        <Button fx:id="addMaintenanceBtn" onAction="#onCreateMaintenance" styleClass="action-btn" text="Προσθήκη συντήρησης" />
 
-                        <Button fx:id="completeMaintenanceBtn"
-                                text="Ολοκλήρωση επιλεγμένης"
-                                styleClass="action-btn"
-                                onAction="#onCompleteMaintenance"/>
+                        <Button fx:id="completeMaintenanceBtn" onAction="#onCompleteMaintenance" styleClass="action-btn" text="Ολοκλήρωση επιλεγμένης" />
                     </HBox>
 
                 </VBox>
@@ -119,12 +144,15 @@
                     </padding>
                     <Label styleClass="section-title" text="Πρόσφατες ειδοποιήσεις" />
 
-                    <TableView fx:id="alertsTable">
+                    <TableView fx:id="alertsTable" maxWidth="1.7976931348623157E308">
                         <columns>
                             <TableColumn fx:id="aTimeCol" text="Χρόνος" />
                             <TableColumn fx:id="aTypeCol" text="Τύπος" />
                             <TableColumn fx:id="aMsgCol" text="Μήνυμα" />
                         </columns>
+                  <columnResizePolicy>
+                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                  </columnResizePolicy>
                     </TableView>
                 </VBox>
             </Tab>
@@ -137,11 +165,14 @@
                     </padding>
                     <Label styleClass="section-title" text="Ανεβασμένα έγγραφα" />
 
-                    <TableView fx:id="documentsTable">
+                    <TableView fx:id="documentsTable" maxWidth="1.7976931348623157E308">
                         <columns>
                             <TableColumn fx:id="dNameCol" text="Όνομα" />
                             <TableColumn fx:id="dDateCol" text="Ημερομηνία" />
                         </columns>
+                  <columnResizePolicy>
+                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                  </columnResizePolicy>
                     </TableView>
 
                     <HBox spacing="10">

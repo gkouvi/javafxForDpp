@@ -1,36 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/23"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.CreateBuildingController"
-      spacing="12">
+<VBox spacing="12" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.CreateBuildingController">
 
     <padding>
-        <Insets top="20" left="20" right="20" bottom="20"/>
+        <Insets bottom="20" left="20" right="20" top="20" />
     </padding>
 
-    <Label text="Προσθήκη νέου κτιρίου"
-           style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+    <Label style="-fx-font-size: 20px; -fx-font-weight: bold;" text="Προσθήκη νέου κτιρίου" />
 
     <GridPane hgap="10" vgap="10">
 
-        <Label text="Όνομα κτιρίου:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <TextField fx:id="nameField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Label text="Όνομα κτιρίου:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-        <Label text="Διεύθυνση:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-        <TextField fx:id="addressField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <Label text="Διεύθυνση:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-        <Label text="Μονάδα ID:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-        <TextField fx:id="siteIdField" editable="false" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <Label text="Μονάδα ID:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+        <TextField fx:id="siteIdField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+        <Label text="Αναφορά μοντέλου BIM:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <TextField fx:id="bimModelRefField" promptText="Αναφορά μοντέλου (Κτίριο_A.ifc)" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label text="Μορφή BIM" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <ComboBox fx:id="bimFormatCombo" prefHeight="26.0" prefWidth="149.0" promptText="Μορφή BIM" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+      <columnConstraints>
+         <ColumnConstraints />
+         <ColumnConstraints />
+      </columnConstraints>
+      <rowConstraints>
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+         <RowConstraints />
+      </rowConstraints>
+
+
     </GridPane>
 
-    <HBox spacing="10" alignment="CENTER_RIGHT">
-        <Button text="Ακύρωση" onAction="#onCancel"/>
-        <Button text="Δημιουργία κτιρίου" onAction="#onCreate"/>
+    <HBox alignment="CENTER_RIGHT" spacing="10">
+        <Button onAction="#onCancel" text="Ακύρωση" />
+        <Button onAction="#onCreate" text="Δημιουργία κτιρίου" />
     </HBox>
 
 </VBox>

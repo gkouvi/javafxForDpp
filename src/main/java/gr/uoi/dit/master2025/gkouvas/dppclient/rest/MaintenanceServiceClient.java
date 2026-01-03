@@ -1,10 +1,9 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceBarChartStats;
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceModel;
-import gr.uoi.dit.master2025.gkouvas.dppclient.model.MaintenanceStats;
+import gr.uoi.dit.master2025.gkouvas.dppclient.model.*;
 import gr.uoi.dit.master2025.gkouvas.dppclient.session.UserSession;
 
 import java.net.URI;
@@ -101,17 +100,23 @@ public class MaintenanceServiceClient extends ApiClient {
     }
 
     public MaintenanceModel completeMaintenance(Long id) {
+
         try {
+
             HttpRequest req = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/maintenance/" + id + "/complete"))
                     .header("Authorization", "Bearer " + UserSession.getToken())
-                    .POST(HttpRequest.BodyPublishers.noBody())
+                    .PUT(HttpRequest.BodyPublishers.noBody())
                     .build();
 
             HttpResponse<String> res = httpClient.send(req, HttpResponse.BodyHandlers.ofString());
-            if (res.statusCode() >= 200 && res.statusCode() < 300) {
-                return mapper.readValue(res.body(), MaintenanceModel.class);
+            if (res.statusCode() >= 400) {
+                // error από backend
+                throw new RuntimeException("Maintenance error: " + res.body());
             }
+            //if (res.statusCode() >= 200 && res.statusCode() < 300) {
+                return mapper.readValue(res.body(), MaintenanceModel.class);
+            //}
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -199,6 +204,75 @@ public class MaintenanceServiceClient extends ApiClient {
             return new MaintenanceBarChartStats();
         }
     }
+
+    public List<MaintenanceDailySummaryModel> getDailySummaryForDevice(Long deviceId) {
+
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL +
+                            "/maintenance/device/" + deviceId + "/summary"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return mapper.readValue(
+                    response.body(),
+                    new TypeReference<>() {}
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    public List<MaintenanceDailySummaryModel> getGlobalDailySummary() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/maintenance/summary"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            return mapper.readValue(
+                    response.body(),
+                    new TypeReference<>() {}
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    public MaintenanceBoxesKpiModel getMaintenanceKpis() {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(BASE_URL + "/maintenance/stats/kpi"))
+                    .header("Authorization", "Bearer " + UserSession.getToken())
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new RuntimeException("KPI error: " + response.body());
+            }
+
+            return mapper.readValue(response.body(), MaintenanceBoxesKpiModel.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 
 
 

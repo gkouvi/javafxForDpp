@@ -1,7 +1,5 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.model;
 
-import java.time.LocalDate;
-
 /**
  * UI Model for representing an alert associated with a device.
  */
@@ -56,7 +54,6 @@ import java.time.LocalDate;
     }
 }*///221125
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -67,9 +64,19 @@ public class AlertModel {
     private Long alertId;
     private Long deviceId;
     private String message;
-    private LocalDate dueDate;
-    private String status;
+    private LocalDateTime dueDate;
+    private AlertStatus status;
+    private AlertSeverity severity;
+    private LocalDateTime createdAt;
+    private String deviceName;
 
+    public AlertSeverity getSeverity() {
+        return severity;
+    }
+
+    public void setSeverity(AlertSeverity severity) {
+        this.severity = severity;
+    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -79,10 +86,10 @@ public class AlertModel {
         this.createdAt = createdAt;
     }
 
-    private LocalDateTime createdAt;
 
-    // 👇 ΝΕΟ ΠΕΔΙΟ
-    private String deviceName;
+
+
+
 
     public AlertModel() {}
 
@@ -110,19 +117,19 @@ public class AlertModel {
         this.message = message;
     }
 
-    public LocalDate getDueDate() {
+    public LocalDateTime getDueDate() {
         return dueDate;
     }
 
-    public void setDueDate(LocalDate dueDate) {
+    public void setDueDate(LocalDateTime dueDate) {
         this.dueDate = dueDate;
     }
 
-    public String getStatus() {
+    public AlertStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(AlertStatus status) {
         this.status = status;
     }
 

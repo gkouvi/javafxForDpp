@@ -3,24 +3,39 @@ package gr.uoi.dit.master2025.gkouvas.dppclient.controller;
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.*;
 import gr.uoi.dit.master2025.gkouvas.dppclient.rest.*;
 import gr.uoi.dit.master2025.gkouvas.dppclient.ui.HeatmapComponent;
+import gr.uoi.dit.master2025.gkouvas.dppclient.util.MaintenanceCategory;
+import gr.uoi.dit.master2025.gkouvas.dppclient.util.MaintenanceRules;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.chart.*;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class DashboardContentController {
 
@@ -33,12 +48,31 @@ public class DashboardContentController {
     public VBox overdueBox;
     public LineChart dualMaintenanceChart;
     public NumberAxis leftYAxis;
+    public Label pendingLabel;
+    public Label completedLabel;
+    public Label cancelledLabel;
+    public CategoryAxis maintenanceXAxis;
+    public StackPane maintenanceChartContainer;
+    public Label autoClosedLabel;
+    public Label escalatedLabel;
+
+
     //public StackPane heatmapContainer;
     @FXML private Canvas heatmapCanvas;
        // ===== CHARTS =====
     @FXML private BarChart<String, Number> alertsChart;
+    @FXML private BarChart<String, Number> maintenanceBarChart;
+
 
     @FXML public StackPane riskGaugePane;
+
+    @FXML private Label lblPendingAlerts;
+    @FXML private Label lblMaintenanceInProgress;
+    @FXML private Label lblMttr;
+    @FXML private Label lblLastIotEventTime;
+    @FXML private Label lblLastIotEventDetails;
+
+    @FXML private ListView<String> riskDriversList;
 
         // REST Clients
     private final SiteServiceClient siteClient = new SiteServiceClient();
@@ -50,7 +84,7 @@ public class DashboardContentController {
     private static final int CELL_H = 25;
     public VBox dueMaintBox;
     public Label onlineLabel;
-    public Label dueMaintLabel;
+    public Label totalMaintLabel;
     public VBox riskBox;
     public Label riskLabel;
     @FXML private Label overdueLabel;
@@ -59,61 +93,60 @@ public class DashboardContentController {
     public VBox uptimeBox;
     public Label offlineDevicesLabel;
     public Label uptimeLabel;
-    OverallHealthModel health = deviceClient.getFleetHealth();
-    private static final String[] WEEKDAYS = {
-            "Κυρ", "Δευ", "Τρι", "Τετ", "Πεμ", "Παρ", "Σαβ"
-    };
+    OverallHealthModel health;
+    private final KpiClient kpiClient = new KpiClient();
+
+
 
 
     // -----------------------------------------
     // INITIALIZE – καλείται μόλις φορτωθεί το FXML
     // -----------------------------------------
+
     @FXML
     public void initialize() {
 
-        Long overdueMaint = loadMaintenanceKpi();
+        // 1) Fleet health (backend)
+        health = deviceClient.getFleetHealth();
         loadHealthKpis();
-        loadAlertsChart();
-        loadHeatmap();
-        styleChart(alertsChart);
-        //styleChart(maintenanceChart);
-        double riskPercent = computeRisk(health, overdueMaint);
+
+        // 2) KPI από backend ΜΟΝΟ (θα ενημερώσει labels + risk gauge)
         updateKpis();
+
+        // 3) Charts / widgets
+        loadAlertsChart();
+        styleChart(alertsChart);
+
+        loadHeatmap();
+
         setupKpiTooltips();
+        loadActiveIssues();
+        loadRiskDrivers();
+        loadLastIotEventFromAlerts();
 
-        // Αποφυγή NullPointer
-        if (dualMaintenanceChart != null) {
-            dualMaintenanceChart.getStylesheets().add(getClass().getResource("/css/charts.css").toExternalForm());
-            //loadMaintenanceForecast();
-            loadDualMaintenanceChart();
+        // 4) Maintenance chart
+        if (maintenanceBarChart != null) {
+            maintenanceBarChart.getStylesheets().add(
+                    getClass().getResource("/css/charts.css").toExternalForm()
+            );
+            Platform.runLater(() -> {
+                loadMaintenanceChart();
+            });
+
+
+
+
+            addHoverEffect(maintenanceBarChart);
+            addHoverEffect(alertsChart);
+            addHoverEffect(riskGaugePane);
+            addHoverEffect(heatmapOverlayPane);
+            addHoverEffect(uptimeBox);
+            addHoverEffect(offlineDevicesBox);
+            addHoverEffect(dueMaintBox);
+            addHoverEffect(overdueBox);
+            addHoverEffect(riskBox);
         }
-
-        if (riskGaugePane != null) {
-            renderRiskGauge(riskPercent);// demo value
-        }
-
     }
-
-
-    private Long loadMaintenanceKpi() {
-        List<MaintenanceModel> all = maintenanceClient.getAll();
-
-        long thisMonth = all.stream()
-                .filter(m -> m.getMaintenanceDate() != null &&
-                        m.getMaintenanceDate().getMonth().equals(LocalDate.now().getMonth()))
-                .count();
-
-        long overdue = all.stream()
-                .filter(m -> m.getPlannedDate() != null &&
-                        m.getPlannedDate().isBefore(LocalDate.now()))
-                .count();
-
-        dueMaintLabel.setText(String.valueOf(thisMonth));
-        overdueLabel.setText(String.valueOf(overdue));
-        return overdue;
-    }
-
-
 
     private void loadHealthKpis() {
         try {
@@ -176,9 +209,12 @@ public class DashboardContentController {
         double angle = -360 * (riskPercent / 100.0); // clockwise
 
         Color gaugeColor =
-                (riskPercent < 30) ? Color.LIMEGREEN :
-                        (riskPercent < 60) ? Color.GOLD :
-                                Color.RED;
+                (riskPercent < 20) ? Color.DARKGREEN :
+                (riskPercent < 40) ? Color.LIMEGREEN :
+                (riskPercent < 60) ? Color.GOLD :
+                (riskPercent < 80) ? Color.ORANGE :
+                                     Color.RED;
+
 
         gc.setStroke(gaugeColor);
         gc.strokeArc(
@@ -202,60 +238,150 @@ public class DashboardContentController {
 
 
     // -----------------------------------------
-    // MAINTENANCE FORECAST
+    // MAINTENANCE
     // -----------------------------------------
-    private void loadDualMaintenanceChart() {
-        MaintenanceBarChartStats stats = maintenanceClient.getMonthlyStats();
-        if (stats == null) return;
 
-        // --- gather month list (sorted)
-        Set<String> allMonths = new TreeSet<>();
 
-        if (stats.planned != null)
-            stats.planned.forEach(m -> allMonths.add(m.getMonth()));
-        if (stats.completed != null)
-            stats.completed.forEach(m -> allMonths.add(m.getMonth()));
 
-        // --- SERIES 1: PLANNED
-        XYChart.Series<String, Number> plannedSeries = new XYChart.Series<>();
-        plannedSeries.setName("Προγραμματισμένες");
 
-        for (String m : allMonths) {
-            long value = stats.planned.stream()
-                    .filter(x -> x.getMonth().equals(m))
-                    .map(MonthCountModel::getCount)
-                    .findFirst()
-                    .orElse(0L);
 
-            plannedSeries.getData().add(new XYChart.Data<>(m, value));
-        }
+   private void loadMaintenanceChart() {
 
-        // --- SERIES 2: COMPLETED
-        XYChart.Series<String, Number> completedSeries = new XYChart.Series<>();
-        completedSeries.setName("Ολοκληρωμένες");
+       List<MaintenanceModel> all = maintenanceClient.getAll();
+       if (all == null || all.isEmpty()) {
+           maintenanceBarChart.getData().clear();
+           return;
+       }
 
-        for (String m : allMonths) {
-            long value = stats.completed.stream()
-                    .filter(x -> x.getMonth().equals(m))
-                    .map(MonthCountModel::getCount)
-                    .findFirst()
-                    .orElse(0L);
+       LocalDate today = LocalDate.now();
 
-            completedSeries.getData().add(new XYChart.Data<>(m, value));
-        }
+       // ⏱️ Χρονικό παράθυρο: -30 → +30
+       List<LocalDate> timeline =
+               IntStream.rangeClosed(-30, 30)
+                       .mapToObj(today::plusDays)
+                       .toList();
 
-        dualMaintenanceChart.getData().setAll(plannedSeries, completedSeries);
+       // ---------------- AXIS ----------------
+       CategoryAxis xAxis = (CategoryAxis) maintenanceBarChart.getXAxis();
+       xAxis.setTickLabelRotation(45);
+       xAxis.setGapStartAndEnd(false);
+       xAxis.setCategories(
+               FXCollections.observableArrayList(
+                       timeline.stream()
+                               .map(LocalDate::toString)
+                               .toList()
+               )
+       );
 
-        // TOOLTIP για κάθε σημείο
-        plannedSeries.getData().forEach(d ->
-                Tooltip.install(d.getNode(),
-                        new Tooltip("Προγραμματισμένες: " + d.getYValue()))
-        );
+       maintenanceBarChart.setAnimated(false);
+       maintenanceBarChart.setCategoryGap(6);
+       maintenanceBarChart.setBarGap(2);
 
-        completedSeries.getData().forEach(d ->
-                Tooltip.install(d.getNode(),
-                        new Tooltip("Ολοκληρωμένες: " + d.getYValue()))
-        );
+       // ---------------- SERIES ----------------
+       XYChart.Series<String, Number> plannedSeries        = new XYChart.Series<>();
+       XYChart.Series<String, Number> completedSeries      = new XYChart.Series<>();
+       XYChart.Series<String, Number> pendingFutureSeries  = new XYChart.Series<>();
+       XYChart.Series<String, Number> overdueSeries        = new XYChart.Series<>();
+
+       plannedSeries.setName("Προγραμματισμένες");
+       completedSeries.setName("Υλοποιημένες");
+       pendingFutureSeries.setName("Εκκρεμείς / Μελλοντικές");
+       overdueSeries.setName("Εκπρόθεσμες");
+
+       // ---------------- POPULATE ----------------
+       for (LocalDate d : timeline) {
+
+           String key = d.toString();
+
+           // 1  Ό,τι είχε προγραμματιστεί (baseline)
+           long plannedCount = all.stream()
+                   .filter(m -> m.getPlannedDate() != null)
+                   .filter(m -> m.getPlannedDate().equals(d))
+                   .filter(m -> m.getStatus() != MaintenanceStatus.CANCELLED)
+                   .count();
+
+           // 2 Ό,τι ολοκληρώθηκε εκείνη την ημέρα
+           long completedCount = all.stream()
+                   .filter(m -> m.getStatus() == MaintenanceStatus.COMPLETED)
+                   .filter(m -> d.equals(m.getPerformedDate()))
+                   .count();
+
+           // 3 Εκκρεμείς με ημερομηνία στο μέλλον ή σήμερα
+           long pendingFutureCount = all.stream()
+                   .filter(m -> m.getStatus() == MaintenanceStatus.PENDING)
+                   .filter(m -> m.getPlannedDate() != null)
+                   .filter(m -> m.getPlannedDate().equals(d))
+                   .filter(m -> !m.getPlannedDate().isBefore(today))
+                   .count();
+
+           // 4 Εκπρόθεσμες
+           long overdueCount = all.stream()
+                   .filter(m -> m.getStatus() == MaintenanceStatus.PENDING)
+                   .filter(m -> m.getPlannedDate() != null)
+                   .filter(m -> m.getPlannedDate().equals(d))
+                   .filter(m -> m.getPlannedDate().isBefore(today))
+                   .count();
+
+           // ---------------- DATA ----------------
+           XYChart.Data<String, Number> pl = new XYChart.Data<>(key, plannedCount);
+           XYChart.Data<String, Number> c  = new XYChart.Data<>(key, completedCount);
+           XYChart.Data<String, Number> p  = new XYChart.Data<>(key, pendingFutureCount);
+           XYChart.Data<String, Number> o  = new XYChart.Data<>(key, overdueCount);
+
+           plannedSeries.getData().add(pl);
+           completedSeries.getData().add(c);
+           pendingFutureSeries.getData().add(p);
+           overdueSeries.getData().add(o);
+
+           // ---------------- CLICKS ----------------
+           addClickIfAny(pl, plannedCount, d, MaintenanceCategory.PLANNED);
+           addClickIfAny(c,  completedCount, d, MaintenanceCategory.COMPLETED);
+           addClickIfAny(p,  pendingFutureCount, d, MaintenanceCategory.PENDING);
+           addClickIfAny(o,  overdueCount, d, MaintenanceCategory.OVERDUE);
+       }
+
+       // ---------------- RENDER ----------------
+       maintenanceBarChart.getData().setAll(
+               plannedSeries,
+               completedSeries,
+               pendingFutureSeries,
+               overdueSeries
+       );
+
+       maintenanceBarChart.applyCss();
+       maintenanceBarChart.layout();
+   }
+
+
+    private void addClickIfAny(
+            XYChart.Data<String, Number> data,
+            long count,
+            LocalDate date,
+            MaintenanceCategory category
+    ) {
+        if (count <= 0) return;
+
+        addBarClick(data, date, category);
+    }
+
+
+
+
+    private void addBarClick(
+            XYChart.Data<String, Number> data,
+            LocalDate date,
+            MaintenanceCategory category
+    ) {
+        data.nodeProperty().addListener((obs, oldNode, node) -> {
+            if (node == null) return;
+
+            node.setCursor(Cursor.HAND);
+            node.setOnMouseClicked(e -> {
+                if (e.getButton() == MouseButton.PRIMARY) {
+                    openMaintenanceList(date, category);
+                }
+            });
+        });
     }
 
 
@@ -263,13 +389,53 @@ public class DashboardContentController {
 
 
 
+    private void openMaintenanceList(
+            LocalDate date,
+            MaintenanceCategory category
+    ) {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/tabs/maintenance.fxml")
+            );
+
+            Parent root = loader.load();
+            MaintenanceController ctrl = loader.getController();
+
+            // περνάμε ΜΟΝΟ context (όχι business logic)
+            ctrl.loadData(date, category);
+
+            Stage stage = new Stage();
+            stage.setTitle(
+                    "Συντηρήσεις " + date + " (" + categoryToLabel(category) + ")"
+            );
+
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    private String categoryToLabel(MaintenanceCategory c) {
+        return switch (c) {
+            case PLANNED   -> "Προγραμματισμένες";
+            case COMPLETED -> "Υλοποιημένες";
+            case PENDING   -> "Εκκρεμείς";
+            case OVERDUE   -> "Εκπρόθεσμες";
+        };
+    }
+
     private void loadAlertsChart() {
 
         List<AlertModel> alerts = new ArrayList<>();
 
 
 
-        // μαζεύουμε ΟΛΕΣ τις συσκευές → και όλα τα alerts
+        // μαζεύουμε ΟΛΕΣ τις συσκευές και όλα τα alerts
         siteClient.getAllSites().forEach(site ->
                 buildingClient.getBuildingsBySite(site.getId())
                         .forEach(building ->
@@ -317,30 +483,161 @@ public class DashboardContentController {
             background.setStyle("-fx-background-color: transparent;");
         }
     }
-    private double computeRisk(OverallHealthModel health, long overdueMaint) {
+    private double computeOperationalRisk(OverallHealthModel health, long overdueMaint) {
+        if (health.getTotalDevices() == 0) return 0.0;//θωράκιση απο διαίρεση με το 0
+        //Αν 1–2 συσκευές πέσουν → το risk ανεβαίνει απότομα
 
-        double offlineFactor = (double) health.getOfflineCount() / health.getTotalDevices();
-        double overdueFactor = (double) overdueMaint / (health.getTotalDevices() * 2);
+        double offlineRatio =
+                (double) health.getOfflineCount() / health.getTotalDevices();
 
-        // alerts weight
-        //alertClient.getAllAlerts().size();
-        double alertFactor = (double) alertClient.getAllAlerts().size() / 50.0;
+// Logistic-like amplification
+        double offlineFactor = 1 - Math.exp(-3 * offlineRatio);
 
-        double risk = (offlineFactor * 0.5 + overdueFactor * 0.3 + alertFactor * 0.2) * 100;
+        double overdueRatio =
+                (double) overdueMaint / health.getTotalDevices();
 
-        return Math.min(100, risk);
+        double overdueFactor = 1 - Math.exp(-2 * overdueRatio);
+
+
+        // alerts weight Alert factor με severity
+        List<AlertModel> alerts = alertClient.getAllAlerts();
+
+
+        long weightedAlerts = alerts.stream()
+                .mapToLong(a -> switch (a.getSeverity()) {
+                    case AlertSeverity.CRITICAL -> 5;
+                    case AlertSeverity.HIGH    -> 3;
+                    case AlertSeverity.MEDIUM   -> 2;
+                    default         -> 1;
+                })
+                .sum();
+
+        double alertFactor = Math.min(1.0, weightedAlerts / (health.getTotalDevices() * 5.0));
+
+
+        double heatmapFactor = computeHeatmapRisk(
+                deviceClient.getFailureHeatmap()
+        );
+        heatmapFactor = Math.min(1.0, Math.max(0.0, heatmapFactor));
+
+        double rawRisk =
+                offlineFactor  * 0.450 +
+                        overdueFactor  * 0.10 +
+                        alertFactor    * 0.20 +
+                        heatmapFactor  * 0.25;
+
+// Επιχειρησιακή ανοχή 15%
+        double adjustedRisk = Math.max(0, rawRisk - 0.15);
+
+        return Math.min(100, adjustedRisk * 100);
+
+
+
     }
+
+    private double computeHeatmapRisk(List<FailureHeatmapCell> data) {
+
+        if (data == null || data.isEmpty()) {
+            return 0.0;
+        }
+
+        int totalAlerts = data.stream()
+                .mapToInt(FailureHeatmapCell::getCount)
+                .sum();
+
+        if (totalAlerts == 0) {
+            return 0.0;
+        }
+
+        int peak = data.stream()
+                .mapToInt(FailureHeatmapCell::getCount)
+                .max()
+                .orElse(0);
+
+        double normalizedLoad =
+                Math.min(1.0, totalAlerts / 50.0);
+
+        double concentration =
+                (double) peak / totalAlerts;
+
+        return Math.min(1.0,
+                0.6 * normalizedLoad +//0.6
+                        0.4 * concentration//0.4
+        );
+    }
+
+    /*private double computeHeatmapRisk(List<FailureHeatmapCell> data) {
+
+        if (data == null || data.isEmpty()) {
+            return 0.0;
+        }
+
+        int totalAlerts = data.stream()
+                .mapToInt(FailureHeatmapCell::getCount)
+                .sum();
+
+        int peak = data.stream()
+                .mapToInt(FailureHeatmapCell::getCount)
+                .max()
+                .orElse(0);
+
+        // Πόσα κελιά έχουν alerts
+        long activeCells = data.stream()
+                .filter(c -> c.getCount() > 0)
+                .count();
+
+        // Συγκέντρωση: λίγα κελιά με πολλά alerts = κακό
+        double concentration =
+                (double) peak / Math.max(1, totalAlerts);
+
+        // Κανονικοποίηση (εμπειρικά ασφαλής)
+        double normalizedLoad =
+                Math.min(1.0, totalAlerts / 50.0);
+
+        // Τελικός heatmap factor
+        return Math.min(1.0,
+                0.6 * normalizedLoad +
+                        0.4 * concentration
+        );
+    }*/
+
     private void updateKpis() {
-        MaintenanceStats stats = maintenanceClient.getMaintenanceStats();
-        //μαι.setText(String.valueOf(stats.thisMonth));
-        overdueLabel.setText(String.valueOf(stats.overdue));
-        OverallHealthModel health = deviceClient.getFleetHealth();
 
-        double riskPercent = computeRisk(health, stats.overdue);
+        MaintenanceBoxesKpiModel kpi = maintenanceClient.getMaintenanceKpis();
+
+        if (kpi == null) {
+            totalMaintLabel.setText("-");
+            completedLabel.setText("-");
+            pendingLabel.setText("-");
+            overdueLabel.setText("-");
+            riskLabel.setText("-");
+            cancelledLabel.setText("-");
+            return;
+        }
+
+        totalMaintLabel.setText(String.valueOf(kpi.getTotal()));
+        completedLabel.setText(String.valueOf(kpi.getCompleted()));
+        pendingLabel.setText(String.valueOf(kpi.getPending()));
+        overdueLabel.setText(String.valueOf(kpi.getOverdue()));
+        cancelledLabel.setText(String.valueOf(kpi.getCancel()));
+        autoClosedLabel.setText(
+                String.valueOf(kpi.getAutoClosed())
+        );
+
+        escalatedLabel.setText(
+                String.valueOf(kpi.getEscalated())
+        );
+
+
+
+        OverallHealthModel h = (health != null) ? health : deviceClient.getFleetHealth();
+
+        double riskPercent = computeOperationalRisk(h, kpi.getOverdue());
         renderRiskGauge(riskPercent);
-        riskLabel.setText((int)riskPercent + "%");
-
+        riskLabel.setText((int) riskPercent + "%");
     }
+
+
     public void loadHeatmap() {
         List<FailureHeatmapCell> data = deviceClient.getFailureHeatmap();
         HeatmapComponent heatmap = new HeatmapComponent(data);
@@ -370,9 +667,138 @@ public class DashboardContentController {
         ));
 
         Tooltip.install(riskBox, new Tooltip(
-                "Risk Level = βάρος από outages + overdue + critical alerts.\n"
-                        + "Υψηλή τιμή υποδηλώνει υψηλό επιχειρησιακό ρίσκο."
+                "Ο συνολικός δείκτης Risk εκφράζει το λειτουργικό ρίσκο του συστήματος.\n\n"
+                        + "Υπολογίζεται από:\n"
+                        + "• Διαθεσιμότητα συσκευών (offline)\n"
+                        + "• Εκπρόθεσμες συντηρήσεις\n"
+                        + "• Πλήθος και σοβαρότητα ειδοποιήσεων\n"
+                        + "• Χρονική συγκέντρωση βλαβών (heatmap)\n\n"
+                        + "Υψηλές τιμές υποδηλώνουν αυξημένη επιχειρησιακή πίεση\n"
+                        + "και ανάγκη άμεσης προτεραιοποίησης ενεργειών."
         ));
+
+    }
+
+
+    private void loadActiveIssues() {
+        //Εκκρεμείς ειδοποιήσεις
+        List<AlertModel> alerts = alertClient.getAllAlerts();
+
+        long pendingAlerts = alerts.stream()
+                .filter(a -> !"CLOSED".equalsIgnoreCase(a.getStatus().name()))
+                .count();
+
+        lblPendingAlerts.setText(String.valueOf(pendingAlerts));
+       // Συντηρήσεις σε εξέλιξη
+        List<MaintenanceModel> maints = maintenanceClient.getAll();
+
+        long inProgress = maints.stream()
+                .filter(m -> "PENDING".equalsIgnoreCase(m.getStatus().name()))
+                .count();
+
+
+        lblMaintenanceInProgress.setText(String.valueOf(inProgress));
+        loadMttr();
+
+
+
+    }
+    private void loadLastIotEventFromAlerts() {
+
+        List<AlertModel> alerts = alertClient.getAllAlerts();
+
+        alerts.stream()
+                .max(Comparator.comparing(AlertModel::getCreatedAt))
+                .ifPresentOrElse(alert -> {
+
+                    lblLastIotEventTime.setText(
+                            alert.getCreatedAt().toString()
+                    );
+
+                    lblLastIotEventDetails.setText(
+                            alert.getDeviceName() +
+                                    " / κρισιμότητα = " + alert.getSeverity() +
+                                    " / κατάσταση = " + alert.getStatus()
+                    );
+
+                }, () -> {
+                    lblLastIotEventTime.setText("—");
+                    lblLastIotEventDetails.setText("—");
+                });
+    }
+
+    private void loadRiskDrivers() {
+
+        ObservableList<String> drivers = FXCollections.observableArrayList();
+
+        long offline = computeOfflineDevices();
+        if (offline > 0) {
+            drivers.add("🔴 " + offline + " offline συσκευές (μειωμένη διαθεσιμότητα)");
+        }
+
+        long overdue = computeOverdueMaintenance();
+        if (overdue > 0) {
+            drivers.add("🛠 " + overdue + " εκπρόθεσμες συντηρήσεις (αυξημένο τεχνικό χρέος)");
+        }
+
+        long criticalAlerts = alertClient.getAllAlerts().stream()
+                .filter(a -> a.getSeverity() == AlertSeverity.CRITICAL)
+                .count();
+
+        if (criticalAlerts > 0) {
+            drivers.add("⚠ " + criticalAlerts + " critical alerts (επιχειρησιακή πίεση)");
+        }
+
+        // 🟠 ΝΕΟ — Heatmap contribution
+        double heatmapFactor = computeHeatmapRisk(
+                deviceClient.getFailureHeatmap()
+        );
+
+        if (heatmapFactor > 0.25) {
+            drivers.add("🟠 Χρονική συγκέντρωση βλαβών (heatmap peak)");
+        }
+
+        if (drivers.isEmpty()) {
+            drivers.add("✅ Δεν εντοπίστηκαν παράγοντες κινδύνου");
+        }
+
+        riskDriversList.setItems(drivers);
+    }
+
+    private long computeOfflineDevices() {
+
+        List<DeviceModel> devices = deviceClient.getAllDevices();
+
+        return devices.stream()
+                .filter(d -> Boolean.TRUE.equals(d.isOffline()))//!Boolean.TRUE.equals(d.isOffline())
+                .count();
+    }
+    private long computeOverdueMaintenance() {
+        LocalDate today = LocalDate.now();
+        List<MaintenanceModel> maints = maintenanceClient.getAll();
+
+        return maints.stream()
+                .filter(m -> MaintenanceRules.isOverdue(m, today))
+                .count();
+    }
+
+    private void addHoverEffect(Node node) {
+        node.setOnMouseEntered(e ->
+                node.setStyle("-fx-opacity: 1.0; -fx-scale-x:1.05; -fx-scale-y:1.05;"));
+
+        node.setOnMouseExited(e ->
+                node.setStyle("-fx-opacity: 0.85; -fx-scale-x:1.0; -fx-scale-y:1.0;"));
+    }
+    private void loadMttr() {
+
+        double mttr = kpiClient.getOperationalMttr();
+
+
+        if (mttr > 0) {
+            lblMttr.setText(mttr + " ημέρες");
+        } else {
+            lblMttr.setText("—");
+        }
     }
 
 

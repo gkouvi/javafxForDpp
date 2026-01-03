@@ -83,6 +83,7 @@ public class BuildingServiceClient extends ApiClient {
 
     public BuildingModel createBuilding(BuildingModel building) {
         try {
+            System.out.println(building);
             String json = mapper.writeValueAsString(building);
 
             HttpRequest request = HttpRequest.newBuilder()
@@ -94,6 +95,10 @@ public class BuildingServiceClient extends ApiClient {
 
             HttpResponse<String> response =
                     httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            if (response.statusCode() >= 400) {
+                // error από backend
+                throw new RuntimeException("Maintenance error: " + response.body());
+            }
 
             return mapper.readValue(response.body(), BuildingModel.class);
         } catch (Exception e) {
@@ -109,7 +114,7 @@ public class BuildingServiceClient extends ApiClient {
             byte[] png = baos.toByteArray();
 
             String boundary = "----DPPBUILDINGQR1234";
-            byte[] multipart = MultipartUtil.buildMultipart(png, boundary, "file", "qr.png");
+            byte[] multipart = MultipartUtil.buildMultipart(png, boundary, "file", buildingId+".png");
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(BASE_URL + "/buildings/" + buildingId + "/qr"))

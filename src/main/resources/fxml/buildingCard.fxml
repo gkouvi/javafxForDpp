@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="16"
+      xmlns="http://javafx.com/javafx/21"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="gr.uoi.dit.master2025.gkouvas.dppclient.controller.BuildingCardController"
+      styleClass="card-root">
+
+    <!-- ================= HEADER ================= -->
+    <Label fx:id="buildingNameLabel"
+           styleClass="card-title"
+           text="Building Name"/>
+
+    <!-- ================= BASIC INFO ================= -->
+    <GridPane hgap="12" vgap="8">
+        <columnConstraints>
+            <ColumnConstraints minWidth="140"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <Label text="Διεύθυνση:"/>
+        <Label fx:id="addressLabel" GridPane.columnIndex="1"/>
+
+        <Label text="BIM Format:" GridPane.rowIndex="1"/>
+        <Label fx:id="bimFormatLabel" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+        <Label text="BIM Model Ref:" GridPane.rowIndex="2"/>
+        <Label fx:id="bimModelRefLabel" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+    </GridPane>
+
+    <!-- ================= QR ================= -->
+    <Separator/>
+
+    <HBox spacing="16" alignment="CENTER_LEFT">
+        <VBox spacing="6">
+            <Label text="QR Code"/>
+            <ImageView fx:id="qrImage"
+                       fitWidth="160"
+                       fitHeight="160"
+                       preserveRatio="true"/>
+        </VBox>
+
+        <Label wrapText="true"
+               text="Το QR αντιστοιχεί στο Digital Product Passport του κτιρίου και χρησιμοποιείται για άμεση πρόσβαση στα δεδομένα του."/>
+    </HBox>
+
+</VBox>

@@ -9,18 +9,26 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class HeatmapComponent extends VBox {
 
-    private static final int CELL_SIZE = 32;
-    private static final Color BACKGROUND = Color.web("#1A1A1A");
+    private static final int CELL_SIZE = 28;
+    private static final Color BACKGROUND = Color.web("#0E223A");
 
     public HeatmapComponent(List<FailureHeatmapCell> data) {
 
+        Map<String, FailureHeatmapCell> lookup = new HashMap<>();
+
+        for (FailureHeatmapCell cell : data) {
+            String key = cell.getDay() + "-" + cell.getHour();
+            lookup.put(key, cell);
+        }
         setSpacing(10);
         setPadding(new Insets(10));
-        setStyle("-fx-background-color: #001A33;");
+        setStyle("-fx-background-color: #0E223A;");
 
         GridPane grid = new GridPane();
         grid.setHgap(4);
@@ -49,50 +57,89 @@ public class HeatmapComponent extends VBox {
         int max = data.stream().mapToInt(FailureHeatmapCell::getCount).max().orElse(1);
 
         // ==== DRAW CELLS ====
-        for (FailureHeatmapCell cell : data) {
+        for (int d = 0; d < 7; d++) {
+            for (int h = 0; h < 24; h++) {
 
-            Rectangle rect = new Rectangle(CELL_SIZE, CELL_SIZE);
-            rect.setArcHeight(6);
-            rect.setArcWidth(6);
+                String key = d + "-" + h;
+                FailureHeatmapCell cell = lookup.get(key);
 
-            Color color = computeColor(cell.getCount(), max);
-            rect.setFill(color);
+                int count = (cell == null) ? 0 : cell.getCount();
 
-            String tooltipText = """
-                    Ώρα: %d:00
-                    Ημέρα: %s
-                    Alerts: %d
-                    Συσκευές:
-                    %s
-                    """.formatted(
-                    cell.getHour(),
-                    days[cell.getDay()],
-                    cell.getCount(),
-                    (cell.getDevices() == null || cell.getDevices().isEmpty())
-                            ? " - "
-                            : String.join("\n - ", cell.getDevices())
-            );
+                Rectangle rect = new Rectangle(CELL_SIZE, CELL_SIZE);
+                rect.setArcHeight(6);
+                rect.setArcWidth(6);
 
-            Tooltip.install(rect, new Tooltip(tooltipText));
+                Color color = computeColor(count, max);
+                rect.setFill(color);
 
-            GridPane.setConstraints(rect, cell.getHour() + 1, cell.getDay() + 1);
-            grid.getChildren().add(rect);
+                if (cell != null && cell.getCount() > 0) {
+
+                    String tooltipText = """
+                Ώρα: %d:00
+                Ημέρα: %s
+                Alerts: %d
+                Συσκευές:
+                %s
+                """.formatted(
+                            h,
+                            days[d],
+                            cell.getCount(),
+                            (cell.getDevices() == null || cell.getDevices().isEmpty())
+                                    ? " - "
+                                    : String.join("\n - ", cell.getDevices())
+                    );
+
+                    Tooltip.install(rect, new Tooltip(tooltipText));
+                }
+
+                GridPane.setConstraints(rect, h + 1, d + 1);
+                grid.getChildren().add(rect);
+            }
         }
+
 
         getChildren().add(grid);
     }
 
-    /** Heat color scaling */
+    /**
+     * Heatmap color scale:
+     * 0 failures  -> Green
+     * 1+ failures -> Lime → Yellow → Orange → Red
+     */
     private Color computeColor(int count, int max) {
-        if (count == 0) return BACKGROUND;
 
-        double ratio = (double) count / max;  // scale 0→1
+        // 0 βλάβες → καθαρό πράσινο
+        if (count == 0) {
+            return Color.hsb(
+                    120,   // green
+                    0.75,
+                    0.50
+            );
+        }
 
-        return Color.hsb(
-                0,              // κόκκινο hue
-                0.8,            // saturation
-                0.4 + ratio * 0.6   // brightness scaling
-        );
+        // Προστασία
+        if (max <= 1) {
+            // αν όλα είναι 1, δείξε lime
+            return Color.hsb(
+                    90,    // lime
+                    0.85,
+                    0.90
+            );
+        }
+
+        // ratio μόνο για count >= 1
+        double ratio = (double) (count - 1) / (max - 1);
+        ratio = Math.min(1.0, ratio);
+
+        // Hue: Lime (90°) → Red (0°)
+        double hue = 90.0 * (1.0 - ratio);
+
+        double saturation = 0.8 + (0.2 * ratio);  // πιο έντονο όσο ανεβαίνει
+        double brightness = 0.90;
+
+        return Color.hsb(hue, saturation, brightness);
     }
+
+
 }
 

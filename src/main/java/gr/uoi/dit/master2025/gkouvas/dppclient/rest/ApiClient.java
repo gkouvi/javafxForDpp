@@ -1,6 +1,7 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import java.net.http.HttpClient;
@@ -20,5 +21,6 @@ public abstract class ApiClient {
         this.httpClient = HttpClient.newBuilder().build();
         this.mapper = new ObjectMapper();
         this.mapper.registerModule(new JavaTimeModule());
+        mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
 }

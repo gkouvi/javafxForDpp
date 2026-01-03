@@ -39,7 +39,7 @@
         <DatePicker fx:id="dateField" prefHeight="26.0" prefWidth="299.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
         <Label prefHeight="18.0" prefWidth="150.0" text="Κατάσταση:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <TextField fx:id="statusField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+        <ComboBox fx:id="statusField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <Label prefHeight="18.0" prefWidth="149.0" text="Κτίριο" GridPane.rowIndex="6" />
       <Label prefHeight="18.0" prefWidth="150.0" text="Διεύθυνση IP" GridPane.rowIndex="7" />
       <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
@@ -99,6 +99,11 @@
             </HBox>
          </children>
       </VBox>
+        <Label text="BIM Στοιχείο ID:" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+        <TextField fx:id="bimElementIdField" editable="false" promptText="IFC GlobalId" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+
+        <Label text="Κλάδος BIM:" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+        <ComboBox fx:id="bimDisciplineCombo" GridPane.columnIndex="1" GridPane.rowIndex="11" />
       <columnConstraints>
          <ColumnConstraints maxWidth="181.6" minWidth="145.599951171875" prefWidth="180.80001220703124" />
          <ColumnConstraints maxWidth="295.20001220703125" minWidth="300.0" prefWidth="264.79998779296875" />
@@ -114,12 +119,14 @@
          <RowConstraints minHeight="10.0" prefHeight="30.0" />
          <RowConstraints minHeight="10.0" prefHeight="30.0" />
          <RowConstraints minHeight="10.0" prefHeight="30.0" />
+         <RowConstraints />
+         <RowConstraints />
       </rowConstraints>
 
     </GridPane>
 
     <HBox alignment="CENTER_RIGHT" spacing="10">
-        <Button fx:id="envBtn" text="Περιβαλλοντικές Πληροφορίες" onAction="#onEditEnvironmental"/>
+        <Button fx:id="envBtn" onAction="#onEditEnvironmental" text="Περιβαλλοντικές Πληροφορίες" />
         <Button onAction="#onCancel" text="Ακύρωση" />
         <Button onAction="#onSave" text="Αποθήκευση αλλαγών" />
     </HBox>

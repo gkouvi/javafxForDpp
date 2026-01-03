@@ -138,15 +138,18 @@
                 </VBox>
 
                       <VBox HBox.hgrow="ALWAYS">
-                    <LineChart fx:id="maintenanceChart" legendVisible="true" VBox.vgrow="ALWAYS">
-                        <xAxis>
-                            <CategoryAxis label="Μήνας" />
-                        </xAxis>
-                        <yAxis>
-                            <NumberAxis label="Ενέργειες" tickUnit="1" />
-                        </yAxis>
-                    </LineChart>
-            <HBox VBox.vgrow="ALWAYS">
+                          <BarChart fx:id="maintenanceBarChart"
+                                    prefHeight="260"
+                                    animated="false">
+                              <xAxis>
+                                  <CategoryAxis label="Ημερομηνία"/>
+                              </xAxis>
+                              <yAxis>
+                                  <NumberAxis label="Πλήθος εργασιών"/>
+                              </yAxis>
+                          </BarChart>
+
+                          <HBox VBox.vgrow="ALWAYS">
                <children>
                   <VBox>
                      <children>

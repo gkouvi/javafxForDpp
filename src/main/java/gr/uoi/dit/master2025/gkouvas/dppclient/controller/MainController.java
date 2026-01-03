@@ -574,6 +574,9 @@ public class MainController {
                         }
 
                         case "building" -> {
+                            MenuItem info = new MenuItem("Πληροφορίες κτιρίου");
+                            info.setOnAction(e -> onCardBuilding());
+
                             MenuItem edit = new MenuItem("Επεξεργασία κτιρίου");
                             edit.setOnAction(e -> onEditBuilding());
 
@@ -604,6 +607,33 @@ public class MainController {
 
             return cell;
         });
+    }
+
+    private void onCardBuilding() {
+        Long id = SelectionContext.selectedBuildingId;
+
+        if (id == null) {
+            showWarning("Παρακαλώ επιλέξτε ένα κτίριο.");
+            return;
+        }
+        BuildingModel d = buildingClient.getBuilding((id));
+        try {
+
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/buildingCard.fxml"));
+            Parent root = loader.load();
+
+            BuildingCardController controller = loader.getController();
+            controller.loadBuilding((d.getId()));
+
+            Stage stage = new Stage();
+            stage.setTitle("ΠΠληροφορίες  Κτιρίου");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void selectDeviceInTree(Long deviceId) {

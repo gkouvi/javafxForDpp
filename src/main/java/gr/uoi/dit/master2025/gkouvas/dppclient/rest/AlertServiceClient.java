@@ -1,6 +1,8 @@
 package gr.uoi.dit.master2025.gkouvas.dppclient.rest;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import gr.uoi.dit.master2025.gkouvas.dppclient.model.AlertModel;
+import gr.uoi.dit.master2025.gkouvas.dppclient.model.PageResponse;
 import gr.uoi.dit.master2025.gkouvas.dppclient.session.UserSession;
 import javafx.scene.control.TextField;
 
@@ -22,15 +24,40 @@ public class AlertServiceClient extends ApiClient {
                     .GET()
                     .build();
 
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response =
+                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            return Arrays.asList(mapper.readValue(response.body(), AlertModel[].class));
+            if (response.statusCode() != 200) {
+                System.err.println("getAlertsForDevice failed: " + response.body());
+                return List.of();
+            }
+
+            String body = response.body().trim();
+
+            if (body.startsWith("[")) {
+                return mapper.readValue(
+                        body,
+                        new TypeReference<List<AlertModel>>() {}
+                );
+            }
+
+            PageResponse<AlertModel> page =
+                    mapper.readValue(
+                            body,
+                            new TypeReference<PageResponse<AlertModel>>() {}
+                    );
+
+            return page.getContent() != null ? page.getContent() : List.of();
 
         } catch (Exception e) {
             e.printStackTrace();
             return List.of();
         }
     }
+
+
+
+
 
     public AlertModel createAlert(AlertModel alert) {
         try {
@@ -65,13 +92,37 @@ public class AlertServiceClient extends ApiClient {
             HttpResponse<String> response =
                     httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-            return Arrays.asList(mapper.readValue(response.body(), AlertModel[].class));
+            if (response.statusCode() != 200) {
+                System.err.println("getAllAlerts failed: " + response.body());
+                return List.of();
+            }
+
+            String body = response.body().trim();
+
+            // 🔹 CASE 1: JSON ARRAY
+            if (body.startsWith("[")) {
+                return mapper.readValue(
+                        body,
+                        new TypeReference<List<AlertModel>>() {}
+                );
+            }
+
+            // 🔹 CASE 2: JSON OBJECT (Page)
+            PageResponse<AlertModel> page =
+                    mapper.readValue(
+                            body,
+                            new TypeReference<PageResponse<AlertModel>>() {}
+                    );
+
+            return page.getContent() != null ? page.getContent() : List.of();
 
         } catch (Exception e) {
             e.printStackTrace();
             return List.of();
         }
     }
+
+
 
 
     public AlertModel updateAlert(AlertModel alert) {
@@ -88,6 +139,13 @@ public class AlertServiceClient extends ApiClient {
             HttpResponse<String> response =
                     httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
+            // 🔒 ΑΜΥΝΤΙΚΟΣ ΕΛΕΓΧΟΣ
+            if (response.statusCode() < 200 || response.statusCode() >= 300) {
+                System.err.println("updateAlert failed (" +
+                        response.statusCode() + "): " + response.body());
+                return null;
+            }
+
             return mapper.readValue(response.body(), AlertModel.class);
 
         } catch (Exception e) {
@@ -95,6 +153,7 @@ public class AlertServiceClient extends ApiClient {
             return null;
         }
     }
+
 
     // ========================= GET ALERT BY DEVICE ============================
     public AlertModel getAllertFromDeviceID(Long deviceId) {
@@ -115,33 +174,6 @@ public class AlertServiceClient extends ApiClient {
         } catch (Exception e) {
             e.printStackTrace();
             return null;
-        }
-    }
-//δεν απαιτείται
-    public void createPingAlert(Long deviceId, String type, String message) {
-        try {
-
-            AlertModel model = new AlertModel();
-            model.setDeviceId(deviceId);
-            model.setStatus(type);
-            model.setMessage(message);
-            model.setDueDate(LocalDate.now());
-
-            String json = mapper.writeValueAsString(model);
-
-
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(BASE_URL + "/alerts/ping"))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(json))
-                    .build();
-
-            HttpResponse<String> response =
-                    httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

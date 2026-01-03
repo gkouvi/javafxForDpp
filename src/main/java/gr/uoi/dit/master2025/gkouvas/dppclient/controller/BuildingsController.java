@@ -43,9 +43,11 @@ public class BuildingsController {
             ContextMenu menu = new ContextMenu();
 
             MenuItem edit = new MenuItem("Επεξεργασία Κτιρίου");
+            MenuItem buildingCard = new MenuItem("Άνοιγμα Κάρτας Κτιρίου");
 
 
             edit.setOnAction(e -> onEditBuilding(row.getItem()));
+            buildingCard.setOnAction(event->onCardBuildingOpen(row.getItem()));
 
             menu.getItems().addAll(edit);
 
@@ -60,6 +62,29 @@ public class BuildingsController {
 
 
 
+    }
+
+    private void onCardBuildingOpen(BuildingModel item) {
+        if (item == null) return;
+
+        BuildingModel d = buildingClient.getBuilding((item.getId()));
+        try {
+
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/buildingCard.fxml"));
+            Parent root = loader.load();
+
+            BuildingCardController controller = loader.getController();
+            controller.loadBuilding((d.getId()));
+
+            Stage stage = new Stage();
+            stage.setTitle("ΠΠληροφορίες  Κτιρίου");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void onEditBuilding(BuildingModel row) {

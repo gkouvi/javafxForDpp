@@ -123,13 +123,14 @@ import java.util.List;
 
 public class CreateDeviceController {
 
-    public CheckBox hasIPCheck;
+    @FXML private TextField bimElementIdField;
+    @FXML private ComboBox<String> bimDisciplineCombo;
     @FXML private TextField nameField;
     @FXML private TextField typeField;
     @FXML private TextField serialField;
     @FXML private TextField firmwareField;
     @FXML private DatePicker dateField;
-    @FXML private TextField statusField;
+    @FXML private ComboBox<DeviceStatus> statusField;
     @FXML private TextField ipAddressField;
    // @FXML private TextField buildingIdField;
 
@@ -197,6 +198,10 @@ public class CreateDeviceController {
                 if (b != null) selectedBuildingId = b.getId();
             });
         }
+        bimDisciplineCombo.getItems().setAll(
+                "HVAC", "Ηλεκτρικά", "Ασφάλεια", "Πυρασφάλεια", "Υδραυλικά", "IT/Δίκτυο", "Δομικά", "Άλλα"
+        );
+        statusField.setItems(FXCollections.observableArrayList(DeviceStatus.values()));
     }
 
     @FXML
@@ -223,13 +228,15 @@ public class CreateDeviceController {
             device.setSerialNumber(serialField.getText());
             device.setFirmwareVersion(firmwareField.getText());
             device.setInstallationDate(dateField.getValue());
-            device.setStatus(statusField.getText());
+            device.setStatus(statusField.getValue().name());
             device.setIpAddress(ipAddressField.getText());
             device.setOffline(false);
 
             device.setBuildingId(selectedBuildingId);
             device.setMaintenanceIntervals(intervals);
 
+            device.setBimElementId(bimElementIdField.getText());
+            device.setBimDiscipline(bimDisciplineCombo.getValue());
             // 3. Δημιουργία συσκευής και περιβάλλον
             DeviceModel created = deviceClient.createDevice(device);
             Long newId = created.getDeviceId();
@@ -239,7 +246,17 @@ public class CreateDeviceController {
             }
 
             // 4. Δημιουργία QR
-            String payload = "DPP://device/" + newId;
+            String payload = "DPP://device/" + newId + "?v=1";
+            if (payload == null || !payload.startsWith("DPP://")) {
+                throw new IllegalArgumentException("Invalid DPP QR");
+            }
+
+            // DPP://device/42
+            String[] parts = payload.replace("DPP://", "").split("/");
+
+            if (parts.length != 2) {
+                throw new IllegalArgumentException("Invalid DPP format");
+            }
             BufferedImage qr = QRUtil.generateQRCode(payload, 300);
 
             // 5. Ανεβάστε QR

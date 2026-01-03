@@ -28,6 +28,11 @@
         <TextField fx:id="siteIdField"
                    GridPane.rowIndex="2" GridPane.columnIndex="1"
                    editable="false"/>
+        <Label text="Αναφορά μοντέλου BIM:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+        <TextField fx:id="bimModelRefField" promptText="Αναφορά μοντέλου (Κτίριο_A.ifc)" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+        <Label text="Μορφή BIM" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+        <ComboBox fx:id="bimFormatCombo" prefHeight="26.0" prefWidth="149.0" promptText="Μορφή BIM" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
 
     </GridPane>
 

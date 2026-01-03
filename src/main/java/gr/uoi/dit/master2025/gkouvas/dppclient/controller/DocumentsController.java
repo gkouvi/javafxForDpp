@@ -77,20 +77,31 @@ public class DocumentsController {
      * Ανεβάστε χρησιμοποιώντας multipart/form-data
      */
     private void uploadDocument() {
-        FileChooser fc = new FileChooser();
-        fc.setTitle("Μεταφόρτωση Εγγράφου");
+        try {
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Ανεβάστε έγγραφο");
+            File file = fc.showOpenDialog(btnUpload.getScene().getWindow());
 
-        File file = fc.showOpenDialog(null);
-        if (file == null) return;
+            if (file == null) return;
 
-        boolean ok = client.uploadDocument(currentDeviceId, file);
+            client.uploadDocument((long) currentDeviceId, file);
+
+            loadDocuments(currentDeviceId);
+            showInfo("Ανεβασμένο", "Το έγγραφο μεταφορτώθηκε με επιτυχία.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Σφάλμα μεταφόρτωσης");
+        }
+
+        /*boolean ok = client.uploadDocument(currentDeviceId, file);
 
         if (ok) {
             loadDocuments(currentDeviceId);
             showInfo("Η μεταφόρτωση ολοκληρώθηκε", "Το έγγραφο μεταφορτώθηκε με επιτυχία.");
         } else {
             showError("Η μεταφόρτωση απέτυχε.");
-        }
+        }*/
     }
 
     /**

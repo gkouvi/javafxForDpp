@@ -8,6 +8,8 @@ import javafx.stage.Stage;
 
 public class EditBuildingController {
 
+    @FXML private TextField bimModelRefField;
+    @FXML private ComboBox<String> bimFormatCombo;
     @FXML private TextField nameField;
     @FXML private TextField addressField;
     @FXML private TextField siteIdField;
@@ -23,6 +25,9 @@ public class EditBuildingController {
         nameField.setText(b.getName());
         addressField.setText(b.getAddress());
         siteIdField.setText(b.getSiteId() != null ? b.getSiteId().toString() : "");
+        bimFormatCombo.setValue(b.getBimFormat());
+        bimModelRefField.setText(b.getBimModelRef());
+
     }
 
     @FXML
@@ -38,6 +43,8 @@ public class EditBuildingController {
             b.setName(nameField.getText());
             b.setAddress(addressField.getText());
             b.setSiteId(Long.parseLong(siteIdField.getText()));
+            b.setBimFormat(bimFormatCombo.getValue());
+            b.setBimModelRef(bimModelRefField.getText());
 
             buildingClient.updateBuilding(buildingId, b);
 

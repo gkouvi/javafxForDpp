@@ -176,4 +176,7 @@ public class MaintenancePageController {
         List<UpcomingMaintenanceItem> list = deviceClient.getUpcomingMaintenanceDetails();
         upcomingMaintenanceTable.getItems().setAll(list);
     }
+
+
+
 }
